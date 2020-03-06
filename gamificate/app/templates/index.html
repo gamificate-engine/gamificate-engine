@@ -1,8 +1,153 @@
 {% extends "header.html" %}
 
 {% block content %}
-    <h1>Hi, {{ user.username }}!</h1>
-    {% for post in posts %}
-        <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    {% endfor %}
+
+
+
+<section id="gamificate">
+
+    <h1>Gamificate</h1>
+
+    <img id="trophy" src="{{ url_for('static', filename='img/trophy.png') }}">        
+    
+    <hr class="divider">
+
+    Open Source Gamification Engine
+
+</section>
+
+<section id="gamification">
+
+    <h1>Gamification</h1>
+
+    <hr class="divider">
+
+    <div class="row" style="display: flex; flex-wrap: wrap;">
+        <!-- Feature 1 -->
+        <div class="col-lg-4 col-md-6 col-sm-12">           
+            <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Bullseye.png') }}">
+            <h3>GOAL</h3>
+            <p>Texto</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            LEARNING
+            <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Settings.png') }}">
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            ACHIVEMENT
+            <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Rocket.png') }}">
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            CHALLENGE
+            <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Controller.png') }}">
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            REWARD
+            <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Ribbon.png') }}">
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            COMPETITION
+            <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Crown.png') }}">
+        </div>
+    </div>
+    
+</section>
+
+<section id="about">
+
+    <h1>About</h1>
+    <hr class="divider">
+
+</section>
+
+
+<section id="pricing">
+    
+    <h1>Pricing</h1>
+    <hr class="divider">
+    Teste
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Free</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>1 realm</li>
+                        <li>250 users</li>
+                        <li>25 badges</li>
+                        <li>Email support</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-dark">Sign up for free</button>
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Premium</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>∞ realm</li>
+                        <li>∞ users</li>
+                        <li>∞ badges</li>
+                        <li>Priority email support</li>
+                    </ul>
+                    <button id="premium_btn" type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<section id="team">
+    
+    <h1>Meet the Team</h1>
+    <hr class="divider">
+    Teste
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="140" height="140">
+                <h2>Henrique</h2>
+                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+            </div>
+            <div class="col-lg-4">
+                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="140" height="140">
+                <h2>Pedro</h2>
+                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+            </div>
+            <div class="col-lg-4">
+                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="140" height="140">
+                <h2>Tifany</h2>
+                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+            </div>
+          </div>
+    </div>
+   
+</section>
+
+
+
+
+<!-- Bootstrap 4 -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
 {% endblock %}
