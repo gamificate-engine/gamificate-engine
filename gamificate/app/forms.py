@@ -23,3 +23,4 @@ class RegistrationForm(FlaskForm):
         admin = Admin.query.filter_by(email=email.data).first()
         if admin is not None:
             raise ValidationError('Please use a different email address.')
+
