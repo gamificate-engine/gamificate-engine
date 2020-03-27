@@ -1,19 +1,44 @@
-* {
+
+
+*:not(.left) {
     text-align: center;
 }
 
-#gamificate, #pricing {
-    background-color: #292825;
-    color:white;
+
+h1 {
+    font-size: 64px;
+}
+
+#logo {
+    width: 85%;
+}
+
+#gamificate {
+    padding-top: 80px;
+    text-align: left;
+}
+
+#gamificate div div div.container {
+    vertical-align: middle;
+}
+
+#gamificate, #about, #buymeacoffee{
+    color: #292825;
+}
+
+#gamificate hr, #pricing hr , #about hr, #buymeacoffee hr{
+    border-top: 1px solid rgb(119, 119, 119);
 }
 
 #gamification, #team {
     background-color: #fcca03;
     color: #292825;
+    clear: both;
 }
 
-#about {
-    color: #292825;
+#pricing {
+    background-color: #292825;
+    color:white;   
 }
 
 
@@ -31,9 +56,7 @@ section {
 #premium_btn:not(:disabled):not(.disabled):active:focus,#premium_btn:not(:disabled):not(.disabled).active:focus,.show>#premium_btn.dropdown-toggle:focus{box-shadow:0 0 0 .2rem #ebbc02}
 
 
-#pricing h1 {
-    color: white;
-}
+
 
 #pricing div {
     color: #292825;
@@ -42,3 +65,45 @@ section {
 .img-gamification {
     width: 50%;
 }
+
+
+.navbar-custom {
+    background-color: #292825 !important;
+    border-bottom: 2px solid black;
+    font-size: 18px;
+}
+
+.features-list {
+    display: flex; 
+    flex-wrap: wrap;
+
+}
+
+.feature h3 {
+    margin-top: -0.2em;
+}
+
+.feature p {
+    padding: 0 1em;
+}
+
+.developer h3 {
+    margin-top: 0.5em;
+}
+
+.card {
+    border: 1px solid #292825;
+    margin-top: 30px;
+}
+
+
+#whatis {
+    padding-top: 20%;
+}
+
+@media (max-width: 992px) {
+    #whatis {
+        padding-top: 0%;
+    }
+}
+

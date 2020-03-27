@@ -1,5 +1,12 @@
 body {
+    padding-top: 80px;
     background-color: #292825 !important;
+}
+
+.navbar-custom {
+    background-color: #292825 !important;
+    border-bottom: 1px solid black;
+    font-size: 18px;
 }
 
 #login-btn {color:#fff; background-color:#fcca03;border-color:#fcca03}

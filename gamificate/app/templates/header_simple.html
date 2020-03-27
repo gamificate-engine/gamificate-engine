@@ -6,18 +6,22 @@
     
     <title>Gamificate - Open Source Gamification Engine</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
 </head>
 <body>
+    <header id="header">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark navbar-custom">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Gamificate</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <div>
-        Gamificate: 
-        <a href="{{ url_for('index') }}">Home</a>
-    </div>
+        </nav>
+       
+    </header>
     
-    <hr>
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}

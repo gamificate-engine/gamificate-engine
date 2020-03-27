@@ -5,14 +5,27 @@
 
 
 <section id="gamificate">
-
-    <h1>Gamificate</h1>
-
-    <img id="trophy" src="{{ url_for('static', filename='img/trophy.png') }}">        
     
-    <hr class="divider">
 
-    Open Source Gamification Engine
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="whatis" class="container">
+                <h3>What is Gamificate?</h3>
+                <hr class="divider">
+                <p>Open Source Gamification Engine - Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis adipisci, consectetur beatae neque repellat, asperiores culpa saepe sequi quas distinctio quisquam, a veniam possimus quae accusantium fugiat ut? Qui, dolorum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, quod laborum vitae iste laudantium consectetur in deleniti. Eligendi laboriosam perspiciatis obcaecati nostrum! Neque at id sapiente totam et quas ea? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum, ea asperiores suscipit odit provident voluptatem quae cumque, nam veniam nesciunt eligendi dicta laboriosam sed architecto minima error optio non voluptatibus.</p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <img id="logo" src="{{ url_for('static', filename='img/logo.png') }}">        
+
+        </div>
+    </div>
+    
+
+    
+    
+
+    
 
 </section>
 
@@ -22,60 +35,57 @@
 
     <hr class="divider">
 
-    <div class="row" style="display: flex; flex-wrap: wrap;">
+    <div class="row features-list">
         <!-- Feature 1 -->
-        <div class="col-lg-4 col-md-6 col-sm-12">           
+        <div class="feature col-lg-4 col-md-6 col-sm-12">           
             <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Bullseye.png') }}">
-            <h3>GOAL</h3>
-            <p>Texto</p>
+            <h3>Goal</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At, suscipit. Quo dolores inventore repellat dolorem autem mollitia, vitae, dolor quas pariatur repudiandae amet et in quae beatae! Suscipit, atque vitae!</p>
         </div>
         
         <!-- Feature 2 -->
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            LEARNING
+        <div class="feature col-lg-4 col-md-6 col-sm-12">           
             <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Settings.png') }}">
+            <h3>Learning</h3>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid ex sunt officiis enim dignissimos tenetur repudiandae omnis nam, consequuntur cupiditate itaque cumque, a sint ipsam, aut mollitia numquam repellat deserunt?</p>
         </div>
         
         <!-- Feature 3 -->
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            ACHIVEMENT
+        <div class="feature col-lg-4 col-md-6 col-sm-12">
             <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Rocket.png') }}">
+            <h3>Achievement</h3>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae odit earum est itaque quidem excepturi eaque repellendus quo, debitis vitae nesciunt. Repellendus voluptatum sapiente ullam facere fugiat consequatur molestiae! Commodi?</p>
         </div>
 
         <!-- Feature 4 -->
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            CHALLENGE
+        <div class="feature col-lg-4 col-md-6 col-sm-12">
             <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Controller.png') }}">
+            <h3>Challenge</h3>
+            <p>Encourage engagement by offering specific tasks to complete - Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa saepe tempora doloremque ipsum doloribus architecto impedit. Modi pariatur cum nulla? A quam cupiditate dolorum eveniet eum, quia quod minima fugiat.</p>
         </div>
 
         <!-- Feature 5 -->
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            REWARD
+        <div class="feature col-lg-4 col-md-6 col-sm-12">
             <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Ribbon.png') }}">
+            <h3>Reward</h3>
+            <p>Users' activity is continuously recognized with points, offers and prizes - Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea corrupti aliquid inventore tenetur maxime facilis nam ab commodi molestias, quia enim officiis eius animi aliquam exercitationem odit. Assumenda, eius hic!</p>
         </div>
 
         <!-- Feature 6 -->
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            COMPETITION
+        <div class="feature col-lg-4 col-md-6 col-sm-12">
             <img class="img-fluid img-gamification" src="{{ url_for('static', filename='img/Crown.png') }}">
+            <h3>Competition</h3>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quod, neque! Recusandae aperiam vitae nobis, sed culpa corrupti enim illum praesentium sequi delectus maxime eius similique id quod. Ex, recusandae impedit.</p>
         </div>
     </div>
     
 </section>
 
-<section id="about">
-
-    <h1>About</h1>
-    <hr class="divider">
-
-</section>
-
-
 <section id="pricing">
     
     <h1>Pricing</h1>
     <hr class="divider">
-    Teste
+    
     <div class="container">
         <div class="card-deck mb-3 text-center">
             <div class="card mb-4 box-shadow">
@@ -83,14 +93,14 @@
                     <h4 class="my-0 font-weight-normal">Free</h4>
                 </div>
                 <div class="card-body">
-                    <h2 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>
+                    <h2 class="card-title pricing-card-title">0€ <small class="text-muted">/ mo</small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>1 realm</li>
                         <li>250 users</li>
                         <li>25 badges</li>
                         <li>Email support</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-dark">Sign up for free</button>
+                    <a class="btn btn-lg btn-block btn-outline-dark" href="{{ url_for('login') }}">Sign up for free</a>
                 </div>
             </div>
             <div class="card mb-4 box-shadow">
@@ -98,14 +108,14 @@
                     <h4 class="my-0 font-weight-normal">Premium</h4>
                 </div>
                 <div class="card-body">
-                    <h2 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>
+                    <h2 class="card-title pricing-card-title">25€ <small class="text-muted">/ mo</small></h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li>∞ realm</li>
                         <li>∞ users</li>
                         <li>∞ badges</li>
                         <li>Priority email support</li>
                     </ul>
-                    <button id="premium_btn" type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+                    <a id="premium_btn" class="btn btn-lg btn-block btn-primary" href="{{ url_for('login') }}">Get started</a>
                 </div>
             </div>
         </div>
@@ -113,33 +123,55 @@
 
 </section>
 
+<section id="about">
+
+    <h1>About</h1>
+    <hr class="divider">
+    <div class="container">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum voluptatum quas officiis doloremque, vel quasi a ratione molestias itaque dolores, ex impedit reiciendis tempore sed fuga quis error aliquid accusamus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit animi, a minus et beatae ex? Quidem nulla quia animi excepturi expedita! Porro tenetur sequi similique nesciunt, blanditiis nostrum iusto unde. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolores velit adipisci dicta, rerum eveniet cumque ut ipsum repellat! Modi molestias ab vel esse. Consequuntur in delectus repellendus ad consequatur? Eum? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex consectetur, delectus beatae officia minima ut unde. Quasi excepturi dolor exercitationem quibusdam voluptatum eum odit in repellendus! Ratione excepturi nesciunt odit!
+    </div>
+</section>
+
+
+
+
 
 <section id="team">
     
     <h1>Meet the Team</h1>
+    
     <hr class="divider">
-    Teste
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="140" height="140">
-                <h2>Henrique</h2>
+            <div class="developer col-lg-4">
+                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="200" height="200">
+                <h3>Henrique</h3>
                 <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
             </div>
-            <div class="col-lg-4">
-                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="140" height="140">
-                <h2>Pedro</h2>
+            <div class="developer col-lg-4">
+                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="200" height="200">
+                <h3>Pedro</h3>
                 <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
             </div>
-            <div class="col-lg-4">
-                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="140" height="140">
-                <h2>Tifany</h2>
+            <div class="developer col-lg-4">
+                <img class="rounded-circle" src="{{ url_for('static', filename='img/trophy.png') }}" alt="Generic placeholder image" width="200" height="200">
+                <h3>Tifany</h3>
                 <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
             </div>
           </div>
     </div>
    
+</section>
+
+<section id="buymeacoffee">
+    <h1>Donate</h1>
+    
+    <hr class="divider">
+    
+    <p>If you love this project you can always help and motivate us buying us a coffee. Because as everyone knows a developer doesn't code without a delicious cup of coffee.</p>
+
+    <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 10px 7px 10px !important;line-height: 35px !important;height:51px !important;min-width:217px !important;text-decoration: none !important;display:inline-flex !important;color:#000000 !important;background-color:#FFDD00 !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 10px 7px 10px !important;font-size: 22px !important;letter-spacing: 0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Cookie', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;-o-transition: 0.3s all linear !important;-webkit-transition: 0.3s all linear !important;-moz-transition: 0.3s all linear !important;-ms-transition: 0.3s all linear !important;transition: 0.3s all linear !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#000000 !important;}</style><link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/aH0CSPz"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:15px;font-size:28px !important;">Buy me a coffee</span></a>
 </section>
 
 
