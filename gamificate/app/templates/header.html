@@ -3,23 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    {% if title %} <!-- conditional -->
-        <title>{{ title }} - Gamificate</title>
-        {% else %}
-        <title>Welcome to Gamificate!</title>
-    {% endif %}
+
+    <title>Gamificate - Open Source Gamification Engine</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 <body>
 
-    <div>
-        Gamificate: 
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('login') }}">Login</a>
-    </div>
-    
-    <hr>
+    <header id="header">      
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Gamificate</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#gamification">Gamification</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#pricing">Pricing</a>
+                </li>       
+              </ul>
+              
+              <ul class="navbar-nav">
+                {% if current_user.is_anonymous %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}">Login</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="url_for('admin', username=current_user.username) }}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% endif %}
+              
+                </ul>
+            </div>
+          </nav>
+    </header>
+
+
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}

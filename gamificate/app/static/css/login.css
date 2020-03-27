@@ -1,0 +1,10 @@
+body {
+    background-color: #292825 !important;
+}
+
+#login-btn {color:#fff; background-color:#fcca03;border-color:#fcca03}
+#login-btn:hover{color:#fff;background-color:#ebbc02;border-color:#ebbc02}
+#login-btn:focus,#login-btn.focus{box-shadow:0 0 0 .2rem #f8cd20}
+#login-btn.disabled,#login-btn:disabled{color:#fff;background-color:#fcca03;border-color:#ebbc02}
+#login-btn:not(:disabled):not(.disabled):active,#login-btn:not(:disabled):not(.disabled).active,.show>#login-btn.dropdown-toggle{color:#fff;background-color:#ebbc02;border-color:#000}
+#login-btn:not(:disabled):not(.disabled):active:focus,#login-btn:not(:disabled):not(.disabled).active:focus,.show>#login-btn.dropdown-toggle:focus{box-shadow:0 0 0 .2rem #ebbc02}

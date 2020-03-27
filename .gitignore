@@ -1,6 +1,5 @@
-gamificate/__pycache__/config.cpython-36.pyc
-gamificate/__pycache__/gamificate.cpython-36.pyc
-gamificate/app/__pycache__/__init__.cpython-36.pyc
-gamificate/app/__pycache__/forms.cpython-36.pyc
-gamificate/app/__pycache__/routes.cpython-36.pyc
+
 gamificate/venv
+*__pycache__*
+gamificate/env
+
