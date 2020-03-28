@@ -1,8 +1,8 @@
-"""update admin table
+"""update admin and realm
 
-Revision ID: a563f4be9e4e
+Revision ID: f3bc7c5f757e
 Revises: 
-Create Date: 2020-03-05 21:08:52.117940
+Create Date: 2020-03-27 23:14:15.933891
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a563f4be9e4e'
+revision = 'f3bc7c5f757e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,9 +30,11 @@ def upgrade():
     op.create_table('realm',
     sa.Column('id_realm', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=32), nullable=True),
+    sa.Column('description', sa.String(length=256), nullable=True),
     sa.Column('admin_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['admin_id'], ['admin.id_admin'], ),
     sa.PrimaryKeyConstraint('id_realm'),
+    sa.UniqueConstraint('description'),
     sa.UniqueConstraint('name')
     )
     # ### end Alembic commands ###
