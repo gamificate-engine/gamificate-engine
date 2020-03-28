@@ -1,0 +1,64 @@
+{% extends "header_simple.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-12 col-xl-10">
+            <div class="card shadow-lg o-hidden border-0 my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-flex">
+                            <div class="flex-grow-1 bg-login-image" style="background-image: url({{url_for('static', filename='img/login.png')}});"></div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h4 class="text-dark mb-4">Welcome Back!</h4>
+                                </div>
+
+                                <form class="user" action="" method="post" novalidate>
+                                    {{ form.hidden_tag() }}
+                                    <p>
+
+                                        <div class="form-group">
+                                            <input class="form-control form-control-user" type="text" id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email" required>
+                                        </div>
+                                        {% for error in form.email.errors %}
+                                            <span style="color: red;">[{{ error }}]</span>
+                                        {% endfor %}
+                                    </p>
+                                    <p>
+                                        <div class="form-group">
+                                            <input class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password" size="32" required>
+                                        </div>
+                                        {% for error in form.password.errors %}
+                                            <span style="color: red;">[{{ error }}]</span>
+                                        {% endfor %}
+                                    </p>
+
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">
+                                            <div class="form-check">
+                                                <input class="form-check-input custom-control-input" type="checkbox" id="remember_me" value="y">
+                                                <label class="form-check-label custom-control-label" for="remember_me">Remember Me</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button id="login-btn" class="btn btn-primary btn-block text-white btn-user" type="submit">Login</button>
+                                    
+                                    <hr>
+                                </form>
+                                <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
+                                <div class="text-center"><a class="small" href="{{ url_for('register') }}">Create an Account!</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+{% endblock %}
