@@ -86,7 +86,7 @@ class User(db.Model):
 
 class Standings(db.Model):
     realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id_realm'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True)
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
 
