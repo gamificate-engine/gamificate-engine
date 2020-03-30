@@ -1,6 +1,8 @@
-from app import db, login
+from app import app, db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from time import time
+import jwt
 
 
 class Admin(UserMixin, db.Model):
@@ -11,6 +13,22 @@ class Admin(UserMixin, db.Model):
     password = db.Column(db.String(128))
     realms = db.relationship('Realm', backref='author', lazy='dynamic')
     # falta premium
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id_admin, 'exp': time() + expires_in}, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        
+        return Admin.query.get(id)
+
 
     def setPassword(self, password):
         self.password = generate_password_hash(password)
@@ -86,7 +104,7 @@ class User(db.Model):
 
 class Standings(db.Model):
     realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id_realm'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True)
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
 
