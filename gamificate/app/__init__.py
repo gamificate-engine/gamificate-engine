@@ -16,6 +16,10 @@ login = LoginManager(app)
 login.login_view = 'login'
 mail = Mail(app)
 
+from app.errors import bp as errors_bp
+app.register_blueprint(errors_bp)
+
+
 # Error handling
 if not app.debug:
     if app.config['MAIL_SERVER']:
@@ -35,4 +39,4 @@ if not app.debug:
 
 
 
-from app import routes, models, errors
+from app import routes, models
