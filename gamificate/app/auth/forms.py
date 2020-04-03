@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from app.models import Admin, Realm
+from app.models import Admin
+
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
@@ -23,19 +24,6 @@ class RegistrationForm(FlaskForm):
         admin = Admin.query.filter_by(email=email.data).first()
         if admin is not None:
             raise ValidationError('Please use a different email address.')
-
-
-class RealmForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
-    submit = SubmitField('Create Realm')
-
-    def validate_name(self, name):
-        realm = Realm.query.filter_by(name = name.data).first()
-        if realm is not None:
-            raise ValidationError('Please use a different name.')
-
-    # Falta validação do premium
 
 
 class ResetPasswordRequestForm(FlaskForm):

@@ -1,6 +1,6 @@
-{% extends "webpage/header_simple.html" %}
+{% extends "auth/header_simple.html" %}
 
 {% block content %}
     <h1>File Not Found</h1>
-    <p><a href="{{ url_for('index') }}">Back</a></p>
+    <p><a href="{{ url_for('main.index') }}">Back</a></p>
 {% endblock %}
