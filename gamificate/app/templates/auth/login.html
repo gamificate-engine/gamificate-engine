@@ -1,4 +1,4 @@
-{% extends "webpage/header_simple.html" %}
+{% extends "auth/header_simple.html" %}
 {% block content %}
 
 <div class="container">
@@ -49,8 +49,8 @@
                                     
                                     <hr>
                                 </form>
-                                <div class="text-center"><a class="small" href="{{ url_for('reset_password_request') }}">Forgot Password?</a></div>
-                                <div class="text-center"><a class="small" href="{{ url_for('register') }}">Create an Account!</a></div>
+                                <div class="text-center"><a class="small" href="{{ url_for('auth.reset_password_request') }}">Forgot Password?</a></div>
+                                <div class="text-center"><a class="small" href="{{ url_for('auth.register') }}">Create an Account!</a></div>
 
                             </div>
                         </div>

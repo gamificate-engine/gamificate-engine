@@ -1,4 +1,4 @@
-{% extends "webpage/header.html" %}
+{% extends "main/header.html" %}
 
 {% block content %}
 
@@ -100,7 +100,7 @@
                         <li>25 badges</li>
                         <li>Email support</li>
                     </ul>
-                    <a class="btn btn-lg btn-block btn-outline-dark" href="{{ url_for('login') }}">Sign up for free</a>
+                    <a class="btn btn-lg btn-block btn-outline-dark" href="{{ url_for('auth.login') }}">Sign up for free</a>
                 </div>
             </div>
             <div class="card mb-4 box-shadow">
@@ -115,7 +115,7 @@
                         <li>∞ badges</li>
                         <li>Priority email support</li>
                     </ul>
-                    <a id="premium_btn" class="btn btn-lg btn-block btn-primary" href="{{ url_for('login') }}">Get started</a>
+                    <a id="premium_btn" class="btn btn-lg btn-block btn-primary" href="{{ url_for('auth.login') }}">Get started</a>
                 </div>
             </div>
         </div>
