@@ -82,13 +82,13 @@ def add_badge_progress(id):
     badge_progress = UserBadges.query.get((id,id_badge))
 
     if badge_progress is not None:
-        badge_progress.update_progress(progress)
+        badge_progress.update_progress(progress, badge, user)
     else:
         badge_progress = UserBadges(progress=0,finished=False)
         badge_progress.badge = badge
         user.badges.append(badge_progress)
 
-        badge_progress.update_progress(progress)
+        badge_progress.update_progress(progress, badge, user)
 
     db.session.commit()
 

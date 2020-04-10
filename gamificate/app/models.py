@@ -92,13 +92,14 @@ class UserBadges(db.Model):
     finished_date = db.Column(db.DateTime)
     badge = db.relationship("Badge")
 
-    def update_progress(self, progress):
+    def update_progress(self, progress, badge, user):
         setattr(self, 'progress', self.progress + progress)
-        # is self.badge a Badge object? needs testing
-        badge = Badge.query.get(self.id_badge)
+
         if self.progress >= badge.required:
             setattr(self, 'finished', True)
             setattr(self, 'finished_date', datetime.now())
+            user.total_xp = user.total_xp + badge.xp
+            user.total_badges = user.total_badges + 1
 
     def to_dict(self):
         data = {
@@ -116,6 +117,7 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(254), unique=True)
     total_xp = db.Column(db.Integer)
+    total_badges = db.Column(db.Integer)
     active = db.Column(db.Boolean)
     level = db.Column(db.Integer)
     realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
@@ -130,6 +132,7 @@ class User(db.Model):
             'id': self.id_user,
             'username': self.username,
             'total_xp': self.total_xp,
+            'total_badges': self.total_badges,
             'active': self.active,
             'level': self.level,
             'realm_id': self.realm_id        
@@ -140,7 +143,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data):
-        for field in ['username','email', 'total_xp', 'active', 'level', 'realm_id']:
+        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level', 'realm_id']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -148,6 +151,7 @@ class User(db.Model):
         setattr(self, 'username', data['username'])
         setattr(self, 'email', data['email'])
         setattr(self, 'total_xp', 0)
+        setattr(self, 'total_badges', 0)
         setattr(self, 'active', True)
         setattr(self, 'level', 1)
         setattr(self, 'realm_id', data['realm_id'])
