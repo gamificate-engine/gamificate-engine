@@ -28,7 +28,7 @@ app.register_blueprint(main_bp)
 from app.realms import bp as realms_bp
 app.register_blueprint(realms_bp)
 
- from app.api import bp as api_bp
+from app.api import bp as api_bp
 app.register_blueprint(api_bp, url_prefix='/api')
 
 
@@ -51,4 +51,4 @@ if not app.debug:
 
 
 
-from app import routes, models
+from app import models
