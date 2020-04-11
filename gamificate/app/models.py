@@ -82,6 +82,17 @@ class UserRewards(db.Model):
     redeem_date = db.Column(db.DateTime, nullable=True)
     reward = db.relationship("Reward")
 
+    def redeem(self,reward):
+        self.redeem_date = datetime.now()
+        self.reward = reward
+
+    def to_dict(self):
+        data = {
+            'id_reward': self.id_reward,
+            'redeem_date': self.redeem_date
+        }
+        return data
+
 # intermediate table between User and Badge
 class UserBadges(db.Model):
     __tablename__ = 'user_badge'
@@ -93,11 +104,11 @@ class UserBadges(db.Model):
     badge = db.relationship("Badge")
 
     def update_progress(self, progress, badge, user):
-        setattr(self, 'progress', self.progress + progress)
+        self.progress = self.progress + progress
 
         if self.progress >= badge.required:
-            setattr(self, 'finished', True)
-            setattr(self, 'finished_date', datetime.now())
+            self.finished = True
+            self.finished_date = datetime.now()
             user.total_xp = user.total_xp + badge.xp
             user.total_badges = user.total_badges + 1
 
@@ -148,13 +159,13 @@ class User(db.Model):
                 setattr(self, field, data[field])
 
     def new_user(self, data):
-        setattr(self, 'username', data['username'])
-        setattr(self, 'email', data['email'])
-        setattr(self, 'total_xp', 0)
-        setattr(self, 'total_badges', 0)
-        setattr(self, 'active', True)
-        setattr(self, 'level', 1)
-        setattr(self, 'realm_id', data['realm_id'])
+        self.username = data['username']
+        self.email = data['email']
+        self.total_xp = 0
+        self.total_badges = 0
+        self.active = True
+        self.level = 1
+        self.realm_id = data['realm_id']
 
 
 class Standings(db.Model):
