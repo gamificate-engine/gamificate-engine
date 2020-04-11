@@ -6,13 +6,24 @@ Open Source Gamification Engine
 
 ## Databse (Migrations)
 
-To update db: 
+- Create schema called 'gamificate'
+
+- Create .env file following .env_sample specifications
+
+- To update db: 
 ```shell
 flask db upgrade
 ```
 
-To apply changes in models to db: 
+- To apply changes in models to db: 
 ```shell
 flask db migrate -m "message"
 flask db upgrade
+```
+
+## App Server
+
+- Start:
+```shell
+flask run
 ```
