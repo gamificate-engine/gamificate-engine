@@ -96,6 +96,9 @@ def add_badge_progress(id):
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
 
+    if badge.id_realm != user.id_realm:
+        return error_response(400, "User and Badge from different realms.")
+
     badge_progress = UserBadges.query.get((id,id_badge))
 
     if badge_progress is not None:
@@ -129,7 +132,12 @@ def get_badge_progress(id):
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
 
-    badge_progress = UserBadges.query.get_or_404((id,id_badge))
+    if badge.id_realm != user.id_realm:
+        return error_response(400, "User and Badge from different realms.")
+
+    badge_progress = UserBadges.query.get((id,id_badge))
+    if not badge_progress:
+        return error_response(404, "User has no progress on that Badge.")
 
     return jsonify(badge_progress.to_dict())
 

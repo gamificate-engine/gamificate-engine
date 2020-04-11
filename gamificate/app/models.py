@@ -57,14 +57,32 @@ class Realm(db.Model):
 
 class Badge(db.Model):
     id_badge = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True)
+    name = db.Column(db.String(32))
     xp = db.Column(db.Integer)
     required = db.Column(db.Integer)
-    realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
-    reward_id = db.Column(db.Integer, db.ForeignKey('reward.id_reward'), nullable=True)
+    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
+    id_reward = db.Column(db.Integer, db.ForeignKey('reward.id_reward'), nullable=True)
 
     def __repr__(self):
         return '<Badge {}>'.format(self.name)
+
+    def to_dict(self):
+        data = {
+            'id_badge': self.id_badge,
+            'name': self.name,
+            'xp': self.xp,
+            'required': self.required,
+            'id_realm': self.id_realm
+        }
+        if self.id_reward:
+            data['id_reward'] = self.id_reward
+        return data
+
+    def new_or_update(self, data):
+        for field in ['name','xp', 'required', 'id_reward']:
+            if field in data:
+                setattr(self, field, data[field])
+
 
 class Reward(db.Model):
     id_reward = db.Column(db.Integer, primary_key=True)
@@ -115,7 +133,7 @@ class UserBadges(db.Model):
     def to_dict(self):
         data = {
             'id_badge': self.id_badge,
-            'progress': self.id_badge,
+            'progress': self.progress,
             'finished': self.finished
         }
         if self.finished:
