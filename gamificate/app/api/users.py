@@ -32,8 +32,8 @@ def create_user():
     if 'email' not in data:
         return bad_request('must include email')
 
-    if 'realm_id' not in data:
-        return bad_request('must include realm id')
+    if 'id_realm' not in data:
+        return bad_request('must include id_realm')
 
     if User.query.filter_by(email=data['username']).first():
         return bad_request('please use a different username')

@@ -131,7 +131,7 @@ class User(db.Model):
     total_badges = db.Column(db.Integer)
     active = db.Column(db.Boolean)
     level = db.Column(db.Integer)
-    realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
+    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
     badges = db.relationship("UserBadges")
     rewards = db.relationship("UserRewards")
 
@@ -146,7 +146,7 @@ class User(db.Model):
             'total_badges': self.total_badges,
             'active': self.active,
             'level': self.level,
-            'realm_id': self.realm_id        
+            'id_realm': self.id_realm        
         }
         if include_email:
             data['email'] = self.email
@@ -154,7 +154,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data):
-        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level', 'realm_id']:
+        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level', 'id_realm']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -165,7 +165,17 @@ class User(db.Model):
         self.total_badges = 0
         self.active = True
         self.level = 1
-        self.realm_id = data['realm_id']
+        self.id_realm = data['id_realm']
+
+    def rank_to_dict(self, rank, field):
+        data = {
+            'rank': rank,
+            'id_user': self.id_user,
+            'username': self.username
+        }
+        data[field] = getattr(self, field)
+        return data
+
 
 
 class Standings(db.Model):
