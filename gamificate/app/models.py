@@ -50,6 +50,8 @@ class Realm(db.Model):
     description = db.Column(db.String(256), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id_admin'))
     badges = db.relationship('Badge', backref='author', lazy='dynamic')
+    users = db.relationship('User')
+    rewards = db.relationship('Reward')
 
     def __repr__(self):
         return '<Realm {}>'.format(self.name)
@@ -88,6 +90,7 @@ class Reward(db.Model):
     id_reward = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     desc = db.Column(db.String(255))
+    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
 
     def __repr__(self):
         return '<Reward {}>'.format(self.name)
@@ -172,7 +175,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data):
-        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level', 'id_realm']:
+        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -183,7 +186,6 @@ class User(db.Model):
         self.total_badges = 0
         self.active = True
         self.level = 1
-        self.id_realm = data['id_realm']
 
     def rank_to_dict(self, rank, field):
         data = {

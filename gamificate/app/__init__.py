@@ -6,6 +6,8 @@ from flask_login import LoginManager, UserMixin
 import logging
 from logging.handlers import SMTPHandler
 from flask_mail import Mail
+from flask_jwt_extended import JWTManager
+
 
 
 app = Flask(__name__, instance_relative_config=True) 
@@ -15,6 +17,8 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 mail = Mail(app)
+
+jwt = JWTManager(app)
 
 from app.errors import bp as errors_bp
 app.register_blueprint(errors_bp)
