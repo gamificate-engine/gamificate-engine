@@ -12,8 +12,8 @@ class Admin(UserMixin, db.Model):
     last_name = db.Column(db.String(32))
     email = db.Column(db.String(128), index=True, unique=True)
     password = db.Column(db.String(128))
+    premium = db.Column(db.Boolean, default=False)
     realms = db.relationship('Realm', backref='author', lazy='dynamic')
-    # falta premium
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
@@ -50,6 +50,8 @@ class Realm(db.Model):
     description = db.Column(db.String(256), unique=True)
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id_admin'))
     badges = db.relationship('Badge', backref='author', lazy='dynamic')
+    users = db.relationship('User', backref='author', lazy='dynamic')
+    rewards = db.relationship('Reward', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<Realm {}>'.format(self.name)
@@ -88,6 +90,7 @@ class Reward(db.Model):
     id_reward = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     desc = db.Column(db.String(255))
+    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
 
     def __repr__(self):
         return '<Reward {}>'.format(self.name)

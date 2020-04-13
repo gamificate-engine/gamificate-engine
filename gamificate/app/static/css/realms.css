@@ -23,3 +23,16 @@
     border-radius: 5px;
     position: relative;
 }
+
+
+.title {
+    font-size: xx-large !important;
+    padding-left: 0.4em;
+}
+
+.notification {
+    align-items: center;
+    display: flex;
+    margin-top: 0.75rem;
+    padding: 0.5rem 1rem !important;
+}

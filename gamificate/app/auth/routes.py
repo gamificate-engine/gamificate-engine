@@ -11,7 +11,7 @@ from app.auth.email import send_password_reset_email
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('realms'))
+        return redirect(url_for('realms.realms'))
 
     form = LoginForm()
     
