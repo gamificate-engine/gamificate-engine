@@ -184,7 +184,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data):
-        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level', 'id_realm']:
+        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -195,7 +195,6 @@ class User(db.Model):
         self.total_badges = 0
         self.active = True
         self.level = 1
-        self.id_realm = data['id_realm']
 
     def rank_to_dict(self, rank, field):
         data = {
