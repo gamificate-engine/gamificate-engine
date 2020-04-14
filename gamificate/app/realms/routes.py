@@ -38,7 +38,7 @@ def new_realm():
 
 
 def calculate_avg_completed(realm):
-    return 25 #implement
+    return 25 # TODO: implement logic
 
 @bp.route('/realms/<id>', methods=['GET', 'POST'])
 @login_required
@@ -46,10 +46,9 @@ def show_realm(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
 
-    # Melhor maneira para fazer este count? ou Realm.query.filter_by(id_realm=id).count()
-    total_users = len(realm.users.all())
-    total_badges = len(realm.badges.all())
-    total_rewards = len(realm.rewards.all())
+    total_users = realm.users.count()
+    total_badges = realm.badges.count()
+    total_rewards = realm.rewards.count()
     avg_completed = calculate_avg_completed(realm)
 
     return render_template('realms/show.html', realm=realm, admin=admin, total_users=total_users, total_badges=total_badges, avg_completed=avg_completed, total_rewards=total_rewards)
@@ -63,7 +62,7 @@ def badges(id):
 
     return render_template('realms/badges/index.html', realm=realm, admin=admin, badges=realm.badges.all())
 
-    # falta new e edit
+    # TODO: new e edit
 
 
 
@@ -77,4 +76,4 @@ def users(id):
 
     return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all())
 
-    # falta new e edit
+    # TODO: new e edit
