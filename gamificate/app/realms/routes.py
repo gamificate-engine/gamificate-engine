@@ -80,9 +80,6 @@ def new_api_key(id):
     return redirect(url_for('realms.show_realm', id=id))
 
 
-
-
-
 @bp.route('/realms/<id>/badges')
 @login_required
 def badges(id):

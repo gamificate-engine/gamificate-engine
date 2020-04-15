@@ -61,7 +61,7 @@ class Realm(db.Model):
     def check_api_key(self, api_key):
         return check_password_hash(self.api_key, api_key)
     
-    
+
     def __repr__(self):
         return '<Realm {}>'.format(self.name)
 
