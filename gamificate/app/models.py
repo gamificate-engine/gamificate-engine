@@ -52,7 +52,16 @@ class Realm(db.Model):
     badges = db.relationship('Badge', lazy='dynamic')
     users = db.relationship('User', lazy='dynamic')
     rewards = db.relationship('Reward', lazy='dynamic')
+    api_key = db.Column(db.String(128), unique=True)
+    
 
+    def set_api_key(self, api_key):
+        self.api_key = generate_password_hash(api_key)
+
+    def check_api_key(self, api_key):
+        return check_password_hash(self.api_key, api_key)
+    
+    
     def __repr__(self):
         return '<Realm {}>'.format(self.name)
 
