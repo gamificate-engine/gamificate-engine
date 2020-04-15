@@ -4,12 +4,18 @@
 
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
-            {% include "realms/partials/navbar.html" %}
+            {% with title='Welcome!' %}
+                {% include "realms/partials/navbar.html"  %}
+            {% endwith%}
 
             <div class="container-fluid">
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0">Realms</h3>
-                    <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+                    {% if admin.premium == False and realms|length >= 1 %}
+                        <a href="" class="btn btn-primary float-right">Become Premium!</a>
+                    {% else %}
+                        <a href="{{url_for('realms.new_realm')}}" class="btn btn-primary float-right">New Realm</a>
+                    {% endif %}
                 </div>
              
                 <div class="row">
@@ -22,21 +28,9 @@
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}  
-                    
-                    <div class="col-lg-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Create a realm!</h5>
-                                <a href="{{url_for('realms.new_realm')}}" class="btn btn-primary float-right">Create</a>
-                            </div>
-                        </div>
-                    </div>               
-
+                    {% endfor %}       
                 </div>
-
             </div>
-
         </div>
     </div>
 

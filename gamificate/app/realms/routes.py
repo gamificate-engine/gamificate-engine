@@ -36,14 +36,22 @@ def new_realm():
     return render_template('realms/new.html', admin=admin, form=form)
 
 
+
+def calculate_avg_completed(realm):
+    return 25 # TODO: implement logic
+
 @bp.route('/realms/<id>', methods=['GET', 'POST'])
 @login_required
 def show_realm(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
 
-    
-    return render_template('realms/show.html', realm=realm, admin=admin)
+    total_users = realm.users.count()
+    total_badges = realm.badges.count()
+    total_rewards = realm.rewards.count()
+    avg_completed = calculate_avg_completed(realm)
+
+    return render_template('realms/show.html', realm=realm, admin=admin, total_users=total_users, total_badges=total_badges, avg_completed=avg_completed, total_rewards=total_rewards)
 
 
 @bp.route('/realms/<id>/badges')
@@ -54,4 +62,18 @@ def badges(id):
 
     return render_template('realms/badges/index.html', realm=realm, admin=admin, badges=realm.badges.all())
 
+    # TODO: new e edit
 
+
+
+
+
+@bp.route('/realms/<id>/users')
+@login_required
+def users(id):
+    realm = Realm.query.filter_by(id_realm=id).first_or_404()
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all())
+
+    # TODO: new e edit
