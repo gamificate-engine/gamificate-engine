@@ -6,7 +6,9 @@ from app.realms.forms import RealmForm
 from werkzeug.urls import url_parse
 from flask import request
 from app.realms import bp
-
+from app.realms.email import send_api_key_email
+from binascii import hexlify # generate API Key
+import os
 
 @bp.route('/realms/') #/<admin_id>/')
 @login_required
@@ -25,12 +27,17 @@ def new_realm():
     form = RealmForm()
     
     if form.validate_on_submit():
+        api_key = hexlify(os.urandom(16)).decode()
+
         realm = Realm(name = form.name.data, admin_id = current_user.get_id())
+        realm.set_api_key(api_key)
+
+        send_api_key_email(admin, api_key, realm)
 
         db.session.add(realm)
         db.session.commit()
 
-        flash('Congratulations, you created a new realm!')
+        flash('Congratulations, you created a new realm! Realm\'s API Key was sent to your email!')
         return redirect(url_for('realms.realms'))
     
     return render_template('realms/new.html', admin=admin, form=form)
@@ -52,6 +59,25 @@ def show_realm(id):
     avg_completed = calculate_avg_completed(realm)
 
     return render_template('realms/show.html', realm=realm, admin=admin, total_users=total_users, total_badges=total_badges, avg_completed=avg_completed, total_rewards=total_rewards)
+
+
+@bp.route('/realms/<id>/api_key')
+@login_required
+def new_api_key(id):
+    realm = Realm.query.filter_by(id_realm=id).first_or_404()
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    api_key = hexlify(os.urandom(16)).decode()
+
+    realm.set_api_key(api_key)
+
+    send_api_key_email(admin, api_key, realm)
+
+    db.session.add(realm)
+    db.session.commit()
+
+    flash('Your new Realm\'s API Key was sent to your email!')
+    return redirect(url_for('realms.show_realm', id=id))
 
 
 @bp.route('/realms/<id>/badges')
