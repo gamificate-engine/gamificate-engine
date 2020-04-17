@@ -1,6 +1,6 @@
 from app.api import bp
 from flask import jsonify, request
-from app.models import *
+from app.models import Realm, User
 from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -16,7 +16,7 @@ def get_level_leaderboard():
 
     res = []
 
-    users = realm.users
+    users = realm.users.all()
     # sort in desc order
     users = sorted(users, key=lambda user: user.level, reverse=True)
 
@@ -36,7 +36,7 @@ def get_total_xp_leaderboard():
 
     res = []
 
-    users = realm.users
+    users = realm.users.all()
     # sort in desc order
     users = sorted(users, key=lambda user: user.total_xp, reverse=True)
 
@@ -56,7 +56,7 @@ def get_total_badges_leaderboard():
 
     res = []
 
-    users = realm.users
+    users = realm.users.all()
     # sort in desc order
     users = sorted(users, key=lambda user: user.total_badges, reverse=True)
 

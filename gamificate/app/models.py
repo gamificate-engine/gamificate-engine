@@ -110,7 +110,7 @@ class UserRewards(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True)
     id_reward = db.Column(db.Integer, db.ForeignKey('reward.id_reward'), primary_key=True)
     redeem_date = db.Column(db.DateTime, nullable=True)
-    reward = db.relationship("Reward")
+    reward = db.relationship("Reward", lazy='dynamic')
 
     def redeem(self,reward):
         self.redeem_date = datetime.now()
@@ -131,7 +131,7 @@ class UserBadges(db.Model):
     progress = db.Column(db.Integer)
     finished = db.Column(db.Boolean)
     finished_date = db.Column(db.DateTime)
-    badge = db.relationship("Badge")
+    badge = db.relationship("Badge", lazy='dynamic')
 
     def update_progress(self, progress, badge, user):
         self.progress = self.progress + progress
@@ -162,8 +162,8 @@ class User(db.Model):
     active = db.Column(db.Boolean)
     level = db.Column(db.Integer)
     id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
-    badges = db.relationship("UserBadges")
-    rewards = db.relationship("UserRewards")
+    badges = db.relationship("UserBadges", lazy='dynamic')
+    rewards = db.relationship("UserRewards", lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.email)

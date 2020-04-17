@@ -1,6 +1,6 @@
 from app.api import bp
 from flask import jsonify, request
-from app.models import *
+from app.models import Realm, User, Badge, Reward, UserBadges, UserRewards
 from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -29,7 +29,7 @@ def get_users():
     if not realm:
         return error_response(404, "Realm with given ID does not exist.")
     res = []
-    users = realm.users
+    users = realm.users.all()
     for user in users:
         res.append(user.to_dict())
     return jsonify( {'users': res} )
@@ -87,7 +87,7 @@ def update_user_info(id):
 
     data = request.get_json() or {}
 
-    users = realm.users
+    users = realm.users.all()
 
     # TODO: LIST COMPREHENSION NEEDS TESTING!
     if 'username' in data and data['username'] != user.username and \
@@ -112,7 +112,7 @@ def add_badge_progress(id):
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
-     if user.id_realm != id_realm:
+    if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
     
     data = request.get_json() or {}
@@ -129,7 +129,7 @@ def add_badge_progress(id):
     badge = Badge.query.get(id_badge)
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
-     if badge.id_realm != id_realm:
+    if badge.id_realm != id_realm:
         return error_response(401, "Badge does not belong to your Realm.")
 
     badge_progress = UserBadges.query.get((id,id_badge))
@@ -156,7 +156,7 @@ def get_badge_progress(id):
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
-     if user.id_realm != id_realm:
+    if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
 
     data = request.get_json() or {}
@@ -170,7 +170,7 @@ def get_badge_progress(id):
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
 
-     if badge.id_realm != id_realm:
+    if badge.id_realm != id_realm:
         return error_response(401, "Badge does not belong to your Realm.")
 
     badge_progress = UserBadges.query.get((id,id_badge))
@@ -189,11 +189,11 @@ def get_user_badges(id):
 
     if not user:
         return error_response(404, "User with given ID does not exist.")
-     if user.id_realm != id_realm:
+    if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
 
     res = []
-    badges = user.badges
+    badges = user.badges.all()
     for badge in badges:
         res.append(badge.to_dict())
     return jsonify( {'user_badges': res} )
@@ -208,11 +208,11 @@ def get_user_finished_badges(id):
 
     if not user:
         return error_response(404, "User with given ID does not exist.")
-     if user.id_realm != id_realm:
+    if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
 
     res = []
-    badges = user.badges
+    badges = user.badges.all()
     for badge in badges:
         if badge.finished:
             res.append(badge.to_dict())
@@ -269,7 +269,7 @@ def get_user_rewards(id):
         return error_response(401, "User does not belong to your Realm.")
 
     res = []
-    rewards = user.rewards
+    rewards = user.rewards.all()
     for reward in rewards:
         res.append(reward.to_dict())
     return jsonify( {'user_rewards': res} )
