@@ -162,8 +162,8 @@ class User(db.Model):
     active = db.Column(db.Boolean)
     level = db.Column(db.Integer)
     id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
-    badges = db.relationship("UserBadges")
-    rewards = db.relationship("UserRewards")
+    badges = db.relationship("UserBadges", lazy='dynamic')
+    rewards = db.relationship("UserRewards", lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
@@ -184,7 +184,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data):
-        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level', 'id_realm']:
+        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -195,7 +195,6 @@ class User(db.Model):
         self.total_badges = 0
         self.active = True
         self.level = 1
-        self.id_realm = data['id_realm']
 
     def rank_to_dict(self, rank, field):
         data = {

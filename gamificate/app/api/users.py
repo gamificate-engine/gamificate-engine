@@ -1,39 +1,54 @@
 from app.api import bp
 from flask import jsonify, request
-from app.models import *
+from app.models import Realm, User, Badge, Reward, UserBadges, UserRewards
 from app.api.errors import bad_request, error_response
 from app import db
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # GET USER WITH GIVEN ID
 @bp.route('/users/<int:id>', methods=['GET'])
+@jwt_required
 def get_user(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
+
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
 
     return jsonify(user.to_dict())
 
 # GET ALL USERS
 @bp.route('/users', methods=['GET'])
+@jwt_required
 def get_users():
+    id_realm = get_jwt_identity()
+    realm = Realm.query.get(id_realm)
+    if not realm:
+        return error_response(404, "Realm with given ID does not exist.")
     res = []
-    users = User.query.all()
+    users = realm.users.all()
     for user in users:
         res.append(user.to_dict())
     return jsonify( {'users': res} )
 
 # CREATE NEW USER
 @bp.route('/users', methods=['POST'])
+@jwt_required
 def create_user():
+    id_realm = get_jwt_identity()
+    realm = Realm.query.get(id_realm)
+    if not realm:
+        return error_response(404, "Realm with given ID does not exist.")
+
     data = request.get_json() or {}
     if 'username' not in data:
         return bad_request('must include username')
 
     if 'email' not in data:
         return bad_request('must include email')
-
-    if 'id_realm' not in data:
-        return bad_request('must include id_realm')
 
     if User.query.filter_by(email=data['username']).first():
         return bad_request('please use a different username')
@@ -44,7 +59,9 @@ def create_user():
     user = User()
     user.new_user(data)
 
-    db.session.add(user)
+    realm.users.append(user)
+
+    # db.session.add(user)
     db.session.commit()
 
     response = jsonify(user.to_dict())
@@ -54,20 +71,32 @@ def create_user():
 
 # UPDATE USER
 @bp.route('/users/<int:id>', methods=['PUT'])
+@jwt_required
 def update_user_info(id):
+    id_realm = get_jwt_identity()
+    realm = Realm.query.get(id_realm)
+    if not realm:
+        return error_response(404, "Realm with given ID does not exist.")
+
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
 
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
+
     data = request.get_json() or {}
 
+    users = realm.users.all()
+
+    # TODO: LIST COMPREHENSION NEEDS TESTING!
     if 'username' in data and data['username'] != user.username and \
-            User.query.filter_by(username=data['username']).first():
-        return bad_request('please use a different username')
+            [u.username for u in users if u.username==data['username']].first():
+        return bad_request('Please use a different username.')
 
     if 'email' in data and data['email'] != user.email and \
-            User.query.filter_by(email=data['email']).first():
-        return bad_request('please use a different email address')
+            [u.email for u in users if u.email==data['email']].first():
+        return bad_request('Please use a different email address.')
     
     user.from_dict(data)
     db.session.commit()
@@ -76,10 +105,15 @@ def update_user_info(id):
 
 # UPDATE USER WITH BADGE PROGRESS
 @bp.route('/users/<int:id>/badge', methods=['PUT'])
+@jwt_required
 def add_badge_progress(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
     
     data = request.get_json() or {}
 
@@ -95,9 +129,8 @@ def add_badge_progress(id):
     badge = Badge.query.get(id_badge)
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
-
-    if badge.id_realm != user.id_realm:
-        return error_response(400, "User and Badge from different realms.")
+    if badge.id_realm != id_realm:
+        return error_response(401, "Badge does not belong to your Realm.")
 
     badge_progress = UserBadges.query.get((id,id_badge))
 
@@ -116,10 +149,15 @@ def add_badge_progress(id):
 
 # GET GIVEN BAGDE PROGRESS
 @bp.route('/users/<int:id>/badge', methods=['GET'])
+@jwt_required
 def get_badge_progress(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
 
     data = request.get_json() or {}
 
@@ -132,8 +170,8 @@ def get_badge_progress(id):
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
 
-    if badge.id_realm != user.id_realm:
-        return error_response(400, "User and Badge from different realms.")
+    if badge.id_realm != id_realm:
+        return error_response(401, "Badge does not belong to your Realm.")
 
     badge_progress = UserBadges.query.get((id,id_badge))
     if not badge_progress:
@@ -143,28 +181,38 @@ def get_badge_progress(id):
 
 # GET ALL USER BADGES (FINISHED AND NOT FINISHED)
 @bp.route('/users/<int:id>/badges/all', methods=['GET'])
+@jwt_required
 def get_user_badges(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
 
     if not user:
         return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
 
     res = []
-    badges = user.badges
+    badges = user.badges.all()
     for badge in badges:
         res.append(badge.to_dict())
     return jsonify( {'user_badges': res} )
 
 # GET ALL FINISHED USER BADGES
 @bp.route('/users/<int:id>/badges/finished', methods=['GET'])
+@jwt_required
 def get_user_finished_badges(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
 
     if not user:
         return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
 
     res = []
-    badges = user.badges
+    badges = user.badges.all()
     for badge in badges:
         if badge.finished:
             res.append(badge.to_dict())
@@ -172,11 +220,16 @@ def get_user_finished_badges(id):
 
 # REDEEM REWARD WITH GIVEN ID
 @bp.route('/users/<int:id>/reward', methods=['POST'])
+@jwt_required
 def redeem_reward(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
 
     if not user:
         return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
 
     data = request.get_json() or {}
 
@@ -186,9 +239,10 @@ def redeem_reward(id):
     id_reward = int(data['id_reward'])
 
     reward = Reward.query.get(id_reward)
-
     if not reward:
         return error_response(404, "Reward with given ID does not exist.")
+    if reward.id_realm != id_realm:
+        return error_response(401, "Reward does not belong to your Realm.")
 
     user_reward = UserRewards()
     user_reward.redeem(reward)
@@ -203,14 +257,19 @@ def redeem_reward(id):
     
 # GET ALL USER REWARDS
 @bp.route('/users/<int:id>/rewards', methods=['GET'])
+@jwt_required
 def get_user_rewards(id):
+    id_realm = get_jwt_identity()
+
     user = User.query.get(id)
 
     if not user:
         return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
 
     res = []
-    rewards = user.rewards
+    rewards = user.rewards.all()
     for reward in rewards:
         res.append(reward.to_dict())
     return jsonify( {'user_rewards': res} )
