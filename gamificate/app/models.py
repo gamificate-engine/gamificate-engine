@@ -63,7 +63,7 @@ class Realm(db.Model):
     
 
     def __repr__(self):
-        return '<Realm {}>'.format(self.name)
+        return '<Realm {}>'.format(self.name)    
 
 
 class Badge(db.Model):
@@ -216,9 +216,8 @@ class Standings(db.Model):
 
 class Level(db.Model):
     id_level = db.Column(db.Integer, primary_key=True)
-    a = db.Column(db.Integer)
-    b = db.Column(db.Integer)
-    c = db.Column(db.Integer)
+    a = db.Column(db.Float)
+    b = db.Column(db.Float)
     realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
 
     def __repr__(self):

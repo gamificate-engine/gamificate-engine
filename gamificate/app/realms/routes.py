@@ -1,7 +1,7 @@
 from app import db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import Admin, Realm
+from app.models import Admin, Realm, Level
 from app.realms.forms import RealmForm
 from werkzeug.urls import url_parse
 from flask import request
@@ -35,6 +35,11 @@ def new_realm():
         send_api_key_email(admin, api_key, realm)
 
         db.session.add(realm)
+        db.session.commit()
+        
+        level = Level(a = form.a.data, b = form.b.data, realm_id = realm.id_realm)
+  
+        db.session.add(level)
         db.session.commit()
 
         flash('Congratulations, you created a new realm! Realm\'s API Key was sent to your email!')
