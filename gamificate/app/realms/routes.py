@@ -79,7 +79,7 @@ def new_api_key(id):
     flash('Your new Realm\'s API Key was sent to your email!')
     return redirect(url_for('realms.show_realm', id=id))
 
-
+# TODO: edit
 @bp.route('/realms/<id>/badges')
 @login_required
 def badges(id):
@@ -88,7 +88,7 @@ def badges(id):
 
     return render_template('realms/badges/index.html', realm=realm, admin=admin, badges=realm.badges.all())
 
-    # TODO: new e edit
+
 
 
 

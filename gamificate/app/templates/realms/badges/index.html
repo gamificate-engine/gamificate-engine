@@ -14,7 +14,7 @@
                     {% if admin.premium == False and badges|length >= 25 %}
                         <a href="" class="btn btn-primary float-right">Become Premium!</a>
                     {% else %}
-                        <a href="" class="btn btn-primary float-right">New Badge</a>
+                        <a href="{{url_for('badges.new_badge', id=realm.id_realm)}}" class="btn btn-primary float-right">New Badge</a>
                     {% endif %}     
                 </div>
              

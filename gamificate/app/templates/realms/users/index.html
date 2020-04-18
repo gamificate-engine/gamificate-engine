@@ -14,13 +14,20 @@
                     {% if admin.premium == False and users|length >= 250 %}
                         <a href="" class="btn btn-primary float-right" role="button">Become Premium!</a>
                     {% else %}
-                        <a href="" class="btn btn-primary float-right" role="button">Add User</a>
+                        <a href="{{url_for('users.new_user', id=realm.id_realm)}}" class="btn btn-primary float-right" role="button">Add User</a>
                     {% endif %}  
                 </div>
-                              
-
                 <div class="row">
-                    TABLE (with pages??)
+                    {% for user in users %}
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{user.username}}</h5>
+                                    <a href="{{url_for('realms.show_realm', id=realm.id_realm)}}" class="btn btn-primary float-right">Explore</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
