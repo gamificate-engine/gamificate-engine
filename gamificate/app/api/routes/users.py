@@ -4,10 +4,12 @@ from app.models import Realm, User, Badge, Reward, UserBadges, UserRewards
 from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 # GET USER WITH GIVEN ID
 @bp.route('/users/<int:id>', methods=['GET'])
 @jwt_required
+@swag_from('../docs/users/get.yaml')
 def get_user(id):
     id_realm = get_jwt_identity()
 
@@ -23,6 +25,7 @@ def get_user(id):
 # GET ALL USERS
 @bp.route('/users', methods=['GET'])
 @jwt_required
+@swag_from('../docs/users/get_all.yaml')
 def get_users():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
@@ -37,6 +40,7 @@ def get_users():
 # CREATE NEW USER
 @bp.route('/users', methods=['POST'])
 @jwt_required
+@swag_from('../docs/users/create.yaml')
 def create_user():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
@@ -72,6 +76,7 @@ def create_user():
 # UPDATE USER
 @bp.route('/users/<int:id>', methods=['PUT'])
 @jwt_required
+@swag_from('../docs/users/update.yaml')
 def update_user_info(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
@@ -106,6 +111,7 @@ def update_user_info(id):
 # UPDATE USER WITH BADGE PROGRESS
 @bp.route('/users/<int:id>/badge', methods=['PUT'])
 @jwt_required
+@swag_from('../docs/users/badge.yaml')
 def add_badge_progress(id):
     id_realm = get_jwt_identity()
 
@@ -150,6 +156,7 @@ def add_badge_progress(id):
 # GET GIVEN BAGDE PROGRESS
 @bp.route('/users/<int:id>/badge', methods=['GET'])
 @jwt_required
+@swag_from('../docs/users/get_badge.yaml')
 def get_badge_progress(id):
     id_realm = get_jwt_identity()
 
@@ -182,6 +189,7 @@ def get_badge_progress(id):
 # GET ALL USER BADGES (FINISHED AND NOT FINISHED)
 @bp.route('/users/<int:id>/badges/all', methods=['GET'])
 @jwt_required
+@swag_from('../docs/users/get_badges.yaml')
 def get_user_badges(id):
     id_realm = get_jwt_identity()
 
@@ -201,6 +209,7 @@ def get_user_badges(id):
 # GET ALL FINISHED USER BADGES
 @bp.route('/users/<int:id>/badges/finished', methods=['GET'])
 @jwt_required
+@swag_from('../docs/users/get_finished.yaml')
 def get_user_finished_badges(id):
     id_realm = get_jwt_identity()
 
@@ -221,6 +230,7 @@ def get_user_finished_badges(id):
 # REDEEM REWARD WITH GIVEN ID
 @bp.route('/users/<int:id>/reward', methods=['POST'])
 @jwt_required
+@swag_from('../docs/users/redeem.yaml')
 def redeem_reward(id):
     id_realm = get_jwt_identity()
 
@@ -258,6 +268,7 @@ def redeem_reward(id):
 # GET ALL USER REWARDS
 @bp.route('/users/<int:id>/rewards', methods=['GET'])
 @jwt_required
+@swag_from('../docs/users/rewards.yaml')
 def get_user_rewards(id):
     id_realm = get_jwt_identity()
 
