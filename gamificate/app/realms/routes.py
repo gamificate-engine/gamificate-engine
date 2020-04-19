@@ -1,4 +1,4 @@
-from app import db
+from app import stripe, db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm
@@ -10,12 +10,13 @@ from app.realms.email import send_api_key_email
 from binascii import hexlify # generate API Key
 import os
 
-@bp.route('/realms/') #/<admin_id>/')
+
+@bp.route('/realms/')
 @login_required
-def realms():#admin_id):
+def realms():
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
 
-    return render_template('realms/index.html', admin=admin, realms=admin.realms.all())#, admin=admin, realms=realms)
+    return render_template('realms/index.html', admin=admin, realms=admin.realms.all())
 
 
 
@@ -78,6 +79,41 @@ def new_api_key(id):
 
     flash('Your new Realm\'s API Key was sent to your email!')
     return redirect(url_for('realms.show_realm', id=id))
+
+
+@bp.route('/realms/payment', methods=['POST'])
+@login_required
+def payment():
+    # amount in cents
+    amount = 2500
+
+    customer = stripe.Customer.create(
+        email=request.form['stripeEmail'],
+        source=request.form['stripeToken']
+    )
+
+    stripe.Charge.create(
+        customer=customer.id,
+        amount=amount,
+        currency='eur',
+        description='Gamificate Premium'
+    )
+    
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin.premium = 1
+    db.session.add(admin)
+    db.session.commit()
+
+    flash('Congratulations, you now have a Premium account!')
+    return redirect(url_for('realms.realms'))
+
+
+@bp.route('/realms/premium')
+@login_required
+def premium():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    return render_template('realms/premium.html', admin=admin, key=stripe.publishable_key)
 
 
 @bp.route('/realms/<id>/badges')

@@ -3,8 +3,10 @@
 
 
     <div class="d-flex flex-column" id="content-wrapper">
+        
+
         <div id="content">
-            {% with title='Welcome!' %}
+            {% with title='Welcome!' , premium=admin.premium %}
                 {% include "realms/partials/navbar.html"  %}
             {% endwith%}
 
@@ -12,7 +14,7 @@
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0">Realms</h3>
                     {% if admin.premium == False and realms|length >= 1 %}
-                        <a href="" class="btn btn-primary float-right">Become Premium!</a>
+                        <a href="{{url_for('realms.premium')}}" class="btn btn-primary float-right"> Become Premium! </a>
                     {% else %}
                         <a href="{{url_for('realms.new_realm')}}" class="btn btn-primary float-right">New Realm</a>
                     {% endif %}
@@ -20,7 +22,7 @@
              
                 <div class="row">
                     {% for realm in realms %}
-                        <div class="col-lg-3">
+                        <div class="col-sm-6 col-lg-3">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{realm.name}}</h5>
