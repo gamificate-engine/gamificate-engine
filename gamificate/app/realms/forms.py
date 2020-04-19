@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, DecimalField, TextAreaField, SubmitField
+from wtforms.validators import ValidationError, DataRequired
 from app.models import Admin, Realm
 
 
@@ -8,7 +8,9 @@ from app.models import Admin, Realm
 
 class RealmForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    a = DecimalField('Description', validators=[DataRequired()])
+    b = DecimalField('Description', validators=[DataRequired()])
     submit = SubmitField('Create Realm')
 
     def validate_name(self, name):

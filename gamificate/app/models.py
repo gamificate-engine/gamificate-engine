@@ -53,6 +53,8 @@ class Realm(db.Model):
     users = db.relationship('User', lazy='dynamic')
     rewards = db.relationship('Reward', lazy='dynamic')
     api_key = db.Column(db.String(128), unique=True)
+    a = db.Column(db.Float)
+    b = db.Column(db.Float)
     
 
     def set_api_key(self, api_key):
@@ -63,7 +65,7 @@ class Realm(db.Model):
     
 
     def __repr__(self):
-        return '<Realm {}>'.format(self.name)
+        return '<Realm {}>'.format(self.name)    
 
 
 class Badge(db.Model):
@@ -213,16 +215,6 @@ class Standings(db.Model):
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
 
-
-class Level(db.Model):
-    id_level = db.Column(db.Integer, primary_key=True)
-    a = db.Column(db.Integer)
-    b = db.Column(db.Integer)
-    c = db.Column(db.Integer)
-    realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
-
-    def __repr__(self):
-        return '<Level {}>'.format(self.realm_id)
 
 
 # User-Loader Function
