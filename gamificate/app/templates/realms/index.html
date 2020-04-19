@@ -22,8 +22,8 @@
              
                 <div class="row">
                     {% for realm in realms %}
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card">
+                        <div class="col-lg-3">
+                            <div class="card mt-3">
                                 <div class="card-body">
                                     <h5 class="card-title">{{realm.name}}</h5>
                                     <a href="{{url_for('realms.show_realm', id=realm.id_realm)}}" class="btn btn-primary float-right">Explore</a>
