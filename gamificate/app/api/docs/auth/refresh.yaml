@@ -12,6 +12,12 @@ security:
 responses:
   200:
     description: "New access_token"
+    schema:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: ehakasklfdjdkalkasdfdee...
   404:
     description: "Realm with given ID does not exist"
   401:

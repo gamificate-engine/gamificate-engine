@@ -85,8 +85,8 @@ template = {
     # "termsOfService": "http://me.com/terms",
     "version": "0.0.1"
   },
-  "host": "gamificate-engine.com",  # overrides localhost:500
-  "basePath": "/api",  # base bash for blueprint registration
+#   "host": "gamificate-engine.com",  # overrides localhost:500
+#   "basePath": "/api",  # base bash for blueprint registration
   "schemes": [
     "http",
     "https"
