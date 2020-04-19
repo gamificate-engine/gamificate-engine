@@ -52,6 +52,7 @@ responses:
         finished_date:
           description: "Only when the Badge is finished: Date when it was acquired"
           type: "string"
+          example: "2020-04-19 21:22:27.175801"
   404:
     description: "User or Badge with given ID does not exist"
   400:

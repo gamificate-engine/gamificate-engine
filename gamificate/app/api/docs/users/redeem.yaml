@@ -21,7 +21,7 @@ parameters:
     schema:
       type: "object"
       properties:
-        id_badge:
+        id_reward:
           description: "ID of the Reward"
           type: "integer"
           example: 1
@@ -36,9 +36,10 @@ responses:
           description: "ID of the Reward"
           type: "integer"
           example: 1
-        progress:
-          description: "Date the Reward was redeemed"
-          type: "string"
+        redeem_date:
+            description: "Date the Reward was redeemed"
+            type: "string"
+            example: "2020-04-19 21:22:27.175801"
   404:
     description: "User or Reward with given ID does not exist."
   400:

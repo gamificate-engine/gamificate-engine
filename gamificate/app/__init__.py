@@ -57,6 +57,7 @@ if not app.debug:
 app.config['SWAGGER'] = {
     'title': "Gamificate API",
     'uiversion': 3,
+    'hide_top_bar': True,
     # 'openapi': '3.0.2',
 }
 swagger_config = {
@@ -76,7 +77,55 @@ swagger_config = {
 template = {
   "info": {
     "title": "Gamificate API",
-    "description": "API available for Gamificate users with, at least, one Realm created. If you are not registered user, you will not have access to this API.",
+    "description": 
+        """
+# Welcome to Gamificate API Documentation!
+Here you can find the documentation for the API available for the users of our app, **Gamificate**. 
+In this page you will be able to explore the existing routes: checking what they can do, what are their parameters and what they return. You can even test it within the docs! (if you have the right permissions, of course, but we will discuss it later). An example of parameter data and return data are also available for all the routes.
+
+### Content:
+
+ 1. Quickstart
+ 2. Authentication
+ 3. Routes
+
+## Quickstart:
+To be able to use our API, you need first to create an account in our app: [Gamificate](www.gamificate-engine.com).  
+
+After signing up, you will need to create your first Realm. A Realm is the environment on which you will have your users, badges and rewards. In other words, a Realm represents the context on which you want to introduce gamification. 
+
+When you create your Realm, an API Key will be sent to your email. That API Key must be kept a secret and handled carefuly, in order to keep people who want to ruin your Realm away! If you eventually lose your API Key, or want a new one, you can generate it on our app's dashboard.
+
+Our API only allows you to interact with Users, Badges and Rewards. You will not be able to create Realms or Gamificate accounts through here. For that, you need to do it in our app's dashboard. Creating Badges and Rewards are also not covered here, but you can consult them and check their infos with the provided routes.
+
+To be able to use our API, you need to authenticate yourself first. This will be explained in the next section.
+
+## Authentication:
+So, now that you have your API Key, you can access your Realm through our API!  
+
+Every route we provide is locked. This means you need the *access_token* given by the **api/auth/** route, the only one that is not locked. Our authentication works via JWT, so you need to pass the token in every request's header like this:
+
+`Authorization: Bearer <your_token>`
+
+The *access_token* has a relatively short lifetime, so you may need to get a new one. But don't worry, we got your back! We provide you the **api/auth/refresh** route, that creates another *access_token*. To access this route though, you need to provide the *refresh_token* the API gave you when you authenticated. This *refresh_token* has a bigger lifetime, when compared to the other token.
+
+Please store your tokens in a secure way!
+
+
+## Routes:
+We divided our routes in the following structure:
+- **Auth**: routes that allow you to get the access and refresh tokens
+- **Leaderboards**: routes that allow you to get the user's ranking, ordered by different properties
+- **Users**: routes that allow you to interact with your Realm's users.
+	- **Badges**: routes that allow you to connect your users with the Realm's badges
+	- **Rewards**: routes that allow you to connect your users with the Realm's rewards
+
+You can get more info on each one of the routes below, and even testing them in real time with real values and real results. So, take care when using this feature!
+
+As every route is locked and needs authentication, you have a button on your right that allows you to do that and will fill the request's header with the token you provide. Please follow the instructions on how to authenticate when you click the button. If you enter your token with a different format, the authorization will not be accomplished.
+
+Have fun and **Gamificate** a lot!
+        """,
     "contact": {
       "responsibleOrganization": "Universidade do Minho",
       "responsibleDeveloper": "Henrique Pereira, Pedro Moreira, Sarah Silva",
