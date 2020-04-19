@@ -18,17 +18,22 @@ responses:
   200:
     description: "Redeemed Rewards"
     schema:
-      type: "array"
-      items:
-        type: "object"
-        properties:
-          id_reward:
-            description: "ID of the Reward"
-            type: "integer"
-            example: 1
-          progress:
-            description: "Date the Reward was redeemed"
-            type: "string"
+      type: "object"
+      properties:
+        user_rewards:
+          description: "Redeemed Rewards"
+          type: "array"
+          items:
+              type: "object"
+              properties:
+                id_reward:
+                  description: "ID of the Reward"
+                  type: "integer"
+                  example: 1
+                redeem_date:
+                  description: "Date the Reward was redeemed"
+                  type: "string"
+                  example: "2020-04-19 21:22:27.175801"
   404:
     description: "User with given ID does not exist"
   401:
