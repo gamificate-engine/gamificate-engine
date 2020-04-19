@@ -1,49 +1,72 @@
-summary: "Authenticate in a Realm"
+summary: "Create a new User"
 tags:
-- users
-description: "This route is the one that allows you to authenticate to a given Realm, using its API key. It returns two tokens: access_token and refresh_token. The refresh token
-can be used to generate a new access_token when it expires. All the other routes need the access_token provided by this route, 
-besides the /auth/refresh one, which needs the refresh_token."
+  - users
+description: "This route allows you to create a new User in the Realm you are authenticated in."
 consumes:
-- "application/json"
+  - "application/json"
 produces:
-- "application/json"
+  - "application/json"
+security:
+  - Bearer: []
 parameters:
-- in: "body"
-  name: "body"
-  description: "Object containing the ID of the Realm you want to authenticate in and its API key."
-  required: true
-  schema:
-    type: "object"
-    properties:
-      id_realm:
-        description: "ID of the Realm you want to authenticate in"
-        type: "integer"
-        format: "int64"
-        example: 15
-      api_key:
-        description: "API key of the Realm you want to authenticate in"
-        type: "string"
-        example: "54e2fefcb418b78ad956ecbb670f5d4f"
+  - in: "body"
+    name: "body"
+    description: "Object containing the ID of the Realm you want to authenticate in and its API key."
+    required: true
+    schema:
+      type: "object"
+      properties:
+        username:
+          description: "Username of the new User"
+          type: "string"
+          example: "RicFazeres"
+          required: true
+        email:
+          description: "Email of the new User"
+          type: "string"
+          example: "sempreapuxar@croquetes.com"
+          required: true
 responses:
   200:
-    description: "Access and refresh tokens"
-    content:
-      application/json:
-        schema:
-          type: "object"
-          properties:
-            access_token:
-              description: "Access token"
-              type: "string"
-              example: "jaaksjhdfkasjhkajcb..."
-            refresh_token:
-              description: "Refresh token"
-              type: "string"
-              example: "jaaksjhdfkasjhkajcb..."
+    description: "User created"
+    schema:
+      type: "object"
+      properties:
+        id:
+          description: "ID of the User"
+          type: "integer"
+          example: 13
+        username:
+          description: "Username of the User"
+          type: "string"
+          example: "RicFazeres"
+        email:
+          description: "Email of the User"
+          type: "string"
+          example: "sempreapuxar@croquetes.com"
+        level:
+          description: "Level of the User"
+          type: "integer"
+          example: 1
+        total_xp:
+          description: "Total XP of the User"
+          type: "integer"
+          example: 0
+        total_badges:
+          description: "Total Badges of the User"
+          type: "integer"
+          example: 0
+        active:
+          description: "If the User is active or not"
+          type: "boolean"
+          example: true
+        id_realm:
+          description: "ID of the Realm the User belongs to"
+          type: "integer"
+          example: 1
   404:
     description: "Realm with given ID does not exist"
   400:
-    description: "Must include id_realm OR Must include api_key" 
+    description: "Username and Email are required and must be unique in the Realm."
   401:
     description: "Wrong API key"

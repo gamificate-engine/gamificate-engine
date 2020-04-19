@@ -19,7 +19,6 @@ class Admin(UserMixin, db.Model):
         return jwt.encode(
             {'reset_password': self.id_admin, 'exp': time() + expires_in}, app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
-
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -27,9 +26,8 @@ class Admin(UserMixin, db.Model):
                             algorithms=['HS256'])['reset_password']
         except:
             return
-        
-        return Admin.query.get(id)
 
+        return Admin.query.get(id)
 
     def setPassword(self, password):
         self.password = generate_password_hash(password)
@@ -62,7 +60,6 @@ class Realm(db.Model):
 
     def check_api_key(self, api_key):
         return check_password_hash(self.api_key, api_key)
-    
 
     def __repr__(self):
         return '<Realm {}>'.format(self.name)    
@@ -74,7 +71,8 @@ class Badge(db.Model):
     xp = db.Column(db.Integer)
     required = db.Column(db.Integer)
     id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
-    id_reward = db.Column(db.Integer, db.ForeignKey('reward.id_reward'), nullable=True)
+    id_reward = db.Column(db.Integer, db.ForeignKey(
+        'reward.id_reward'), nullable=True)
 
     def __repr__(self):
         return '<Badge {}>'.format(self.name)
@@ -92,7 +90,7 @@ class Badge(db.Model):
         return data
 
     def new_or_update(self, data):
-        for field in ['name','xp', 'required', 'id_reward']:
+        for field in ['name', 'xp', 'required', 'id_reward']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -107,14 +105,18 @@ class Reward(db.Model):
         return '<Reward {}>'.format(self.name)
 
 # intermediate table between User and Reward
+
+
 class UserRewards(db.Model):
     __tablename__ = 'user_reward'
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True)
-    id_reward = db.Column(db.Integer, db.ForeignKey('reward.id_reward'), primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey(
+        'user.id_user'), primary_key=True)
+    id_reward = db.Column(db.Integer, db.ForeignKey(
+        'reward.id_reward'), primary_key=True)
     redeem_date = db.Column(db.DateTime, nullable=True)
     reward = db.relationship("Reward")
 
-    def redeem(self,reward):
+    def redeem(self, reward):
         self.redeem_date = datetime.now()
         self.reward = reward
 
@@ -126,10 +128,14 @@ class UserRewards(db.Model):
         return data
 
 # intermediate table between User and Badge
+
+
 class UserBadges(db.Model):
     __tablename__ = 'user_badge'
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True)
-    id_badge = db.Column(db.Integer, db.ForeignKey('badge.id_badge'), primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey(
+        'user.id_user'), primary_key=True)
+    id_badge = db.Column(db.Integer, db.ForeignKey(
+        'badge.id_badge'), primary_key=True)
     progress = db.Column(db.Integer)
     finished = db.Column(db.Boolean)
     finished_date = db.Column(db.DateTime)
@@ -170,7 +176,7 @@ class User(db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.email)
 
-    def to_dict(self, include_email=False):
+    def to_dict(self, include_email=True):
         data = {
             'id': self.id_user,
             'username': self.username,
@@ -178,7 +184,7 @@ class User(db.Model):
             'total_badges': self.total_badges,
             'active': self.active,
             'level': self.level,
-            'id_realm': self.id_realm        
+            'id_realm': self.id_realm
         }
         if include_email:
             data['email'] = self.email
@@ -186,7 +192,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data):
-        for field in ['username','email', 'total_xp', 'total_badges', 'active', 'level']:
+        for field in ['username', 'email', 'active']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -208,10 +214,11 @@ class User(db.Model):
         return data
 
 
-
 class Standings(db.Model):
-    realm_id = db.Column(db.Integer, db.ForeignKey('realm.id_realm'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id_user'), primary_key=True)
+    realm_id = db.Column(db.Integer, db.ForeignKey(
+        'realm.id_realm'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'user.id_user'), primary_key=True)
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
 
