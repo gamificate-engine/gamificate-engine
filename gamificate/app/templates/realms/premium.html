@@ -1,0 +1,72 @@
+{% extends "realms/partials/header_dashboard.html" %}
+{% block content %}
+
+
+<div class="d-flex flex-column" id="content-wrapper">
+    
+
+    <div id="content">
+        {% with title='Become Premium' %}
+            {% include "realms/partials/navbar.html"  %}
+        {% endwith%}
+
+        <div class="container-fluid">
+            <div class="card-deck mb-3 text-center">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Free</h4>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title pricing-card-title">0€ <small class="text-muted">/ mo</small></h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>1 realm</li>
+                            <li>250 users</li>
+                            <li>25 badges</li>
+                            <li>Email support</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Premium</h4>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title pricing-card-title">25€ <small class="text-muted">/ mo</small></h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>∞ realm</li>
+                            <li>∞ users</li>
+                            <li>∞ badges</li>
+                            <li>Priority email support</li>
+                        </ul>
+                        {% if admin.premium %}
+                            <div class="alert-info p-2">
+                                You're already premium!
+                            </div>            
+                        {% else %}
+                            <div>
+                                <form action="{{url_for('realms.payment')}}" method="post">
+                                    <script
+                                        src="https://checkout.stripe.com/checkout.js"
+                                        class="stripe-button"
+                                        data-key="{{ key }}"
+                                        data-description="Gamificate Premium"
+                                        data-amount="2500"
+                                        data-locale="auto"
+                                        data-currency="eur"
+                                        data-email="{{ admin.email }}">
+                                    </script>                
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
