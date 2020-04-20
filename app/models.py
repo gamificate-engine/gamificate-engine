@@ -7,7 +7,6 @@ import jwt
 
 
 class Admin(UserMixin, db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     id_admin = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))
@@ -44,7 +43,6 @@ class Admin(UserMixin, db.Model):
 
 
 class Realm(db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     id_realm = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
     description = db.Column(db.String(256), unique=True)
@@ -68,7 +66,6 @@ class Realm(db.Model):
 
 
 class Badge(db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     id_badge = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     xp = db.Column(db.Integer)
@@ -99,7 +96,6 @@ class Badge(db.Model):
 
 
 class Reward(db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     id_reward = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     desc = db.Column(db.String(255))
@@ -112,7 +108,6 @@ class Reward(db.Model):
 
 
 class UserRewards(db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     __tablename__ = 'user_reward'
     id_user = db.Column(db.Integer, db.ForeignKey(
         'user.id_user'), primary_key=True)
@@ -137,7 +132,6 @@ class UserRewards(db.Model):
 
 class UserBadges(db.Model):
     __tablename__ = 'user_badge'
-    __table_args__ = {'schema': 'gamificate'}
     id_user = db.Column(db.Integer, db.ForeignKey(
         'user.id_user'), primary_key=True)
     id_badge = db.Column(db.Integer, db.ForeignKey(
@@ -168,7 +162,6 @@ class UserBadges(db.Model):
 
 
 class User(db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     id_user = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(254), unique=True)
@@ -222,7 +215,6 @@ class User(db.Model):
 
 
 class Standings(db.Model):
-    __table_args__ = {'schema': 'gamificate'}
     realm_id = db.Column(db.Integer, db.ForeignKey(
         'realm.id_realm'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
