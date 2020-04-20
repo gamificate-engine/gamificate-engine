@@ -4,9 +4,11 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 from flask import request, jsonify
 from app.models import Realm
 from app.api.errors import bad_request, error_response
+from flasgger import swag_from
 
 
 @bp.route('/auth', methods=['POST'])
+@swag_from('../docs/auth/auth.yaml')
 def auth():
     data = request.get_json() or {}
 
@@ -36,6 +38,7 @@ def auth():
 
 @bp.route('/auth/refresh', methods=['POST'])
 @jwt_refresh_token_required
+@swag_from('../docs/auth/refresh.yaml')
 def refresh():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)

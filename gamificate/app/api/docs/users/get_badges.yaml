@@ -1,0 +1,48 @@
+summary: "Get the User's progress on all the Badges"
+tags:
+  - users / badges
+description: "This route allows you to get the progress on all Badges belonging to the Realm for a given User. It will provide infos like the current progress, if it is finished/acquired and the date it was acquired for each one the badges."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the User"
+    required: true
+    type: "integer"
+responses:
+  200:
+    description: "User's progress on Badges"
+    schema:
+      type: "object"
+      properties:
+        user_badges:
+          description: "Badges on which User has progress"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id_badge:
+                description: "ID of the Badge"
+                type: "integer"
+                example: 1
+              progress:
+                description: "Progress on the Badge at the time"
+                type: "integer"
+                example: 10
+              finished:
+                description: "If the Badge is acquired or not"
+                type: "boolean"
+                example: false
+              finished_date:
+                description: "Only when the Badge is finished: Date when it was acquired"
+                type: "string"
+                example: "2020-04-19 21:22:27.175801"
+  404:
+    description: "User with given ID does not exist"
+  401:
+    description: "User doesn't belong to the Realm authenticated"

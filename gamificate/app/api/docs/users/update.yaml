@@ -1,0 +1,82 @@
+summary: "Update an existing User"
+tags:
+  - users
+description: "This route allows you to update the following User infos: username, email and active status."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the User to be updated"
+    required: true
+    type: "integer"
+  - in: "body"
+    name: "body"
+    description: "Infos you want to update: email, username and/or active"
+    required: false
+    schema:
+      type: "object"
+      properties:
+        username:
+          description: "New Username of the User"
+          type: "string"
+          example: "John Doe"
+          required: false
+        email:
+          description: "New Email of the User"
+          type: "string"
+          example: "foo@bar.com"
+          required: false
+        active:
+          description: "New active status of the User"
+          type: "boolean"
+          example: false
+          required: false
+responses:
+  200:
+    description: "Updated user"
+    schema:
+      type: "object"
+      properties:
+        id:
+          description: "ID of the User"
+          type: "integer"
+          example: 12
+        username:
+          description: "Username of the User"
+          type: "string"
+          example: "John Doe"
+        email:
+          description: "Email of the User"
+          type: "string"
+          example: "foo@bar.com"
+        level:
+          description: "Level of the User"
+          type: "integer"
+          example: 5
+        total_xp:
+          description: "Total XP of the User"
+          type: "integer"
+          example: 120
+        total_badges:
+          description: "Total Badges of the User"
+          type: "integer"
+          example: 7
+        active:
+          description: "If the User is active or not"
+          type: "boolean"
+          example: false
+        id_realm:
+          description: "ID of the Realm the User belongs to"
+          type: "integer"
+          example: 1
+  404:
+    description: "Realm or User with given ID does not exist"
+  400:
+    description: "Email or Username must be unique"
+  401:
+    description: "Wrong API key"

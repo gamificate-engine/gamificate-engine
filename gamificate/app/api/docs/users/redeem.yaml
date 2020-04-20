@@ -1,0 +1,48 @@
+summary: "Redeem a Reward"
+tags:
+  - users / rewards
+description: "This route allows you to redeem a given reward for a given User."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the User"
+    required: true
+    type: "integer"
+  - in: "body"
+    name: "body"
+    description: "Object containing the ID of the Reward"
+    required: true
+    schema:
+      type: "object"
+      properties:
+        id_reward:
+          description: "ID of the Reward"
+          type: "integer"
+          example: 1
+          required: true
+responses:
+  200:
+    description: "Redeemed Reward"
+    schema:
+      type: "object"
+      properties:
+        id_reward:
+          description: "ID of the Reward"
+          type: "integer"
+          example: 1
+        redeem_date:
+            description: "Date the Reward was redeemed"
+            type: "string"
+            example: "2020-04-19 21:22:27.175801"
+  404:
+    description: "User or Reward with given ID does not exist."
+  400:
+    description: "Must include id_reward"
+  401:
+    description: "Reward/User doesn't belong to the authenticated Realm"

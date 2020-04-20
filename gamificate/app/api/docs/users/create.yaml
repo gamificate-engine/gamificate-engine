@@ -1,0 +1,72 @@
+summary: "Create a new User"
+tags:
+  - users
+description: "This route allows you to create a new User in the Realm you are authenticated in."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "body"
+    name: "body"
+    description: "Object containing the ID of the Realm you want to authenticate in and its API key."
+    required: true
+    schema:
+      type: "object"
+      properties:
+        username:
+          description: "Username of the new User"
+          type: "string"
+          example: "John Doe"
+          required: true
+        email:
+          description: "Email of the new User"
+          type: "string"
+          example: "foo@bar.com"
+          required: true
+responses:
+  200:
+    description: "User created"
+    schema:
+      type: "object"
+      properties:
+        id:
+          description: "ID of the User"
+          type: "integer"
+          example: 13
+        username:
+          description: "Username of the User"
+          type: "string"
+          example: "John Doe"
+        email:
+          description: "Email of the User"
+          type: "string"
+          example: "foo@bar.com"
+        level:
+          description: "Level of the User"
+          type: "integer"
+          example: 1
+        total_xp:
+          description: "Total XP of the User"
+          type: "integer"
+          example: 0
+        total_badges:
+          description: "Total Badges of the User"
+          type: "integer"
+          example: 0
+        active:
+          description: "If the User is active or not"
+          type: "boolean"
+          example: true
+        id_realm:
+          description: "ID of the Realm the User belongs to"
+          type: "integer"
+          example: 1
+  404:
+    description: "Realm with given ID does not exist"
+  400:
+    description: "Username and Email are required and must be unique in the Realm."
+  401:
+    description: "Wrong API key"

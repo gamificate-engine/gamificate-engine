@@ -1,0 +1,42 @@
+summary: "User's Total XP Leaderboard"
+tags:
+  - leaderboards
+description: "This route returns the User rankings of the authenticated Realm regarding its total XP."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+responses:
+  200:
+    description: "Leaderboard"
+    schema:
+      type: "object"
+      properties:
+        leaderboard:
+          description: "User list ordered by their total XP"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              rank:
+                description: "Rank/Position of the User"
+                type: "integer"
+                example: 1
+              id_user:
+                description: "ID of the User"
+                type: "integer"
+                example: 16
+              username:
+                description: "Username of the User"
+                type: "string"
+                example: "Tiagovski"
+              total_xp:
+                description: "Total XP of the User"
+                type: "integer"
+                example: 531
+  401:
+    description: "Unauthorized"
+  404:
+    description: "Realm with given ID does not exist"

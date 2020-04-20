@@ -1,0 +1,24 @@
+summary: "Get new access_token"
+tags:
+- auth
+description: "This allows you to regenerate a new access_token in case your previous one has expired. To access this you need to provide your long-term refresh_token, provided
+on the /auth route. The ID of the Realm will be deducted from the refresh_token."
+consumes:
+- "application/x-www-form-urlencoded"
+produces:
+- "application/json"
+security:
+- Bearer: []
+responses:
+  200:
+    description: "New access_token"
+    schema:
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: ehakasklfdjdkalkasdfdee...
+  404:
+    description: "Realm with given ID does not exist"
+  401:
+    description: "Unauthorized (missing refresh_token)"

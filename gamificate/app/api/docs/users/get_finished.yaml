@@ -1,0 +1,48 @@
+summary: "Get the User's acquired Badges"
+tags:
+  - users / badges
+description: "This route allows you to get all the finished/acquired Badges by a given User."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the User"
+    required: true
+    type: "integer"
+responses:
+  200:
+    description: "Badges acquired by the User"
+    schema:
+      type: "object"
+      properties:
+        user_badges_finished:
+          description: "List of Badges acquired by the User"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id_badge:
+                description: "ID of the Badge"
+                type: "integer"
+                example: 1
+              progress:
+                description: "Progress on the Badge at the time"
+                type: "integer"
+                example: 10
+              finished:
+                description: "If the Badge is acquired or not"
+                type: "boolean"
+                example: false
+              finished_date:
+                description: "Date when it was acquired"
+                type: "string"
+                example: "2020-04-19 21:22:27.175801"
+  404:
+    description: "User with given ID does not exist"
+  401:
+    description: "User doesn't belong to the Realm authenticated"

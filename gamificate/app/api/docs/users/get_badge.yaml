@@ -1,0 +1,56 @@
+summary: "Get the User's progress on a given Badge"
+tags:
+  - users / badges
+description: "This route allows you to get the progress on a given Badge for a given User. It will provide infos like the current progress, if it is finished/acquired and the date it was acquired."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the User"
+    required: true
+    type: "integer"
+  - in: "body"
+    name: "body"
+    description: "Object containing the ID of the Badge"
+    required: true
+    schema:
+      type: "object"
+      properties:
+        id_badge:
+          description: "ID of the Badge"
+          type: "integer"
+          example: 1
+          required: true
+responses:
+  200:
+    description: "Badge Progress"
+    schema:
+      type: "object"
+      properties:
+        id_badge:
+          description: "ID of the Badge"
+          type: "integer"
+          example: 1
+        progress:
+          description: "Progress on the Badge at the time"
+          type: "integer"
+          example: 10
+        finished:
+          description: "If the Badge is acquired or not"
+          type: "boolean"
+          example: false
+        finished_date:
+          description: "Only when the Badge is finished: Date when it was acquired"
+          type: "string"
+          example: "2020-04-19 21:22:27.175801"
+  404:
+    description: "User or Badge with given ID does not exist or User does not have progress on the given Badge."
+  400:
+    description: "Must include id_badge"
+  401:
+    description: "Badge/User doesn't belong to the Realm authenticated"

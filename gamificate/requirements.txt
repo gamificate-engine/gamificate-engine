@@ -27,3 +27,6 @@ WTForms==2.2.1
 httpie==2.0.0
 httpie-jwt-auth==0.4.0
 flask-jwt-extended==3.24.1
+flasgger==0.9.4
+setuptools
+stripe==2.45.0
