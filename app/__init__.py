@@ -8,6 +8,7 @@ from logging.handlers import SMTPHandler
 from flask_mail import Mail
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
+from flask_cors import CORS
 import stripe
 import os
 
@@ -20,6 +21,8 @@ login.login_view = 'login'
 mail = Mail(app)
 
 jwt = JWTManager(app)
+
+CORS(app)
 
 stripe.api_key = os.environ['STRIPE_SECRET_KEY']
 stripe.publishable_key = os.environ['STRIPE_PUBLISHABLE_KEY']
@@ -62,8 +65,33 @@ app.config['SWAGGER'] = {
     'title': "Gamificate API",
     'uiversion': 3,
     'hide_top_bar': True,
-    # 'head_text': '',
-    'favicon': '../static/img/favicon/favicon-32x32.png'
+    'head_text': 
+    """
+<link rel="stylesheet" href="../static/css/bootstrap_navbar.css">
+<style>@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');</style>
+<script>
+        function addMargin() {
+            document.getElementById("swagger-ui").style.marginTop = "80px";
+        }
+
+        window.addEventListener('DOMContentLoaded', addMargin);
+</script>
+    """,
+    'top_text':
+    """
+    <style>
+        .navbar-custom {
+            background-color: #292825 !important;
+            border-bottom: 2px solid black !important;
+            font-size: 18px !important;
+            font-family: 'Russo One', sans-serif !important;
+        }
+    </style>
+	<nav class="navbar fixed-top navbar-expand-lg navbar-dark navbar-custom">
+	    <a class="navbar-brand" href="http://www.gamificate-engine.com">Gamificate</a>
+	</nav>
+    """,
+    'favicon': '../static/img/favicon/favicon-32x32.png',
     # 'openapi': '3.0.2',
 }
 swagger_config = {
@@ -96,7 +124,7 @@ In this page you will be able to explore the existing routes: checking what they
  3. Routes
 
 ## Quickstart:
-To be able to use our API, you need first to create an account in our app: [Gamificate](www.gamificate-engine.com).  
+To be able to use our API, you need first to create an account in our app: [Gamificate](http://www.gamificate-engine.com).  
 
 After signing up, you will need to create your first Realm. A Realm is the environment on which you will have your users, badges and rewards. In other words, a Realm represents the context on which you want to introduce gamification. 
 
@@ -140,7 +168,7 @@ Have fun and **Gamificate** a lot!
     # "termsOfService": "http://me.com/terms",
     "version": "0.0.1"
   },
-#   "host": "gamificate-engine.com",  # overrides localhost:500
+  "host": "www.gamificate-engine.com",  # overrides localhost:500
 #   "basePath": "/api",  # base bash for blueprint registration
   "schemes": [
     "http",
