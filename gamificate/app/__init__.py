@@ -8,7 +8,8 @@ from logging.handlers import SMTPHandler
 from flask_mail import Mail
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
-
+import stripe
+import os
 
 app = Flask(__name__, instance_relative_config=True) 
 app.config.from_object(Config)
@@ -19,6 +20,9 @@ login.login_view = 'login'
 mail = Mail(app)
 
 jwt = JWTManager(app)
+
+stripe.api_key = os.environ['STRIPE_SECRET_KEY']
+stripe.publishable_key = os.environ['STRIPE_PUBLISHABLE_KEY']
 
 from app.errors import bp as errors_bp
 app.register_blueprint(errors_bp)
