@@ -1,6 +1,6 @@
-gamificate/venv
+venv
 *__pycache__*
-gamificate/env
+env
 .vscode/settings.json
-gamificate/app.db
-gamificate/.env
+app.db
+.env
