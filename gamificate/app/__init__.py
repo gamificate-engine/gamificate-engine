@@ -63,7 +63,7 @@ app.config['SWAGGER'] = {
     'uiversion': 3,
     'hide_top_bar': True,
     # 'head_text': '',
-    # 'favicon': ''
+    'favicon': '../static/img/favicon/favicon-32x32.png'
     # 'openapi': '3.0.2',
 }
 swagger_config = {
