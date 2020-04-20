@@ -104,7 +104,59 @@ class Reward(db.Model):
     def __repr__(self):
         return '<Reward {}>'.format(self.name)
 
-# intermediate table between User and Reward
+
+class User(db.Model):
+    id_user = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(254), unique=True)
+    total_xp = db.Column(db.Integer)
+    total_badges = db.Column(db.Integer)
+    active = db.Column(db.Boolean)
+    level = db.Column(db.Integer)
+    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
+    badges = db.relationship("UserBadges", lazy='dynamic')
+    rewards = db.relationship("UserRewards", lazy='dynamic')
+
+    def __repr__(self):
+        return '<User {}>'.format(self.email)
+
+    def to_dict(self, include_email=True):
+        data = {
+            'id': self.id_user,
+            'username': self.username,
+            'total_xp': self.total_xp,
+            'total_badges': self.total_badges,
+            'active': self.active,
+            'level': self.level,
+            'id_realm': self.id_realm
+        }
+        if include_email:
+            data['email'] = self.email
+
+        return data
+
+    def from_dict(self, data):
+        for field in ['username', 'email', 'active']:
+            if field in data:
+                setattr(self, field, data[field])
+
+    def new_user(self, data):
+        self.username = data['username']
+        self.email = data['email']
+        self.total_xp = 0
+        self.total_badges = 0
+        self.active = True
+        self.level = 1
+
+    def rank_to_dict(self, rank, field):
+        data = {
+            'rank': rank,
+            'id_user': self.id_user,
+            'username': self.username
+        }
+        data[field] = getattr(self, field)
+        return data
+
 
 
 class UserRewards(db.Model):
@@ -159,60 +211,6 @@ class UserBadges(db.Model):
         if self.finished:
             data['finished_date'] = self.finished_date
         return data
-
-
-class User(db.Model):
-    id_user = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(254), unique=True)
-    total_xp = db.Column(db.Integer)
-    total_badges = db.Column(db.Integer)
-    active = db.Column(db.Boolean)
-    level = db.Column(db.Integer)
-    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
-    badges = db.relationship("UserBadges", lazy='dynamic')
-    rewards = db.relationship("UserRewards", lazy='dynamic')
-
-    def __repr__(self):
-        return '<User {}>'.format(self.email)
-
-    def to_dict(self, include_email=True):
-        data = {
-            'id': self.id_user,
-            'username': self.username,
-            'total_xp': self.total_xp,
-            'total_badges': self.total_badges,
-            'active': self.active,
-            'level': self.level,
-            'id_realm': self.id_realm
-        }
-        if include_email:
-            data['email'] = self.email
-
-        return data
-
-    def from_dict(self, data):
-        for field in ['username', 'email', 'active']:
-            if field in data:
-                setattr(self, field, data[field])
-
-    def new_user(self, data):
-        self.username = data['username']
-        self.email = data['email']
-        self.total_xp = 0
-        self.total_badges = 0
-        self.active = True
-        self.level = 1
-
-    def rank_to_dict(self, rank, field):
-        data = {
-            'rank': rank,
-            'id_user': self.id_user,
-            'username': self.username
-        }
-        data[field] = getattr(self, field)
-        return data
-
 
 class Standings(db.Model):
     realm_id = db.Column(db.Integer, db.ForeignKey(
