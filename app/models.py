@@ -7,6 +7,8 @@ import jwt
 
 
 class Admin(UserMixin, db.Model):
+    __tablename__ = 'admin'
+    __table_args__ = {'schema': 'gamificate'}
     id_admin = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))
@@ -43,10 +45,12 @@ class Admin(UserMixin, db.Model):
 
 
 class Realm(db.Model):
+    __tablename__ = 'realm'
+    __table_args__ = {'schema': 'gamificate'}
     id_realm = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
     description = db.Column(db.String(256), unique=True)
-    admin_id = db.Column(db.Integer, db.ForeignKey('admin.id_admin'))
+    admin_id = db.Column(db.Integer, db.ForeignKey('gamificate.admin.id_admin'))
     badges = db.relationship('Badge', lazy='dynamic')
     users = db.relationship('User', lazy='dynamic')
     rewards = db.relationship('Reward', lazy='dynamic')
@@ -66,13 +70,15 @@ class Realm(db.Model):
 
 
 class Badge(db.Model):
+    __tablename__ = 'badge'
+    __table_args__ = {'schema': 'gamificate'}
     id_badge = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     xp = db.Column(db.Integer)
     required = db.Column(db.Integer)
-    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
+    id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
     id_reward = db.Column(db.Integer, db.ForeignKey(
-        'reward.id_reward'), nullable=True)
+        'gamificate.reward.id_reward'), nullable=True)
 
     def __repr__(self):
         return '<Badge {}>'.format(self.name)
@@ -96,10 +102,12 @@ class Badge(db.Model):
 
 
 class Reward(db.Model):
+    __tablename__ = 'reward'
+    __table_args__ = {'schema': 'gamificate'}
     id_reward = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     desc = db.Column(db.String(255))
-    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
+    id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
 
     def __repr__(self):
         return '<Reward {}>'.format(self.name)
@@ -108,11 +116,12 @@ class Reward(db.Model):
 
 
 class UserRewards(db.Model):
+    __table_args__ = {'schema': 'gamificate'}
     __tablename__ = 'user_reward'
     id_user = db.Column(db.Integer, db.ForeignKey(
-        'user.id_user'), primary_key=True)
+        'gamificate.user.id_user'), primary_key=True)
     id_reward = db.Column(db.Integer, db.ForeignKey(
-        'reward.id_reward'), primary_key=True)
+        'gamificate.reward.id_reward'), primary_key=True)
     redeem_date = db.Column(db.DateTime, nullable=True)
     reward = db.relationship("Reward")
 
@@ -132,10 +141,11 @@ class UserRewards(db.Model):
 
 class UserBadges(db.Model):
     __tablename__ = 'user_badge'
+    __table_args__ = {'schema': 'gamificate'}
     id_user = db.Column(db.Integer, db.ForeignKey(
-        'user.id_user'), primary_key=True)
+        'gamificate.user.id_user'), primary_key=True)
     id_badge = db.Column(db.Integer, db.ForeignKey(
-        'badge.id_badge'), primary_key=True)
+        'gamificate.badge.id_badge'), primary_key=True)
     progress = db.Column(db.Integer)
     finished = db.Column(db.Boolean)
     finished_date = db.Column(db.DateTime)
@@ -162,6 +172,8 @@ class UserBadges(db.Model):
 
 
 class User(db.Model):
+    __tablename__ = 'user'
+    __table_args__ = {'schema': 'gamificate'}
     id_user = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True)
     email = db.Column(db.String(254), unique=True)
@@ -169,7 +181,7 @@ class User(db.Model):
     total_badges = db.Column(db.Integer)
     active = db.Column(db.Boolean)
     level = db.Column(db.Integer)
-    id_realm = db.Column(db.Integer, db.ForeignKey('realm.id_realm'))
+    id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
     badges = db.relationship("UserBadges", lazy='dynamic')
     rewards = db.relationship("UserRewards", lazy='dynamic')
 
@@ -215,10 +227,12 @@ class User(db.Model):
 
 
 class Standings(db.Model):
+    __tablename__ = 'standings'
+    __table_args__ = {'schema': 'gamificate'}
     realm_id = db.Column(db.Integer, db.ForeignKey(
-        'realm.id_realm'), primary_key=True)
+        'gamificate.realm.id_realm'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
-        'user.id_user'), primary_key=True)
+        'gamificate.user.id_user'), primary_key=True)
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
 
