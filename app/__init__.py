@@ -67,7 +67,7 @@ app.config['SWAGGER'] = {
     'hide_top_bar': True,
     'head_text': 
     """
-<link rel="stylesheet" href="../static/css/bootstrap_navbar.css">
+<link rel="stylesheet" href="../static/css/bootstrap_navbar.min.css">
 <style>@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');</style>
 <script>
         function addMargin() {
