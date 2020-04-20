@@ -1,15 +1,7 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
-
 *:not(.left) {
     text-align: center;
 }
-
-/* TODO: Try to minimize the font flickering */
-body{
-    font-family: 'Russo One', sans-serif !important;
-}
-
 
 h1 {
     font-size: 64px;
