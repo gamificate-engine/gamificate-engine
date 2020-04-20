@@ -4,7 +4,6 @@ from app import db, login
 from app.main import bp
 
 @bp.route('/')
-@bp.route('/index')
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('realms.realms'))
