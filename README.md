@@ -41,3 +41,15 @@ http --auth-type=jwt --auth="<token>" POST http://localhost:5000/api/users email
 ### HTTPie options:
 * -h : show header
 * -v : show full request
+
+## Deployment
+
+- First, install Heroku CLI
+- Run:
+```shell
+heroku login
+```
+- Go to the branch you want to deploy and run the following:
+```shell
+git push heroku hp-<branch_name>:master
+```
