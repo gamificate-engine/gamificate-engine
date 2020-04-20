@@ -27,11 +27,11 @@ responses:
         username:
           description: "Username of the User"
           type: "string"
-          example: "Lopes"
+          example: "John Doe"
         email:
           description: "Email of the User"
           type: "string"
-          example: "rafaelaugusto@gmail.com"
+          example: "foo@bar.com"
         level:
           description: "Level of the User"
           type: "integer"

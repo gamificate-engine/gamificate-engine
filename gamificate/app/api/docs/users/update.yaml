@@ -24,12 +24,12 @@ parameters:
         username:
           description: "New Username of the User"
           type: "string"
-          example: "RicFazeres"
+          example: "John Doe"
           required: false
         email:
           description: "New Email of the User"
           type: "string"
-          example: "sempreapuxar@croquetes.com"
+          example: "foo@bar.com"
           required: false
         active:
           description: "New active status of the User"
@@ -49,11 +49,11 @@ responses:
         username:
           description: "Username of the User"
           type: "string"
-          example: "RicFazeres"
+          example: "John Doe"
         email:
           description: "Email of the User"
           type: "string"
-          example: "sempreapuxar@croquetes.com"
+          example: "foo@bar.com"
         level:
           description: "Level of the User"
           type: "integer"
