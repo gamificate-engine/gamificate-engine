@@ -1,6 +1,11 @@
 {% extends "auth/header_simple.html" %}
 
 {% block content %}
-    <h1>File Not Found</h1>
-    <p><a href="{{ url_for('main.index') }}">Back</a></p>
+
+    <div class="container-fluid text-center">
+        <h1>File Not Found</h1>
+        <img src="{{url_for('static', filename='img/page_not_found.png')}}" class="img-fluid mt-2" alt="Responsive image"><br>
+        <a id="yellow-btn" class="btn btn-lg btn-primary m-4" href="{{ url_for('main.index') }}">Back</a>
+    </div>
+    
 {% endblock %}

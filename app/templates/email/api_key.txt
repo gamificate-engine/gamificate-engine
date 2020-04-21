@@ -3,7 +3,7 @@ Dear {{ admin.first_name }},
 Your API Key for {{ realm.name }} is: 
 {{ api_key }} 
 
-Please, do not share it with anyone you don't trust.
+Please, do not share it with someone you don't trust.
 If you think your key has been compromised you can generate a new one on your Realm's dashboard.
 
 Sincerely,

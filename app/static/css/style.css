@@ -102,5 +102,8 @@ section {
     #whatis {
         padding-top: 0%;
     }
-}
 
+    h1 {
+        font-size: 48px;
+    }
+}
