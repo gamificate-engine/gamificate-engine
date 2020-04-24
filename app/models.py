@@ -112,8 +112,14 @@ class Reward(db.Model):
     def __repr__(self):
         return '<Reward {}>'.format(self.name)
 
-# intermediate table between User and Reward
-
+    def to_dict(self):
+        data = {
+            'id_reward': self.id_reward,
+            'name': self.name,
+            'description': self.desc,
+            'id_realm': self.id_realm
+        }
+        return data
 
 class UserRewards(db.Model):
     __table_args__ = {'schema': 'gamificate'}
@@ -132,11 +138,10 @@ class UserRewards(db.Model):
     def to_dict(self):
         data = {
             'id_reward': self.id_reward,
+            'id_user': self.id_user,
             'redeem_date': self.redeem_date
         }
         return data
-
-# intermediate table between User and Badge
 
 
 class UserBadges(db.Model):

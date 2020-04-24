@@ -149,8 +149,10 @@ Please store your tokens in a secure way!
 ## Routes:
 We divided our routes in the following structure:
 - **Auth**: routes that allow you to get the access and refresh tokens
+- **Badges**: routes that allow you to get information regarding the Realm's Badges
 - **Leaderboards**: routes that allow you to get the user's ranking, ordered by different properties
-- **Users**: routes that allow you to interact with your Realm's users.
+- **Rewards**: routes that allow you to get information regarding the Realm's Rewards
+- **Users**: routes that allow you to interact with your Realm's users
 	- **Badges**: routes that allow you to connect your users with the Realm's badges
 	- **Rewards**: routes that allow you to connect your users with the Realm's rewards
 

@@ -1,0 +1,40 @@
+summary: "Get all the Realm's Rewards"
+tags:
+  - rewards
+description: "This route allows you to fetch all the Rewards' information, like its ID, name, description and ID of the Realm it belongs to."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+responses:
+  200:
+    description: "Info of the Rewards"
+    schema:
+      type: "object"
+      properties:
+        rewards:
+          description: "Realm's reward list"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id_reward:
+                description: "ID of the Reward"
+                type: "integer"
+                example: 1
+              name:
+                description: "Name of the Reward"
+                type: "string"
+                example: "+1 Vacation Day"
+              description:
+                description: "Description of the Reward"
+                type: "string"
+                example: "Adds one more day to your vacation days"
+              id_realm:
+                description: "ID of the Realm the Badge belongs to"
+                type: "integer"
+                example: 1
+  404:
+    description: "Realm with given ID does not exist"

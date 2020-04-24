@@ -41,7 +41,7 @@ def get_badges():
 @bp.route('/badges/<int:id>/progress', methods=['GET'])
 @jwt_required
 @swag_from('../docs/badges/get_progress.yaml')
-def get_badge_progress(id):
+def get_badge_progresses(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:

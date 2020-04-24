@@ -1,0 +1,46 @@
+summary: "Get Badge with given ID"
+tags:
+  - badges
+description: "This route allows you to fetch a given Badge's information, like its name, the XP it gives, the progress required to acquire, its ID and its Realm's ID"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the Badge you want to fetch"
+    required: true
+    type: "integer"
+responses:
+  200:
+    description: "Info of the Badge with given ID"
+    schema:
+      type: "object"
+      properties:
+        id_badge:
+          description: "ID of the Badge"
+          type: "integer"
+          example: 12
+        name:
+          description: "Name of the Badge"
+          type: "string"
+          example: "Level 5"
+        xp:
+          description: "XP it gives when acquired"
+          type: "integer"
+          example: 100
+        required:
+          description: "Progress required to acquire"
+          type: "integer"
+          example: 20
+        id_realm:
+          description: "ID of the Realm the Badge belongs to"
+          type: "integer"
+          example: 1
+  404:
+    description: "Badge with given ID does not exist"
+  401:
+    description: "Badge does not belong to the authenticated Realm"

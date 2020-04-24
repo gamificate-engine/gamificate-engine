@@ -110,7 +110,7 @@ def update_user_info(id):
     return jsonify(user.to_dict())
 
 # UPDATE USER WITH BADGE PROGRESS
-@bp.route('/users/<int:id>/badge', methods=['PUT'])
+@bp.route('/users/<int:id>/badges', methods=['PUT'])
 @jwt_required
 @swag_from('../docs/users/badge.yaml')
 def add_badge_progress(id):
@@ -142,6 +142,8 @@ def add_badge_progress(id):
     badge_progress = UserBadges.query.get((id, id_badge))
 
     if badge_progress is not None:
+        if badge_progress.finished:
+            return error_response(400, "Badge already finished.")
         badge_progress.update_progress(progress, badge, user)
     else:
         badge_progress = UserBadges(progress=0, finished=False)
@@ -155,7 +157,7 @@ def add_badge_progress(id):
     return jsonify(badge_progress.to_dict())
 
 # GET GIVEN BAGDE PROGRESS
-@bp.route('/users/<int:id>/badge', methods=['GET'])
+@bp.route('/users/<int:id>/badges', methods=['GET'])
 @jwt_required
 @swag_from('../docs/users/get_badge.yaml')
 def get_badge_progress(id):
@@ -229,7 +231,7 @@ def get_user_finished_badges(id):
     return jsonify({'user_badges_finished': res})
 
 # REDEEM REWARD WITH GIVEN ID
-@bp.route('/users/<int:id>/reward', methods=['POST'])
+@bp.route('/users/<int:id>/rewards', methods=['POST'])
 @jwt_required
 @swag_from('../docs/users/redeem.yaml')
 def redeem_reward(id):
@@ -254,6 +256,10 @@ def redeem_reward(id):
         return error_response(404, "Reward with given ID does not exist.")
     if reward.id_realm != id_realm:
         return error_response(401, "Reward does not belong to your Realm.")
+
+    user_reward = UserRewards.query.get((id, id_reward))
+    if user_reward:
+        return error_response(400, "Reward already redeemed.")
 
     user_reward = UserRewards()
     user_reward.redeem(reward)

@@ -10,7 +10,7 @@ security:
   - Bearer: []
 responses:
   200:
-    description: "Info of the User with given ID"
+    description: "Info of the Users"
     schema:
       type: "object"
       properties:
@@ -54,5 +54,3 @@ responses:
                 example: 1
   404:
     description: "Realm with given ID does not exist"
-  401:
-    description: "User does not belong to the authenticated Realm"
