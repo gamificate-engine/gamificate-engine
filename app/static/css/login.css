@@ -15,3 +15,8 @@ body {
 #yellow-btn.disabled,#yellow-btn:disabled{color:#fff;background-color:#fcca03;border-color:#ebbc02}
 #yellow-btn:not(:disabled):not(.disabled):active,#yellow-btn:not(:disabled):not(.disabled).active,.show>#yellow-btn.dropdown-toggle{color:#fff;background-color:#ebbc02;border-color:#000}
 #yellow-btn:not(:disabled):not(.disabled):active:focus,#yellow-btn:not(:disabled):not(.disabled).active:focus,.show>#yellow-btn.dropdown-toggle:focus{box-shadow:0 0 0 .2rem #ebbc02}
+
+.error {
+    color: red; 
+    font-size: smaller;
+}
