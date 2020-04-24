@@ -43,6 +43,6 @@ responses:
   404:
     description: "User or Reward with given ID does not exist."
   400:
-    description: "Must include id_reward"
+    description: "Must include id_reward OR Reward already redeemed."
   401:
     description: "Reward/User doesn't belong to the authenticated Realm"

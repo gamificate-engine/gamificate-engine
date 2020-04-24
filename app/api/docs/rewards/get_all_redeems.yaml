@@ -1,0 +1,40 @@
+summary: "Get Users' redeems on all the Rewards"
+tags:
+  - rewards
+description: "This route allows you to fetch all the users that redeemed each of the Rewards."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+responses:
+  200:
+    description: "List of Rewards"
+    schema:
+      type: "object"
+      properties:
+        rewards:
+          description: "Rewards and their redeems"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id_reward:
+                description: "ID of the Reward"
+                type: "integer"
+                example: 1
+              redeems:
+                description: "Users' Reward redeem"
+                type: "object"
+                properties:
+                  id_user:
+                    description: "ID of the User"
+                    type: "integer"
+                    example: 1
+                  redeem_date:
+                    description: "Date when the Reward was redeemed"
+                    type: "string"
+                    example: "2020-04-19 21:22:27.175801"
+  404:
+    description: "Realm with given ID does not exist"

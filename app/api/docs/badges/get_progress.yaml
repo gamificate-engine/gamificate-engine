@@ -1,0 +1,58 @@
+summary: "Get Users' progress on a given Badge"
+tags:
+  - badges
+description: "This route allows you to fetch all the users' progress on the given badge, which means it will return an object composed by two lists: one with the users that acquired the badge and another with the users that have not finished yet."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the Badge you want to fetch"
+    required: true
+    type: "integer"
+responses:
+  200:
+    description: "Progress on the Badge"
+    schema:
+      type: "object"
+      properties:
+        finished:
+          description: "Users that finished the Badge"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id_user:
+                description: "ID of the User"
+                type: "integer"
+                example: 1
+              finished_date:
+                description: "Date when the Badge was acquired"
+                type: "string"
+                example: "2020-04-19 21:22:27.175801"
+        unfinished:
+          description: "Users that haven't yet finished the Badge"
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id_user:
+                description: "ID of the User"
+                type: "integer"
+                example: 2
+              progress:
+                description: "Progress of the User on the Badge"
+                type: "integer"
+                example: 10       
+              required:
+                description: "XP required to finish the Badge"
+                type: "integer"
+                example: 20      
+  404:
+    description: "Realm or Badge with given ID does not exist"
+  401:
+    description: "Badge does not belong to the authenticated Realm"
