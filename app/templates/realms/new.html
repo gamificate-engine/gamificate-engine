@@ -34,14 +34,18 @@
                                 {% endfor %}
                             </div>
                             
-                            <label>Level Up (f(lvl) = a*lvl^2 + b*lvl)</label>
+                            <label>
+                                Level Up 
+                                <i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" style="color:dodgerblue" 
+                                    title="Parameters of level up function: f(lvl) = a*lvl^2 + b*lvl"></i>
+                            </label>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="a">a</label>
-                                        <input id="a" class="form-control" name="a" required="" type="number" value="0">
-                                        {% for error in form.description.errors %}
+                                        <input id="a" class="form-control" name="a" required="" type="number" value="0" min="0" step="0.5">
+                                        {% for error in form.a.errors %}
                                             <span style="color: red;">{{ error }}</span>
                                         {% endfor %}
                                     </div>
@@ -49,8 +53,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="b">b</label>
-                                        <input id="b" class="form-control" name="b" required="" type="number" value="1">
-                                        {% for error in form.description.errors %}
+                                        <input id="b" class="form-control" name="b" required="" type="number" value="1" min="1" step="0.5">
+                                        {% for error in form.b.errors %}
                                             <span style="color: red;">{{ error }}</span>
                                         {% endfor %}
                                     </div>
