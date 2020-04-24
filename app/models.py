@@ -48,7 +48,7 @@ class Realm(db.Model):
     __tablename__ = 'realm'
     __table_args__ = {'schema': 'gamificate'}
     id_realm = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True)
+    name = db.Column(db.String(32))
     description = db.Column(db.String(256))
     admin_id = db.Column(db.Integer, db.ForeignKey('gamificate.admin.id_admin'))
     badges = db.relationship('Badge', lazy='dynamic')

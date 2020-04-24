@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, FloatField, TextAreaField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, InputRequired, Length, NumberRange
-from app.models import Admin, Realm
-
+from app.models import Admin
+from flask_login import current_user
 
 
 
@@ -14,7 +14,10 @@ class RealmForm(FlaskForm):
     submit = SubmitField('Create Realm')
 
     def validate_name(self, name):
-        realm = Realm.query.filter_by(name = name.data).first()
-        if realm is not None:
-            raise ValidationError('Please use a different name.')
+        admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+        realms = admin.realms.all()
+
+        for realm in realms:
+            if realm.name == name.data:
+                raise ValidationError('Please use a different name.')
     
