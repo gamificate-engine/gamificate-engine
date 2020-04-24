@@ -36,3 +36,20 @@
     margin-top: 1.75rem;
     padding: 0.5rem 1rem !important;
 }
+
+.warn {
+    width: 100%;
+    text-align: center;
+    margin-top: 3rem;
+    color: rgb(194, 194, 194);
+}
+
+.warn i {
+    font-size: 15rem;
+
+}
+
+.warn p {
+    margin-top: 3rem;
+    font-size: x-large;
+}

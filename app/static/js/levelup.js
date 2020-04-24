@@ -41,11 +41,10 @@ function updateChart() {
     chart.data.datasets[0].data = [];
     a = a_field.value
     b = b_field.value
-    console.log(a)
     
     for (i = 1; i <= 10; i++) {
         chart.data.datasets[0].data.push(xp(i))
     }
-    console.log(chart.data.datasets[0].data)
+    
     chart.update();
 }

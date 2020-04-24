@@ -11,7 +11,7 @@
             {% endwith%}
 
             <div class="container-fluid">
-                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                <div class="row justify-content-between mb-4">
                     <h3 class="text-dark mb-0">Realms</h3>
                     {% if admin.premium == False and realms|length >= 1 %}
                         <a href="{{url_for('realms.premium')}}" class="btn btn-primary float-right"> Become Premium! </a>
@@ -19,19 +19,30 @@
                         <a href="{{url_for('realms.new_realm')}}" class="btn btn-primary float-right">New Realm</a>
                     {% endif %}
                 </div>
-             
-                <div class="row">
-                    {% for realm in realms %}
-                        <div class="col-sm-12 col-md-6 col-lg-3">
-                            <div class="card mt-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{realm.name}}</h5>
-                                    <a href="{{url_for('realms.show_realm', id=realm.id_realm)}}" class="btn btn-primary float-right">Explore</a>
+                
+                {% if realms|length == 0 %}
+                    <div class="d-flex flex-column" style="text-align: center">
+                        <div class="warn">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Looks like you haven't created any realm. Click on 'New Realm'.</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        {% for realm in realms %}
+                            <div class="col-sm-12 col-md-6 col-lg-3">
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{realm.name}}</h5>
+                                        <a href="{{url_for('realms.show_realm', id=realm.id_realm)}}" class="btn btn-primary float-right">Explore</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}       
-                </div>
+                        {% endfor %}       
+                    </div>
+                {% endif %}
+
+
             </div>
         </div>
     </div>

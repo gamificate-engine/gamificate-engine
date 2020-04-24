@@ -24,15 +24,15 @@
                                             <input class="form-control form-control-user" type="text" id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email" required>
                                         </div>
                                         {% for error in form.email.errors %}
-                                            <span style="color: red;">[{{ error }}]</span>
+                                            <span class="error">{{ error }}</span>
                                         {% endfor %}
                                     </p>
                                     <p>
                                         <div class="form-group">
-                                            <input class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password" size="32" required>
+                                            <input class="form-control form-control-user" type="password" id="password" placeholder="Password" name="password" size="32" required >
                                         </div>
                                         {% for error in form.password.errors %}
-                                            <span style="color: red;">[{{ error }}]</span>
+                                            <span class="error">{{ error }}</span>
                                         {% endfor %}
                                     </p>
 
