@@ -40,6 +40,6 @@ responses:
   404:
     description: "Realm does not exist"
   400:
-    description: "Must include id_realm OR Must include api_key" 
+    description: "Must include id_realm OR Must include api_key OR id_realm must be an integer" 
   401:
     description: "Wrong API key"
