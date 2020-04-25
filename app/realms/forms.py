@@ -39,3 +39,13 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=24)])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit2 = SubmitField('Request Password Reset')
+
+
+class DeleteAccountForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+
+    def validate_password(self, password):
+        admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+        if not admin.checkPassword(password.data):
+            raise ValidationError('Password inserted doesn\'t match.')

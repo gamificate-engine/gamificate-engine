@@ -15,7 +15,7 @@ class Admin(UserMixin, db.Model):
     email = db.Column(db.String(128), index=True, unique=True)
     password = db.Column(db.String(128))
     premium = db.Column(db.Boolean, default=False)
-    realms = db.relationship('Realm', lazy='dynamic')
+    realms = db.relationship('Realm', lazy='dynamic', cascade="delete")
     subscription_key = db.Column(db.String(128), unique=True)
 
     def get_reset_password_token(self, expires_in=600):
@@ -52,9 +52,9 @@ class Realm(db.Model):
     name = db.Column(db.String(32))
     description = db.Column(db.String(256))
     admin_id = db.Column(db.Integer, db.ForeignKey('gamificate.admin.id_admin'))
-    badges = db.relationship('Badge', lazy='dynamic')
-    users = db.relationship('User', lazy='dynamic')
-    rewards = db.relationship('Reward', lazy='dynamic')
+    badges = db.relationship('Badge', lazy='dynamic', cascade="delete")
+    users = db.relationship('User', lazy='dynamic', cascade="delete")
+    rewards = db.relationship('Reward', lazy='dynamic', cascade="delete")
     api_key = db.Column(db.String(128), unique=True)
     a = db.Column(db.Float)
     b = db.Column(db.Float)
@@ -125,10 +125,8 @@ class Reward(db.Model):
 class UserRewards(db.Model):
     __table_args__ = {'schema': 'gamificate'}
     __tablename__ = 'user_reward'
-    id_user = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.user.id_user'), primary_key=True)
-    id_reward = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.reward.id_reward'), primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('gamificate.user.id_user'), primary_key=True)
+    id_reward = db.Column(db.Integer, db.ForeignKey('gamificate.reward.id_reward'), primary_key=True)
     redeem_date = db.Column(db.DateTime, nullable=True)
     reward = db.relationship("Reward")
 
@@ -148,10 +146,8 @@ class UserRewards(db.Model):
 class UserBadges(db.Model):
     __tablename__ = 'user_badge'
     __table_args__ = {'schema': 'gamificate'}
-    id_user = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.user.id_user'), primary_key=True)
-    id_badge = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.badge.id_badge'), primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('gamificate.user.id_user'), primary_key=True)
+    id_badge = db.Column(db.Integer, db.ForeignKey('gamificate.badge.id_badge'), primary_key=True)
     progress = db.Column(db.Integer)
     finished = db.Column(db.Boolean)
     finished_date = db.Column(db.DateTime)
@@ -235,10 +231,8 @@ class User(db.Model):
 class Standings(db.Model):
     __tablename__ = 'standings'
     __table_args__ = {'schema': 'gamificate'}
-    realm_id = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.realm.id_realm'), primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.user.id_user'), primary_key=True)
+    realm_id = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('gamificate.user.id_user'), primary_key=True)
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
 

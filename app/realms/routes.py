@@ -2,7 +2,7 @@ from app import stripe, db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm
-from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm
+from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm, DeleteAccountForm
 from werkzeug.urls import url_parse
 from flask import request
 from app.realms import bp
@@ -133,8 +133,9 @@ def settings():
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
     form_settings = SettingsForm()
     form_password = ResetPasswordForm()
+    form_delete = DeleteAccountForm()
 
-    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=form_password)
+    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=form_password, form_delete=form_delete)
 
 @bp.route('/realms/settings/changesettings', methods=['POST'])
 @login_required
@@ -151,7 +152,7 @@ def change_settings():
         db.session.commit()
         flash('Your settings have been successfully updated.')
 
-    return redirect(url_for('realms.settings'))
+    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=ResetPasswordForm(), form_delete=DeleteAccountForm())
 
 @bp.route('/realms/settings/resetpassword', methods=['POST'])
 @login_required
@@ -166,8 +167,26 @@ def reset_password():
         db.session.commit()
         flash('Your password has been successfully updated.')
     
-    return redirect(url_for('realms.settings'))
+    return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=form_password, form_delete=DeleteAccountForm())
     
+
+@bp.route('/realms/settings/delete', methods=['POST'])
+@login_required
+def delete():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    
+    form_delete = DeleteAccountForm()
+
+    if form_delete.validate_on_submit():
+        db.session.delete(admin)
+        db.session.commit()
+
+        logout_user()
+        
+        return redirect(url_for('main.index'))
+
+    return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=ResetPasswordForm(), form_delete=form_delete)
+
 
 @bp.route('/realms/<id>/badges')
 @login_required
