@@ -38,7 +38,7 @@ responses:
           type: string
           example: jkxjxjaçawlekjkdsjxksda...
   404:
-    description: "Realm with given ID does not exist"
+    description: "Realm does not exist"
   400:
     description: "Must include id_realm OR Must include api_key" 
   401:

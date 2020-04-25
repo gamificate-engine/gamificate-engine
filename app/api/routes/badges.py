@@ -30,7 +30,7 @@ def get_badges():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
     res = []
     badges = realm.badges.all()
     for badge in badges:
@@ -45,7 +45,7 @@ def get_badge_progresses(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
    
     badge = Badge.query.get(id)
     if not badge:
@@ -88,7 +88,7 @@ def get_badge_finished(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
    
     badge = Badge.query.get(id)
     if not badge:
@@ -118,7 +118,7 @@ def get_badge_unfinished(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
    
     badge = Badge.query.get(id)
     if not badge:
@@ -150,7 +150,7 @@ def get_badges_progress():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
     res = []
     badges = realm.badges.all()
     for badge in badges:

@@ -61,4 +61,4 @@ responses:
                           type: "integer"
                           example: 20      
   404:
-    description: "Realm with given ID does not exist"
+    description: "Realm does not exist"

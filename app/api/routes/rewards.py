@@ -30,7 +30,7 @@ def get_rewards():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
     res = []
     rewards = realm.rewards.all()
     for reward in rewards:
@@ -45,7 +45,7 @@ def get_reward_redeems(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
     
     reward = Reward.query.get(id)
     if not reward:
@@ -69,7 +69,7 @@ def get_all_reward_redeems():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
     res = []
     rewards = realm.rewards.all()
     for reward in rewards:
