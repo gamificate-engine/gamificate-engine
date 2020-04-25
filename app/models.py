@@ -51,14 +51,17 @@ class Realm(db.Model):
     id_realm = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     description = db.Column(db.String(256))
-    admin_id = db.Column(db.Integer, db.ForeignKey('gamificate.admin.id_admin'))
+    id_admin = db.Column(db.Integer, db.ForeignKey('gamificate.admin.id_admin'))
     badges = db.relationship('Badge', lazy='dynamic', cascade="delete")
     users = db.relationship('User', lazy='dynamic', cascade="delete")
     rewards = db.relationship('Reward', lazy='dynamic', cascade="delete")
     api_key = db.Column(db.String(128), unique=True)
     a = db.Column(db.Float)
     b = db.Column(db.Float)
-    
+
+    def xp_required(self,lvl):
+        required = self.a * lvl**2 + self.b * lvl
+        return required
 
     def set_api_key(self, api_key):
         self.api_key = generate_password_hash(api_key)
@@ -153,7 +156,7 @@ class UserBadges(db.Model):
     finished_date = db.Column(db.DateTime)
     badge = db.relationship("Badge")
 
-    def update_progress(self, progress, badge, user):
+    def update_progress(self, progress, badge, user, realm):
         self.progress = self.progress + progress
 
         if self.progress >= badge.required:
@@ -161,6 +164,12 @@ class UserBadges(db.Model):
             self.finished_date = datetime.now()
             user.total_xp = user.total_xp + badge.xp
             user.total_badges = user.total_badges + 1
+
+            lvl = user.level
+            while realm.xp_required(lvl) < user.total_xp:
+                lvl = lvl + 1
+            if lvl > user.level:
+                user.level = lvl
 
     def to_dict(self):
         data = {
@@ -235,8 +244,6 @@ class Standings(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('gamificate.user.id_user'), primary_key=True)
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
-
-
 
 # User-Loader Function
 @login.user_loader

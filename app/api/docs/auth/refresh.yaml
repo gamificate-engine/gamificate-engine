@@ -19,6 +19,6 @@ responses:
           type: string
           example: ehakasklfdjdkalkasdfdee...
   404:
-    description: "Realm with given ID does not exist"
+    description: "Realm does not exist"
   401:
     description: "Unauthorized (missing refresh_token)"

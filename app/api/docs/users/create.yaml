@@ -27,7 +27,7 @@ parameters:
           example: "foo@bar.com"
           required: true
 responses:
-  200:
+  201:
     description: "User created"
     schema:
       type: "object"
@@ -65,8 +65,10 @@ responses:
           type: "integer"
           example: 1
   404:
-    description: "Realm with given ID does not exist"
+    description: "Realm does not exist"
   400:
-    description: "Username and Email are required and must be unique in the Realm."
+    description: "Username and Email are required and must be unique in the Realm OR Username must be between 3 and 50 chars OR Email must have a valid format"
   401:
     description: "Wrong API key"
+  403:
+    description: "You need to be a Premium admin to create more than 25 users"
