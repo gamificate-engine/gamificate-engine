@@ -27,7 +27,7 @@ parameters:
           example: 1
           required: true
 responses:
-  200:
+  201:
     description: "Redeemed Reward"
     schema:
       type: "object"
@@ -43,7 +43,7 @@ responses:
   404:
     description: "User or Reward with given ID does not exist."
   400:
-    description: "Must include id_reward."
+    description: "Must include id_reward OR id_reward must be an integer."
   401:
     description: "Reward/User doesn't belong to the authenticated Realm."
   403:

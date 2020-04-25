@@ -15,7 +15,13 @@ def auth():
     if 'id_realm' not in data:
         return bad_request('Must include id_realm')
 
-    id_realm = int(data['id_realm'])
+    try:
+        id_realm = int(data['id_realm'])
+    except ValueError as verr:
+        return bad_request('id_realm must be an integer')
+    except Exception as ex:
+        return bad_request('id_realm must be an integer')
+
     realm = Realm.query.get(id_realm)
     if not realm:
         return error_response(404, "Realm does not exist.")

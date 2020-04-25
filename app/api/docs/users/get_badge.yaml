@@ -51,6 +51,6 @@ responses:
   404:
     description: "User or Badge with given ID does not exist or User does not have progress on the given Badge."
   400:
-    description: "Must include id_badge"
+    description: "Must include id_badge OR id_badge must be an integer"
   401:
     description: "Badge/User doesn't belong to the Realm authenticated"

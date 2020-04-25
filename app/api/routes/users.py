@@ -5,6 +5,12 @@ from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
+import re
+
+def check_email(email):
+    regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    return re.search(regex,email)
+
 
 # GET USER WITH GIVEN ID
 @bp.route('/users/<int:id>', methods=['GET'])
@@ -57,18 +63,22 @@ def create_user():
 
     data = request.get_json() or {}
     if 'username' not in data:
-        return bad_request('must include username')
+        return bad_request('Must include username')
+    if len(data['username']) < 3 or len(data['username']) > 50:
+        return bad_request('Username must have at least 3 chars and no more than 50 chars')
 
     if 'email' not in data:
-        return bad_request('must include email')
+        return bad_request('Must include email')
+    if not check_email(data['email']):
+        return bad_request('Email must have a valid format')
 
     users = realm.users.all()
 
     if [u.username for u in users if u.username == data['username']]:
-        return bad_request('please use a different username')
+        return bad_request('Please use a different username')
 
     if [u.email for u in users if u.email == data['email']]:
-        return bad_request('please use a different email address')
+        return bad_request('Please use a different email address')
 
     user = User()
     user.new_user(data)
@@ -107,10 +117,14 @@ def update_user_info(id):
     if 'username' in data and data['username'] != user.username and \
             [u.username for u in users if u.username == data['username']]:
         return bad_request('Please use a different username.')
+    if len(data['username']) < 3 or len(data['username']) > 50:
+        return bad_request('Username must have at least 3 chars and no more than 50 chars')
 
     if 'email' in data and data['email'] != user.email and \
             [u.email for u in users if u.email == data['email']]:
         return bad_request('Please use a different email address.')
+    if not check_email(data['email']):
+        return bad_request('Email must have a valid format')
 
     user.from_dict(data)
     db.session.commit()
@@ -140,13 +154,27 @@ def add_badge_progress(id):
     data = request.get_json() or {}
 
     if 'id_badge' not in data:
-        return bad_request('must include id_badge')
+        return bad_request('Must include id_badge')
 
     if 'progress' not in data:
-        return bad_request('must include progress')
+        return bad_request('Must include progress')
 
-    id_badge = int(data['id_badge'])
-    progress = int(data['progress'])
+    try:
+        id_badge = int(data['id_badge'])
+    except ValueError as verr:
+        return bad_request('id_badge must be an integer')
+    except Exception as ex:
+        return bad_request('id_badge must be an integer')
+    
+    try:
+        progress = int(data['progress'])
+        if progress < 0:
+            return bad_request('progress must be a positive integer')
+    except ValueError as verr:
+        return bad_request('progress must be an integer')
+    except Exception as ex:
+        return bad_request('progress must be an integer')   
+
 
     badge = Badge.query.get(id_badge)
     if not badge:
@@ -192,9 +220,14 @@ def get_badge_progress(id):
     data = request.get_json() or {}
 
     if 'id_badge' not in data:
-        return bad_request('must include id_badge')
+        return bad_request('Must include id_badge')
 
-    id_badge = int(data['id_badge'])
+    try:
+        id_badge = int(data['id_badge'])
+    except ValueError as verr:
+        return bad_request('id_badge must be an integer')
+    except Exception as ex:
+        return bad_request('id_badge must be an integer')
     badge = Badge.query.get(id_badge)
 
     if not badge:
@@ -267,9 +300,14 @@ def redeem_reward(id):
     data = request.get_json() or {}
 
     if 'id_reward' not in data:
-        return bad_request('must include id_reward')
+        return bad_request('Must include id_reward')
 
-    id_reward = int(data['id_reward'])
+    try:
+        id_reward = int(data['id_reward'])
+    except ValueError as verr:
+        return bad_request('id_reward must be an integer')
+    except Exception as ex:
+        return bad_request('id_reward must be an integer')
 
     reward = Reward.query.get(id_reward)
     if not reward:
