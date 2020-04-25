@@ -16,6 +16,7 @@ class Admin(UserMixin, db.Model):
     password = db.Column(db.String(128))
     premium = db.Column(db.Boolean, default=False)
     realms = db.relationship('Realm', lazy='dynamic')
+    subscription_key = db.Column(db.String(128), unique=True)
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(

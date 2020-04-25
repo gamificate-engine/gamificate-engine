@@ -84,23 +84,20 @@ def new_api_key(id):
 @bp.route('/realms/payment', methods=['POST'])
 @login_required
 def payment():
-    # amount in cents
-    amount = 2500
-
     customer = stripe.Customer.create(
         email=request.form['stripeEmail'],
         source=request.form['stripeToken']
     )
 
-    stripe.Charge.create(
+    subscription = stripe.Subscription.create(
         customer=customer.id,
-        amount=amount,
-        currency='eur',
-        description='Gamificate Premium'
+        items=[{"plan": "plan_H7quRNGUfctwNA"}],
     )
     
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
     admin.premium = 1
+    admin.subscription_key = subscription.id
+
     db.session.add(admin)
     db.session.commit()
 
@@ -114,6 +111,20 @@ def premium():
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
 
     return render_template('realms/premium.html', admin=admin, key=stripe.publishable_key)
+
+@bp.route('/realms/cancel')
+@login_required
+def cancel():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    stripe.Subscription.delete(admin.subscription_key)
+
+    admin.premium = 0
+    admin.subscription_key = None
+    db.session.add(admin)
+    db.session.commit()
+
+    flash('You\'ve cancelled your Premium account!')
+    return redirect(url_for('realms.realms'))
 
 
 @bp.route('/realms/<id>/badges')
