@@ -18,7 +18,7 @@ def auth():
     id_realm = int(data['id_realm'])
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
 
     if 'api_key' not in data:
         return bad_request('Must include api_key')
@@ -43,7 +43,7 @@ def refresh():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
         
     access_token = create_access_token(identity=id_realm)
     return jsonify(access_token=access_token), 200

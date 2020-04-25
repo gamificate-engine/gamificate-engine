@@ -30,7 +30,7 @@ def get_users():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
     res = []
     users = realm.users.all()
     for user in users:
@@ -45,7 +45,15 @@ def create_user():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
+
+    admin = Admin.query.get(realm.id_admin)
+    if not admin:
+        return error_response(404, "Admin does not exist.")
+    
+    if not admin.premium:
+        if realm.users.count() >= 25:
+            return error_response(403, "You have reached the max number of users. To add more, please upgrade your free plan to Premium.")
 
     data = request.get_json() or {}
     if 'username' not in data:
@@ -83,7 +91,7 @@ def update_user_info(id):
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
 
     user = User.query.get(id)
     if not user:
@@ -118,7 +126,7 @@ def add_badge_progress(id):
 
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
 
     user = User.query.get(id)
     if not user:
@@ -150,7 +158,7 @@ def add_badge_progress(id):
 
     if badge_progress is not None:
         if badge_progress.finished:
-            return error_response(400, "Badge already finished.")
+            return error_response(403, "Badge already finished.")
         badge_progress.update_progress(progress, badge, user, realm)
     else:
         badge_progress = UserBadges(progress=0, finished=False)
@@ -271,7 +279,7 @@ def redeem_reward(id):
 
     user_reward = UserRewards.query.get((id, id_reward))
     if user_reward:
-        return error_response(400, "Reward already redeemed.")
+        return error_response(403, "Reward already redeemed.")
 
     user_reward = UserRewards()
     user_reward.redeem(reward)

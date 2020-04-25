@@ -1,7 +1,7 @@
 summary: "Update the User's progress on a given Badge"
 tags:
   - users / badges
-description: "This route allows you to add progress on a Badge for a given User. It will automatically check if the Badge is acquired and increase the User's total XP and total Badges."
+description: "This route allows you to add progress on a Badge for a given User. It will automatically check if the Badge is acquired and increase the User's total XP and total Badges. If the User levels up, an additional field will be added to the response with the new level."
 consumes:
   - "application/json"
 produces:
@@ -50,12 +50,20 @@ responses:
           type: "boolean"
           example: false
         finished_date:
+          required: false
           description: "Only when the Badge is finished: Date when it was acquired"
           type: "string"
           example: "2020-04-19 21:22:27.175801"
+        level_up:
+          required: false
+          description: "Only when the Users levels up: New level"
+          type: "integer"
+          example: 3
   404:
     description: "User or Badge with given ID does not exist"
   400:
-    description: "Must include id_badge and progress OR Badge already finished"
+    description: "Must include id_badge and progress"
   401:
     description: "Badge/User doesn't belong to the Realm authenticated"
+  403:
+    description: "Badge already finished"

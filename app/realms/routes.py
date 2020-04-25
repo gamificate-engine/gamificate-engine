@@ -30,7 +30,7 @@ def new_realm():
     if form.validate_on_submit():
         api_key = hexlify(os.urandom(16)).decode()
 
-        realm = Realm(name = form.name.data, description = form.description.data, a = form.a.data, b = form.b.data, admin_id = current_user.get_id())
+        realm = Realm(name = form.name.data, description = form.description.data, a = form.a.data, b = form.b.data, id_admin = current_user.get_id())
         realm.set_api_key(api_key)
 
         send_api_key_email(admin, api_key, realm)

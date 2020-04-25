@@ -14,7 +14,7 @@ def get_level_leaderboard():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
 
     res = []
 
@@ -35,7 +35,7 @@ def get_total_xp_leaderboard():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
 
     res = []
 
@@ -56,7 +56,7 @@ def get_total_badges_leaderboard():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
-        return error_response(404, "Realm with given ID does not exist.")
+        return error_response(404, "Realm does not exist.")
 
     res = []
 
