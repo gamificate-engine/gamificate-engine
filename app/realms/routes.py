@@ -2,7 +2,7 @@ from app import stripe, db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm
-from app.realms.forms import RealmForm
+from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm
 from werkzeug.urls import url_parse
 from flask import request
 from app.realms import bp
@@ -126,6 +126,48 @@ def cancel():
     flash('You\'ve cancelled your Premium account!')
     return redirect(url_for('realms.realms'))
 
+
+@bp.route('/realms/settings')
+@login_required
+def settings():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    form_settings = SettingsForm()
+    form_password = ResetPasswordForm()
+
+    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=form_password)
+
+@bp.route('/realms/settings/changesettings', methods=['POST'])
+@login_required
+def change_settings():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    form_settings = SettingsForm()
+
+    if form_settings.validate_on_submit():
+        admin.email = form_settings.email.data
+        admin.first_name = form_settings.first_name.data
+        admin.last_name = form_settings.last_name.data
+        db.session.add(admin)
+        db.session.commit()
+        flash('Your settings have been successfully updated.')
+
+    return redirect(url_for('realms.settings'))
+
+@bp.route('/realms/settings/resetpassword', methods=['POST'])
+@login_required
+def reset_password():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    form_password = ResetPasswordForm()
+
+    if form_password.validate_on_submit():
+        admin.setPassword(form_password.password.data)
+        db.session.add(admin)
+        db.session.commit()
+        flash('Your password has been successfully updated.')
+    
+    return redirect(url_for('realms.settings'))
+    
 
 @bp.route('/realms/<id>/badges')
 @login_required

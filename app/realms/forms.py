@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, TextAreaField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, InputRequired, Length, NumberRange
+from wtforms import StringField, FloatField, TextAreaField, SubmitField, PasswordField
+from wtforms.validators import ValidationError, DataRequired, InputRequired, Length, NumberRange, Email, EqualTo
 from app.models import Admin
 from flask_login import current_user
 
@@ -21,3 +21,21 @@ class RealmForm(FlaskForm):
             if realm.name == name.data:
                 raise ValidationError('Please use a different name.')
     
+
+class SettingsForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired(), Length(max=32)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(max=32)])
+    email = StringField('Email', validators=[DataRequired(), Email(), Length(max=128)])
+    submit = SubmitField('Register')
+
+
+    def validate_email(self, email):
+        admin = Admin.query.filter_by(email=email.data).first()
+        if admin is not None and admin.id_admin != current_user.get_id():
+            raise ValidationError('Please use a different email address.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=24)])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit2 = SubmitField('Request Password Reset')

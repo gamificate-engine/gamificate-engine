@@ -53,3 +53,8 @@
     margin-top: 3rem;
     font-size: x-large;
 }
+
+.error-form {
+    color: red; 
+    font-size: smaller;
+}

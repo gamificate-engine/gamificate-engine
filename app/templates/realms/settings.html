@@ -1,0 +1,147 @@
+{% extends "realms/partials/header_dashboard.html" %}
+{% block content %}
+
+
+    <div class="d-flex flex-column" id="content-wrapper">
+        
+
+        <div id="content">
+            {% with premium=admin.premium %}
+                {% include "realms/partials/navbar.html"  %}
+            {% endwith%}
+
+            <div class="container-fluid">
+                <div class="row mb-4">
+                    <h3 class="text-dark mb-0">Settings</h3>                   
+                </div>              
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                            </div>
+                            <div class="card-body">
+                                <form class="user" action="{{ url_for('realms.change_settings') }}" method="post">
+                                    {{ form_settings.hidden_tag() }}
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="email"><strong>Email Address</strong></label>
+                                                <input class="form-control" type="email" value="{{admin.email}}" name="email" id="email" aria-describedby="emailHelp">
+                                                {% for error in form_settings.email.errors %}
+                                                    <span class="error-form">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="first_name"><strong>First Name</strong></label>
+                                                <input class="form-control" type="text" value="{{admin.first_name}}" id="first_name" name="first_name" maxlength="32">
+                                                {% for error in form_settings.first_name.errors %}
+                                                    <span class="error-form">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="last_name"><strong>Last Name</strong></label>
+                                                <input class="form-control" type="text" value="{{admin.last_name}}" id="last_name" name="last_name" maxlength="32">
+                                                {% for error in form_settings.last_name.errors %}
+                                                    <span class="error-form">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group float-right">
+                                        <button class="btn btn-primary btn-sm" id="submit" name="submit" type="submit">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold">Reset Password</p>
+                            </div>
+                            <div class="card-body">
+                                <form class="user" action="{{ url_for('realms.reset_password') }}" method="post">
+                                    {{ form_password.hidden_tag() }}
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="email"><strong>Password</strong></label>
+                                                <input class="form-control" type="password" name="password" id="password" maxlength="24">
+                                                {% for error in form_password.password.errors %}
+                                                    <span class="error-form">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="last_name"><strong>Confirm Password</strong></label>
+                                                <input class="form-control" type="password" name="password2" id="password2" maxlength="24">
+                                                {% for error in form_password.password2.errors %}
+                                                    <span class="error-form">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group float-right">
+                                        <button class="btn btn-primary btn-sm" id="submit2" name="submit2" type="submit">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 align-items-stretch">
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold">Premium Settings</p>
+                            </div>
+                            <div class="card-body">
+                                {% if admin.premium %}
+                                    <p>You're already premium!</p>
+                                    <div class="form-group float-right mt-3">
+                                        <a class="btn btn-danger btn-sm" href="{{url_for('realms.cancel')}}">Cancel subscription</a>
+                                    </div>
+                                {% else %}
+                                    <p>Become a premium member of Gamificate and unlock all our features!</p>
+                                    <div class="form-group float-right mt-3">
+                                        <a class="btn btn-primary btn-sm" href="{{url_for('realms.premium')}}">Become Premium!</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 align-items-stretch">
+                        <div class="card shadow mb-3">
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0 font-weight-bold">Delete Account</p>
+                            </div>
+                            <div class="card-body">
+                                <p>Once you delete your account there is no going back! Please enter your password to confirm.</p>
+                                <form>
+                                    <div class="form-row">
+                                        <input class="form-control" type="password" name="password">
+                                    </div>
+                                    <div class="form-group float-right mt-3"><button class="btn btn-danger btn-sm" type="submit">Delete</button></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
