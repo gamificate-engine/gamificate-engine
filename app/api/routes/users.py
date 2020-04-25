@@ -116,11 +116,18 @@ def update_user_info(id):
 def add_badge_progress(id):
     id_realm = get_jwt_identity()
 
+    realm = Realm.query.get(id_realm)
+    if not realm:
+        return error_response(404, "Realm with given ID does not exist.")
+
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
+
+    # To check if the user leveled up
+    level = user.level
 
     data = request.get_json() or {}
 
@@ -144,17 +151,22 @@ def add_badge_progress(id):
     if badge_progress is not None:
         if badge_progress.finished:
             return error_response(400, "Badge already finished.")
-        badge_progress.update_progress(progress, badge, user)
+        badge_progress.update_progress(progress, badge, user, realm)
     else:
         badge_progress = UserBadges(progress=0, finished=False)
         badge_progress.badge = badge
         user.badges.append(badge_progress)
 
-        badge_progress.update_progress(progress, badge, user)
+        badge_progress.update_progress(progress, badge, user, realm)
+    
+    res = badge_progress.to_dict()
+
+    if user.level > level:
+        res['level_up'] = user.level
 
     db.session.commit()
 
-    return jsonify(badge_progress.to_dict())
+    return jsonify(res)
 
 # GET GIVEN BAGDE PROGRESS
 @bp.route('/users/<int:id>/badges', methods=['GET'])
