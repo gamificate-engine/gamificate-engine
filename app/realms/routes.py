@@ -2,7 +2,7 @@ from app import stripe, db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm
-from app.realms.forms import RealmForm
+from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm, DeleteAccountForm
 from werkzeug.urls import url_parse
 from flask import request
 from app.realms import bp
@@ -84,23 +84,20 @@ def new_api_key(id):
 @bp.route('/realms/payment', methods=['POST'])
 @login_required
 def payment():
-    # amount in cents
-    amount = 2500
-
     customer = stripe.Customer.create(
         email=request.form['stripeEmail'],
         source=request.form['stripeToken']
     )
 
-    stripe.Charge.create(
+    subscription = stripe.Subscription.create(
         customer=customer.id,
-        amount=amount,
-        currency='eur',
-        description='Gamificate Premium'
+        items=[{"plan": "plan_H7quRNGUfctwNA"}],
     )
     
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
     admin.premium = 1
+    admin.subscription_key = subscription.id
+
     db.session.add(admin)
     db.session.commit()
 
@@ -114,6 +111,81 @@ def premium():
     admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
 
     return render_template('realms/premium.html', admin=admin, key=stripe.publishable_key)
+
+@bp.route('/realms/cancel')
+@login_required
+def cancel():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    stripe.Subscription.delete(admin.subscription_key)
+
+    admin.premium = 0
+    admin.subscription_key = None
+    db.session.add(admin)
+    db.session.commit()
+
+    flash('You\'ve cancelled your Premium account!')
+    return redirect(url_for('realms.realms'))
+
+
+@bp.route('/realms/settings')
+@login_required
+def settings():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    form_settings = SettingsForm()
+    form_password = ResetPasswordForm()
+    form_delete = DeleteAccountForm()
+
+    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=form_password, form_delete=form_delete)
+
+@bp.route('/realms/settings/changesettings', methods=['POST'])
+@login_required
+def change_settings():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    form_settings = SettingsForm()
+
+    if form_settings.validate_on_submit():
+        admin.email = form_settings.email.data
+        admin.first_name = form_settings.first_name.data
+        admin.last_name = form_settings.last_name.data
+        db.session.add(admin)
+        db.session.commit()
+        flash('Your settings have been successfully updated.')
+
+    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=ResetPasswordForm(), form_delete=DeleteAccountForm())
+
+@bp.route('/realms/settings/resetpassword', methods=['POST'])
+@login_required
+def reset_password():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+
+    form_password = ResetPasswordForm()
+
+    if form_password.validate_on_submit():
+        admin.setPassword(form_password.password.data)
+        db.session.add(admin)
+        db.session.commit()
+        flash('Your password has been successfully updated.')
+    
+    return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=form_password, form_delete=DeleteAccountForm())
+    
+
+@bp.route('/realms/settings/delete', methods=['POST'])
+@login_required
+def delete():
+    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    
+    form_delete = DeleteAccountForm()
+
+    if form_delete.validate_on_submit():
+        db.session.delete(admin)
+        db.session.commit()
+
+        logout_user()
+        
+        return redirect(url_for('main.index'))
+
+    return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=ResetPasswordForm(), form_delete=form_delete)
 
 
 @bp.route('/realms/<id>/badges')
