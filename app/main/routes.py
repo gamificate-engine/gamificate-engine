@@ -9,3 +9,8 @@ def index():
         return redirect(url_for('realms.realms'))
 
     return render_template('main/index.html')
+
+
+@bp.route('/api')
+def api():
+    return redirect('/api/')
