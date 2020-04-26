@@ -1,4 +1,4 @@
-{% extends "realms/partials/header_dashboard.html" %}
+{% extends "realms/partials/header_realm.html" %}
 {% block content %}
 
 
@@ -9,15 +9,54 @@
             {% endwith%}
 
             <div class="container-fluid">
-                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                <div class="mb-4">
                     <h3 class="text-dark mb-0">Create new Badge</h3>
-                    <a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
                 </div>
             </div>
 
-            <div>
+            <div class="container-fluid">
                 <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+    
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input id="name" class="form-control" name="name" required="" size="32" type="text" value="">
+                        {% for error in form.name.errors %}
+                            <span class="error-form">{{ error }}</span>
+                        {% endfor %}                            
+                    </div>
 
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" class="form-control" name="description" size="32" rows="3" type="text" value=""></textarea>
+                        {% for error in form.description.errors %}
+                            <span class="error-form">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="xp">XP</label>
+                                <input id="xp" class="form-control" name="xp" type="number" value="1">
+                                {% for error in form.xp.errors %}
+                                    <span class="error-form">{{ error }}</span>
+                                {% endfor %}                            
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="required">Required</label>
+                                <input id="required" class="form-control" name="required" type="number" value="1">
+                                {% for error in form.required.errors %}
+                                    <span class="error-form">{{ error }}</span>
+                                {% endfor %}                            
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button id="login-btn" class="btn btn-primary btn-block text-white btn-user" type="submit">Create</button>
                 </form>
             </div>
         </div>

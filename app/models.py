@@ -78,11 +78,11 @@ class Badge(db.Model):
     __table_args__ = {'schema': 'gamificate'}
     id_badge = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
+    description = db.Column(db.String(256))
     xp = db.Column(db.Integer)
     required = db.Column(db.Integer)
     id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
-    id_reward = db.Column(db.Integer, db.ForeignKey(
-        'gamificate.reward.id_reward'), nullable=True)
+    id_reward = db.Column(db.Integer, db.ForeignKey('gamificate.reward.id_reward'), nullable=True)
 
     def __repr__(self):
         return '<Badge {}>'.format(self.name)
@@ -91,16 +91,19 @@ class Badge(db.Model):
         data = {
             'id_badge': self.id_badge,
             'name': self.name,
+            'description': self.description,
             'xp': self.xp,
             'required': self.required,
             'id_realm': self.id_realm
         }
+
         if self.id_reward:
             data['id_reward'] = self.id_reward
+        
         return data
 
     def new_or_update(self, data):
-        for field in ['name', 'xp', 'required', 'id_reward']:
+        for field in ['name', 'description', 'xp', 'required', 'id_reward']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -186,8 +189,8 @@ class User(db.Model):
     __tablename__ = 'user'
     __table_args__ = {'schema': 'gamificate'}
     id_user = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(254), unique=True)
+    username = db.Column(db.String(50))
+    email = db.Column(db.String(254))
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
     active = db.Column(db.Boolean)

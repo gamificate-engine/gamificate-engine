@@ -6,7 +6,7 @@
         <div id="content">
             {% with title=realm.name %}
                 {% include "realms/partials/navbar.html"  %}
-            {% endwith%}
+            {% endwith %}
 
             <div class="container-fluid">
                 <div class="row justify-content-between mb-4">
@@ -14,14 +14,49 @@
                     {% if admin.premium == False and users|length >= 250 %}
                         <a href="{{url_for('realms.premium')}}" class="btn btn-primary float-right" role="button">Become Premium!</a>
                     {% else %}
-                        <a href="" class="btn btn-primary float-right" role="button">Add User</a>
+                        <a href="{{url_for('realms.new_user', id=realm.id_realm)}}" class="btn btn-primary float-right" role="button">New User</a>
                     {% endif %}  
                 </div>
-                              
-
-                <div class="row">
-                    TABLE (with pages??)
-                </div>
+                {% if users|length == 0 %}
+                    <div class="d-flex flex-column" style="text-align: center">
+                        <div class="warn">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Looks like you haven't created any user. Click on 'New User'.</p>
+                        </div>
+                    </div>
+                {% else %}                          
+                    <div class="row">
+                        <table class="table table-light table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Level</th>
+                                    <th scope="col">Active</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    <tr>
+                                        <th scope="row">{{ user.id_user }}</th>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.level }}</td>
+                                        <td>{{ user.active }}</td>
+                                        <td>
+                                            <div class="row">
+                                                <a><i class="fas fa-edit"></i></a>
+                                                <a><i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}  
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
