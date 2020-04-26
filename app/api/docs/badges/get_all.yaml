@@ -27,7 +27,11 @@ responses:
               name:
                 description: "Name of the Badge"
                 type: "string"
-                example: "Level 5"
+                example: "Friendly!"
+              description:
+                description: "Description of the Badge"
+                type: "string"
+                example: "Add 5 new friends"
               xp:
                 description: "XP it gives when acquired"
                 type: "integer"
