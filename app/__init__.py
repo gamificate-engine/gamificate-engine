@@ -35,12 +35,6 @@ app.register_blueprint(realms_bp)
 from app.api import bp as api_bp
 app.register_blueprint(api_bp, url_prefix='/api')
 
-from app.users import bp as users_bp
-app.register_blueprint(users_bp)
-
-from app.badges import bp as badges_bp
-app.register_blueprint(badges_bp)
-
 # Error handling
 if not app.debug:
     if app.config['MAIL_SERVER']:

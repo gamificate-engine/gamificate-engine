@@ -191,7 +191,6 @@ class User(db.Model):
     def new_user(self, data):
         self.username = data['username']
         self.email = data['email']
-        self.id_realm = data['id_realm']
         self.total_xp = 0
         self.total_badges = 0
         self.active = True

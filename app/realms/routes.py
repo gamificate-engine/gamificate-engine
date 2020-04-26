@@ -1,8 +1,8 @@
 from app import db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import Admin, Realm
-from app.realms.forms import RealmForm
+from app.models import Admin, Realm, Badge, User
+from app.realms.forms import RealmForm, BadgeForm, UserForm
 from werkzeug.urls import url_parse
 from flask import request
 from app.realms import bp
@@ -13,7 +13,7 @@ import os
 @bp.route('/realms/') #/<admin_id>/')
 @login_required
 def realms():#admin_id):
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     return render_template('realms/index.html', admin=admin, realms=admin.realms.all())#, admin=admin, realms=realms)
 
@@ -22,7 +22,7 @@ def realms():#admin_id):
 @bp.route('/realms/new', methods=['GET', 'POST'])
 @login_required
 def new_realm():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     form = RealmForm()
     
@@ -50,8 +50,8 @@ def calculate_avg_completed(realm):
 @bp.route('/realms/<id>', methods=['GET', 'POST'])
 @login_required
 def show_realm(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     total_users = realm.users.count()
     total_badges = realm.badges.count()
@@ -64,8 +64,8 @@ def show_realm(id):
 @bp.route('/realms/<id>/api_key')
 @login_required
 def new_api_key(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     api_key = hexlify(os.urandom(16)).decode()
 
@@ -83,23 +83,65 @@ def new_api_key(id):
 @bp.route('/realms/<id>/badges')
 @login_required
 def badges(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     return render_template('realms/badges/index.html', realm=realm, admin=admin, badges=realm.badges.all())
 
 
+@bp.route('/realms/<int:id>/badges/new', methods=['GET', 'POST'])
+@login_required
+def new_badge(id):
+    realm = Realm.query.get_or_404(id)
+
+    admin = Admin.query.get_or_404(current_user.get_id())
+
+    form = BadgeForm(realm)
+
+    if form.validate_on_submit():
+        badge = Badge(name=form.name.data, xp=form.xp.data, required=form.required.data)
+
+        realm.badges.append(badge)
+
+        # db.session.add(badge)
+        db.session.commit()
+
+        flash('Congratulations, you created a new badge!')
+        return redirect(url_for('realms.badges', id = id))
+
+    return render_template('realms/badges/new.html', admin = admin, realm = realm, form = form)
 
 
-
-
-
-@bp.route('/realms/<id>/users')
+@bp.route('/realms/<int:id>/users')
 @login_required
 def users(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all())
 
     # TODO: new e edit
+
+@bp.route('realms/<int:id>/users/new', methods=['GET', 'POST'])
+@login_required
+def new_user(id):
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
+
+    form = UserForm(realm)
+
+    if form.validate_on_submit():
+        infoUser = {'username' : form.username.data, 'email': form.mail.data}
+        user = User()
+
+        user.new_user(infoUser)
+
+        realm.users.append(user)
+
+        # db.session.add(user)
+        db.session.commit()
+
+        flash('Congratulations, you created a new user!')
+        return redirect(url_for('realms.users', id = id))
+
+    return render_template('realms/users/new.html', admin = admin, realm = realm, form = form)
