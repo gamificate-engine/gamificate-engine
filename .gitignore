@@ -4,3 +4,4 @@ gamificate/env
 .vscode/settings.json
 gamificate/app.db
 gamificate/.env
+venv
