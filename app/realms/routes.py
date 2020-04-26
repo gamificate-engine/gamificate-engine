@@ -191,28 +191,3 @@ def delete():
         return redirect(url_for('main.index'))
 
     return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=ResetPasswordForm(), form_delete=form_delete)
-
-
-@bp.route('/realms/<id>/badges')
-@login_required
-def badges(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
-
-    return render_template('realms/badges/index.html', realm=realm, admin=admin, badges=realm.badges.all())
-
-    # TODO: new e edit
-
-
-
-
-
-@bp.route('/realms/<id>/users')
-@login_required
-def users(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
-
-    return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all())
-
-    # TODO: new e edit
