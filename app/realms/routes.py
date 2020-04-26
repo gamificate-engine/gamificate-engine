@@ -84,10 +84,15 @@ def new_api_key(id):
 @bp.route('/realms/payment', methods=['POST'])
 @login_required
 def payment():
-    customer = stripe.Customer.create(
-        email=request.form['stripeEmail'],
-        source=request.form['stripeToken']
-    )
+    customer = stripe.Customer.list(email=request.form['stripeEmail'])
+    
+    if customer.data:
+        customer = customer.data[0]
+    else:
+        customer = stripe.Customer.create(
+            email=request.form['stripeEmail'],
+            source=request.form['stripeToken']
+        )
 
     subscription = stripe.Subscription.create(
         customer=customer.id,
