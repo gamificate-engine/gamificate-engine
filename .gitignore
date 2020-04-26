@@ -5,3 +5,5 @@ gamificate/env
 gamificate/app.db
 gamificate/.env
 venv
+.env
+migrations
