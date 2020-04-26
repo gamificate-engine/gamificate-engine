@@ -25,14 +25,13 @@ def new_badge(id):
     form.realm = realm 
 
     if form.validate_on_submit():
-        badge = Badge(name=form.name.data, xp=form.xp.data, required=form.required.data)
-
-        realm.badges.append(badge)
-
-        # db.session.add(badge)
+        badge = Badge(name=form.name.data, description=form.description.data, xp=form.xp.data, required=form.required.data)
+        
+        realm.badges.append(badge)       
+        db.session.add(badge)
         db.session.commit()
 
-        flash('Congratulations, you created a new badge!')
+        flash('Congratulations, you've created a new badge!')
         return redirect(url_for('realms.badges', id = id))
 
     return render_template('realms/badges/new.html', admin = admin, realm = realm, form = form)

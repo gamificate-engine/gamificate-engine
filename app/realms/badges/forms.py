@@ -4,6 +4,7 @@ from wtforms.validators import ValidationError, DataRequired
 
 class BadgeForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
+    description = StringField('Description', validators=[DataRequired()])
     xp = IntegerField('XP', validators=[DataRequired()])
     required = IntegerField('XP required', validators=[DataRequired()])
     submit = SubmitField('Create Badge')
