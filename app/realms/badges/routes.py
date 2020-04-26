@@ -31,7 +31,9 @@ def new_badge(id):
         db.session.add(badge)
         db.session.commit()
 
-        flash('Congratulations, you've created a new badge!')
+        flash('Congratulations, you\'ve created a new badge!')
         return redirect(url_for('realms.badges', id = id))
 
     return render_template('realms/badges/new.html', admin = admin, realm = realm, form = form)
+
+    # TODO: edit and show

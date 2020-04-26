@@ -180,8 +180,8 @@ class User(db.Model):
     __tablename__ = 'user'
     __table_args__ = {'schema': 'gamificate'}
     id_user = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(254), unique=True)
+    username = db.Column(db.String(50))
+    email = db.Column(db.String(254))
     total_xp = db.Column(db.Integer)
     total_badges = db.Column(db.Integer)
     active = db.Column(db.Boolean)

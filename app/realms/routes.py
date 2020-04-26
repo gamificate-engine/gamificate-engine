@@ -14,7 +14,7 @@ import os
 @bp.route('/realms/')
 @login_required
 def realms():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     return render_template('realms/index.html', admin=admin, realms=admin.realms.all())
 
@@ -23,7 +23,7 @@ def realms():
 @bp.route('/realms/new', methods=['GET', 'POST'])
 @login_required
 def new_realm():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     form = RealmForm()
     
@@ -52,7 +52,7 @@ def calculate_avg_completed(realm):
 @login_required
 def show_realm(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     total_users = realm.users.count()
     total_badges = realm.badges.count()
@@ -66,7 +66,7 @@ def show_realm(id):
 @login_required
 def new_api_key(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     api_key = hexlify(os.urandom(16)).decode()
 
@@ -99,7 +99,7 @@ def payment():
         items=[{"plan": "plan_H7quRNGUfctwNA"}],
     )
     
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
     admin.premium = 1
     admin.subscription_key = subscription.id
 
@@ -113,14 +113,14 @@ def payment():
 @bp.route('/realms/premium')
 @login_required
 def premium():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     return render_template('realms/premium.html', admin=admin, key=stripe.publishable_key)
 
 @bp.route('/realms/cancel')
 @login_required
 def cancel():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
     stripe.Subscription.delete(admin.subscription_key)
 
     admin.premium = 0
@@ -135,7 +135,8 @@ def cancel():
 @bp.route('/realms/settings')
 @login_required
 def settings():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
+
     form_settings = SettingsForm()
     form_password = ResetPasswordForm()
     form_delete = DeleteAccountForm()
@@ -145,7 +146,7 @@ def settings():
 @bp.route('/realms/settings/changesettings', methods=['POST'])
 @login_required
 def change_settings():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     form_settings = SettingsForm()
 
@@ -162,7 +163,7 @@ def change_settings():
 @bp.route('/realms/settings/resetpassword', methods=['POST'])
 @login_required
 def reset_password():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
 
     form_password = ResetPasswordForm()
 
@@ -178,7 +179,7 @@ def reset_password():
 @bp.route('/realms/settings/delete', methods=['POST'])
 @login_required
 def delete():
-    admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+    admin = Admin.query.get_or_404(current_user.get_id())
     
     form_delete = DeleteAccountForm()
 
