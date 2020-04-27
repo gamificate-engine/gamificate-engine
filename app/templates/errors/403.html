@@ -1,0 +1,11 @@
+{% extends "auth/header_simple.html" %}
+
+{% block content %}
+
+    <div class="container-fluid text-center">
+        <h1>You don't have permission for that.</h1>
+        <img src="{{url_for('static', filename='img/page_forbidden.png')}}" class="img-fluid mt-2" alt="Responsive image"><br>
+        <a id="yellow-btn" class="btn btn-lg btn-primary m-4" href="{{ url_for('main.index') }}">Back</a>
+    </div>
+    
+{% endblock %}
