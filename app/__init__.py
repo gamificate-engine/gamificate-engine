@@ -24,7 +24,7 @@ mail = Mail(app)
 jwt = JWTManager(app)
 
 CORS(app)
-Talisman(app, content_security_policy=os.environ.get("CSP_DIRECTIVES", GOOGLE_CSP_POLICY))
+# Talisman(app, content_security_policy=os.environ.get("CSP_DIRECTIVES", GOOGLE_CSP_POLICY))
 
 stripe.api_key = os.environ['STRIPE_SECRET_KEY']
 stripe.publishable_key = os.environ['STRIPE_PUBLISHABLE_KEY']
