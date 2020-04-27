@@ -349,3 +349,63 @@ def get_user_rewards(id):
     for reward in rewards:
         res.append(reward.to_dict())
     return jsonify({'user_rewards': res})
+
+@bp.route('/users/<int:id>/rewards/unredeemed', methods=['GET'])
+@jwt_required
+@swag_from('../docs/users/rewards_unredeemed.yaml')
+def get_user_rewards_unredeemed(id):
+    id_realm = get_jwt_identity()
+
+    user = User.query.get(id)
+
+    if not user:
+        return error_response(404, "User with given ID does not exist.")
+    if user.id_realm != id_realm:
+        return error_response(401, "User does not belong to your Realm.")
+
+    redeemed_ids = []
+    for reward in user.rewards.all():
+        redeemed_ids.append(reward.id_reward)
+
+    res = []
+    badges = user.badges.all()
+    for badge in badges:
+        if badge.finished:
+            if badge.id_reward not in redeemed_ids:
+                res.append({
+                    'id_reward': badge.id_reward,
+                    'id_badge': badge.id_badge
+                })
+    return jsonify({'user_rewards_unredeemed': res})
+
+@bp.route('/users/rewards/unredeemed', methods=['GET'])
+@jwt_required
+@swag_from('../docs/users/all_rewards_unredeemed.yaml')
+def get_users_rewards_unredeemed(id):
+    id_realm = get_jwt_identity()
+    realm = Realm.query.get(id_realm)
+    if not realm:
+        return error_response(404, "Realm does not exist.")
+
+    users_res = []
+    
+    for user in realm.users.all():
+        redeemed_ids = []
+        for reward in user.rewards.all():
+            redeemed_ids.append(reward.id_reward)
+
+        res = []
+        badges = user.badges.all()
+        for badge in badges:
+            if badge.finished:
+                if badge.id_reward not in redeemed_ids:
+                    res.append({
+                        'id_reward': badge.id_reward,
+                        'id_badge': badge.id_badge
+                    })
+        dic = {
+            'id_user': user.id_user,
+            'unredeemed': res
+        }
+        users_res.append(dic)
+    return jsonify({'users_rewards_unredeemed': users_res})

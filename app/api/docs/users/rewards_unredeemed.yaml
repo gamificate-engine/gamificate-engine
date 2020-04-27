@@ -1,0 +1,40 @@
+summary: "Get the User's unredeemed Rewards"
+tags:
+  - users / rewards
+description: "This route allows you to get all the rewards that are still available for a given User. This means we can fetch the rewards associated with the finished Badges by the User that haven't been redeemed yet."
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+security:
+  - Bearer: []
+parameters:
+  - in: "path"
+    name: "id"
+    description: "ID of the User"
+    required: true
+    type: "integer"
+responses:
+  200:
+    description: "Unredeemed Rewards"
+    schema:
+      type: "object"
+      properties:
+        user_rewards_unredeemed:
+          description: "Unredeemed Rewards"
+          type: "array"
+          items:
+              type: "object"
+              properties:
+                id_reward:
+                  description: "ID of the Reward"
+                  type: "integer"
+                  example: 1
+                id_badge:
+                  description: "ID of the Badge to which the Reward is associated"
+                  type: "integer"
+                  example: 12
+  404:
+    description: "User with given ID does not exist"
+  401:
+    description: "User doesn't belong to the Realm authenticated"
