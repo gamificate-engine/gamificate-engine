@@ -4,9 +4,11 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm, Badge
 from app.realms import bp
 from app.realms.badges.forms import BadgeForm
+from app.realms.decorators import check_owernership
 
 @bp.route('/realms/<id>/badges')
 @login_required
+@check_owernership
 def badges(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -16,6 +18,7 @@ def badges(id):
 
 @bp.route('/realms/<int:id>/badges/new', methods=['GET', 'POST'])
 @login_required
+@check_owernership
 def new_badge(id):
     realm = Realm.query.get_or_404(id)
 
