@@ -31,7 +31,7 @@ responses:
               username:
                 description: "Username of the User"
                 type: "string"
-                example: "Tiagovski"
+                example: "John Doe"
               level:
                 description: "Level of the User"
                 type: "integer"
