@@ -23,7 +23,7 @@ def get_level_leaderboard():
     users = sorted(users, key=lambda user: user.level, reverse=True)
 
     for index, user in enumerate(users, start=1):
-        res.append(user.rank_to_dict(index, 'level'))
+        res.append(user.rank_to_dict(index))
 
     return jsonify({'leaderboard': res})
 
@@ -44,7 +44,7 @@ def get_total_xp_leaderboard():
     users = sorted(users, key=lambda user: user.total_xp, reverse=True)
 
     for index, user in enumerate(users, start=1):
-        res.append(user.rank_to_dict(index, 'total_xp'))
+        res.append(user.rank_to_dict(index))
 
     return jsonify({'leaderboard': res})
 
@@ -65,6 +65,6 @@ def get_total_badges_leaderboard():
     users = sorted(users, key=lambda user: user.total_badges, reverse=True)
 
     for index, user in enumerate(users, start=1):
-        res.append(user.rank_to_dict(index, 'total_badges'))
+        res.append(user.rank_to_dict(index))
 
     return jsonify({'leaderboard': res})

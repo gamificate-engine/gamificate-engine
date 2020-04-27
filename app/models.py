@@ -230,13 +230,15 @@ class User(db.Model):
         self.active = True
         self.level = 1
 
-    def rank_to_dict(self, rank, field):
+    def rank_to_dict(self, rank):
         data = {
             'rank': rank,
             'id_user': self.id_user,
-            'username': self.username
+            'username': self.username,
+            'level': self.level,
+            'total_xp': self.total_xp,
+            'total_badges': self.total_badges
         }
-        data[field] = getattr(self, field)
         return data
 
 
