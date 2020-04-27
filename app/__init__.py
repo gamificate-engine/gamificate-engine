@@ -9,7 +9,7 @@ from flask_mail import Mail
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 from flask_cors import CORS
-from flask_talisman import Talisman
+from flask_talisman import Talisman, GOOGLE_CSP_POLICY
 import stripe
 import os
 
@@ -24,7 +24,7 @@ mail = Mail(app)
 jwt = JWTManager(app)
 
 CORS(app)
-Talisman(app)
+Talisman(app, content_security_policy=os.environ.get("CSP_DIRECTIVES", GOOGLE_CSP_POLICY))
 
 stripe.api_key = os.environ['STRIPE_SECRET_KEY']
 stripe.publishable_key = os.environ['STRIPE_PUBLISHABLE_KEY']
