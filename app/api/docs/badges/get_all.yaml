@@ -44,5 +44,15 @@ responses:
                 description: "ID of the Realm the Badge belongs to"
                 type: "integer"
                 example: 1
+              id_reward:
+                description: "Optional: ID of the Reward associated with the Badge"
+                type: "integer"
+                example: 1
+                required: false
+              image_url:
+                description: "Optional: URL of the Badge's image"
+                type: "string"
+                example: "https://www.images.com/badge_friendly.png"
+                required: false
   404:
     description: "Realm does not exist"
