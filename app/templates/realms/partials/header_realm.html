@@ -27,7 +27,7 @@
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.badges', id=realm.id_realm)}}"><i class="fas fa-certificate"></i><span>Badges</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.users', id=realm.id_realm)}}"><i class="fas fa-user"></i><span>Users</span></a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href=""><i class="fas fa-award"></i><span>Rewards</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href=""><i class="fas fa-table"></i><span>Leaderboard</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.leaderboards', id=realm.id_realm)}}"><i class="fas fa-table"></i><span>Leaderboards</span></a></li>
 
                     <li class="nav-item" role="presentation"></li>
                     <li class="nav-item" role="presentation" style="height: 52px;"><a class="nav-link" href="{{url_for('realms.realms')}}" style="height: 80px;"><i class="fas fa-random"></i><span>Switch Realm</span></a></li>

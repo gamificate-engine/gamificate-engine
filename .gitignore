@@ -4,3 +4,4 @@ env
 .vscode/settings.json
 app.db
 .env
+migrations/versions

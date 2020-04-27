@@ -31,11 +31,19 @@ responses:
               username:
                 description: "Username of the User"
                 type: "string"
-                example: "Tiagovski"
+                example: "John Doe"
               level:
                 description: "Level of the User"
                 type: "integer"
                 example: 15
+              total_xp:
+                description: "Total XP of the User"
+                type: "integer"
+                example: 531
+              total_badges:
+                description: "Total Badges of the User"
+                type: "integer"
+                example: 8
   401:
     description: "Unauthorized"
   404:

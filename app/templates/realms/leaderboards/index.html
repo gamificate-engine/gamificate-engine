@@ -1,0 +1,141 @@
+{% extends "realms/partials/header_realm.html" %}
+{% block content %}
+
+
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            {% with title=realm.name %}
+                {% include "realms/partials/navbar.html"  %}
+            {% endwith %}
+
+            <div class="container-fluid">
+                <div class="row justify-content-between mb-4">
+                    <h3 class="text-dark mb-0">Leaderboards</h3>
+                </div>
+
+                <section id="tabs" class="project-tab">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nav>
+                                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <a class="nav-item nav-link active" id="nav-level-tab" data-toggle="tab" href="#nav-level" role="tab" aria-controls="nav-level" aria-selected="true">By Level</a>
+                                        <a class="nav-item nav-link" id="nav-xp-tab" data-toggle="tab" href="#nav-xp" role="tab" aria-controls="nav-xp" aria-selected="false">By Total XP</a>
+                                        <a class="nav-item nav-link" id="nav-badges-tab" data-toggle="tab" href="#nav-badges" role="tab" aria-controls="nav-badges" aria-selected="false">By Total Badges</a>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-level" role="tabpanel" aria-labelledby="nav-level-tab">
+                                        <table class="table table-light table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Username</th>
+                                                    <th scope="col">Level</th>
+                                                    <th scope="col">Total XP</th>
+                                                    <th scope="col">Total Badges</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in leaderboard_level %}
+                                                    <tr>
+                                                        {% if user.rank == 1 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#FFD700;"></i></th>
+                                                        {% elif user.rank == 2 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#C0C0C0;"></i></th>
+                                                        {% elif user.rank == 3 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#CD7F32;"></i></th>
+                                                        {% else %}
+                                                            <th scope="row">{{ user.rank }}</th>
+                                                        {% endif %}
+                                                        <td>{{ user.id_user }}</td>
+                                                        <td>{{ user.username }}</td>
+                                                        <td>{{ user.level }}</td>
+                                                        <td>{{ user.total_xp }}</td>
+                                                        <td>{{ user.total_badges }}</td>
+                                                    </tr>
+                                                {% endfor %}  
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-xp" role="tabpanel" aria-labelledby="nav-xp-tab">
+                                        <table class="table table-light table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Username</th>
+                                                    <th scope="col">Level</th>
+                                                    <th scope="col">Total XP</th>
+                                                    <th scope="col">Total Badges</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in leaderboard_xp %}
+                                                    <tr>
+                                                        {% if user.rank == 1 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#FFD700;"></i></th>
+                                                        {% elif user.rank == 2 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#C0C0C0;"></i></th>
+                                                        {% elif user.rank == 3 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#CD7F32;"></i></th>
+                                                        {% else %}
+                                                            <th scope="row">{{ user.rank }}</th>
+                                                        {% endif %}
+                                                        <td>{{ user.id_user }}</td>
+                                                        <td>{{ user.username }}</td>
+                                                        <td>{{ user.level }}</td>
+                                                        <td>{{ user.total_xp }}</td>
+                                                        <td>{{ user.total_badges }}</td>
+                                                    </tr>
+                                                {% endfor %}  
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-badges" role="tabpanel" aria-labelledby="nav-badges-tab">
+                                        <table class="table table-light table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Username</th>
+                                                    <th scope="col">Level</th>
+                                                    <th scope="col">Total XP</th>
+                                                    <th scope="col">Total Badges</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in leaderboard_badges %}
+                                                    <tr>
+                                                        {% if user.rank == 1 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#FFD700;"></i></th>
+                                                        {% elif user.rank == 2 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#C0C0C0;"></i></th>
+                                                        {% elif user.rank == 3 %}
+                                                            <th scope="row"><i class="fas fa-trophy" style="color:#CD7F32;"></i></th>
+                                                        {% else %}
+                                                            <th scope="row">{{ user.rank }}</th>
+                                                        {% endif %}
+                                                        <td>{{ user.id_user }}</td>
+                                                        <td>{{ user.username }}</td>
+                                                        <td>{{ user.level }}</td>
+                                                        <td>{{ user.total_xp }}</td>
+                                                        <td>{{ user.total_badges }}</td>
+                                                    </tr>
+                                                {% endfor %}  
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

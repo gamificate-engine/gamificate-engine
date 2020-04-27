@@ -81,6 +81,7 @@ class Badge(db.Model):
     description = db.Column(db.String(256))
     xp = db.Column(db.Integer)
     required = db.Column(db.Integer)
+    image_url = db.Column(db.String(2000))
     id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
     id_reward = db.Column(db.Integer, db.ForeignKey('gamificate.reward.id_reward'), nullable=True)
 
@@ -96,6 +97,8 @@ class Badge(db.Model):
             'required': self.required,
             'id_realm': self.id_realm
         }
+        if self.image_url:
+            data['image_url'] = self.image_url
 
         if self.id_reward:
             data['id_reward'] = self.id_reward
@@ -103,7 +106,7 @@ class Badge(db.Model):
         return data
 
     def new_or_update(self, data):
-        for field in ['name', 'description', 'xp', 'required', 'id_reward']:
+        for field in ['name', 'description', 'xp', 'required', 'image_url', 'id_reward']:
             if field in data:
                 setattr(self, field, data[field])
 
@@ -230,13 +233,15 @@ class User(db.Model):
         self.active = True
         self.level = 1
 
-    def rank_to_dict(self, rank, field):
+    def rank_to_dict(self, rank):
         data = {
             'rank': rank,
             'id_user': self.id_user,
-            'username': self.username
+            'username': self.username,
+            'level': self.level,
+            'total_xp': self.total_xp,
+            'total_badges': self.total_badges
         }
-        data[field] = getattr(self, field)
         return data
 
 

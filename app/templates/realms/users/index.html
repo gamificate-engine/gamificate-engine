@@ -29,10 +29,12 @@
                         <table class="table table-light table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">ID</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Level</th>
+                                    <th scope="col">XP</th>
+                                    <th scope="col">Badges</th>
                                     <th scope="col">Active</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -44,6 +46,8 @@
                                         <td>{{ user.username }}</td>
                                         <td>{{ user.email }}</td>
                                         <td>{{ user.level }}</td>
+                                        <td>{{ user.total_xp }}</td>
+                                        <td>{{ user.total_badges }}</td>
                                         <td>{{ user.active }}</td>
                                         <td>
                                             <div class="row">

@@ -25,7 +25,7 @@ def new_badge(id):
     form.realm = realm 
 
     if form.validate_on_submit():
-        badge = Badge(name=form.name.data, description=form.description.data, xp=form.xp.data, required=form.required.data)
+        badge = Badge(name=form.name.data, description=form.description.data, xp=form.xp.data, required=form.required.data, image_url=form.image_url.data)
         
         realm.badges.append(badge)       
         db.session.add(badge)
