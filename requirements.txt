@@ -33,3 +33,4 @@ stripe==2.45.0
 psycopg2==2.8.5
 gunicorn==20.0.4
 flask-cors==3.0.8
+flask-talisman==0.7.0

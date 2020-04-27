@@ -9,6 +9,7 @@ from flask_mail import Mail
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 from flask_cors import CORS
+from flask_talisman import Talisman
 import stripe
 import os
 
@@ -23,6 +24,7 @@ mail = Mail(app)
 jwt = JWTManager(app)
 
 CORS(app)
+Talisman(app)
 
 stripe.api_key = os.environ['STRIPE_SECRET_KEY']
 stripe.publishable_key = os.environ['STRIPE_PUBLISHABLE_KEY']
