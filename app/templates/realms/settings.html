@@ -73,7 +73,18 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label for="email"><strong>Password</strong></label>
+                                                <label for="currentpw"><strong>Current Password</strong></label>
+                                                <input class="form-control" type="password" name="currentpw" id="currentpw" maxlength="24">
+                                                {% for error in form_password.currentpw.errors %}
+                                                    <span class="error-form">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="password"><strong>Password</strong></label>
                                                 <input class="form-control" type="password" name="password" id="password" maxlength="24">
                                                 {% for error in form_password.password.errors %}
                                                     <span class="error-form">{{ error }}</span>
@@ -84,7 +95,7 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label for="last_name"><strong>Confirm Password</strong></label>
+                                                <label for="password2"><strong>Confirm Password</strong></label>
                                                 <input class="form-control" type="password" name="password2" id="password2" maxlength="24">
                                                 {% for error in form_password.password2.errors %}
                                                     <span class="error-form">{{ error }}</span>
@@ -100,6 +111,7 @@
                         </div>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-lg-6 align-items-stretch">
                         <div class="card shadow mb-3">
