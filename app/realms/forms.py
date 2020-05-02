@@ -14,7 +14,7 @@ class RealmForm(FlaskForm):
     submit = SubmitField('Create Realm')
 
     def validate_name(self, name):
-        admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+        admin = Admin.query.get_or_404(current_user.get_id())
         realms = admin.realms.all()
 
         for realm in realms:
@@ -36,16 +36,23 @@ class SettingsForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
+    currentpw = PasswordField('Current Password', validators=[DataRequired(), Length(min=8, max=24)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=24)])
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit2 = SubmitField('Request Password Reset')
+
+    def validate_currentpw(self, currentpw):
+        admin = Admin.query.get_or_404(current_user.get_id())
+
+        if not admin.checkPassword(currentpw.data):
+            raise ValidationError('Password inserted doesn\'t match.')
 
 
 class DeleteAccountForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
 
     def validate_password(self, password):
-        admin = Admin.query.filter_by(id_admin=current_user.get_id()).first_or_404()
+        admin = Admin.query.get_or_404(current_user.get_id())
 
         if not admin.checkPassword(password.data):
             raise ValidationError('Password inserted doesn\'t match.')
