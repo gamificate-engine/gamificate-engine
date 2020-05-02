@@ -7,6 +7,7 @@ from app.realms.rewards.forms import RewardForm
 
 @bp.route('/realms/<id>/rewards')
 @login_required
+@check_owernership
 def rewards(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -16,6 +17,7 @@ def rewards(id):
 
 @bp.route('/realms/<int:id>/rewards/new', methods=['GET', 'POST'])
 @login_required
+@check_owernership
 def new_reward(id):
     realm = Realm.query.get_or_404(id)
 
