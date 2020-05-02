@@ -115,8 +115,8 @@ class Reward(db.Model):
     __tablename__ = 'reward'
     __table_args__ = {'schema': 'gamificate'}
     id_reward = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    desc = db.Column(db.String(255))
+    name = db.Column(db.String(32))
+    desc = db.Column(db.String(256))
     id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
 
     def __repr__(self):
