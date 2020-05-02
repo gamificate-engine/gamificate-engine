@@ -4,12 +4,12 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm, User
 from app.realms import bp
 from app.realms.users.forms import UserForm
-from app.realms.decorators import check_owernership
+from app.realms.decorators import check_ownership
 
 
 @bp.route('/realms/<int:id>/users')
 @login_required
-@check_owernership
+@check_ownership
 def users(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -19,7 +19,7 @@ def users(id):
 
 @bp.route('/realms/<int:id>/users/new', methods=['GET', 'POST'])
 @login_required
-@check_owernership
+@check_ownership
 def new_user(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())

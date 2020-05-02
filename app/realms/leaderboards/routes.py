@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm, User
 from app.realms import bp
+from app.realms.decorators import check_ownership
 
 # ADAPTED FROM API FUNCS:
 def get_leaderboard(id, attr):
@@ -17,6 +18,7 @@ def get_leaderboard(id, attr):
 
 @bp.route('/realms/<int:id>/leaderboards')
 @login_required
+@check_ownership
 def leaderboards(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())

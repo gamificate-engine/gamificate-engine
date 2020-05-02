@@ -4,10 +4,11 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm, Reward
 from app.realms import bp
 from app.realms.rewards.forms import RewardForm
+from app.realms.decorators import check_ownership
 
 @bp.route('/realms/<id>/rewards')
 @login_required
-@check_owernership
+@check_ownership
 def rewards(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -17,7 +18,7 @@ def rewards(id):
 
 @bp.route('/realms/<int:id>/rewards/new', methods=['GET', 'POST'])
 @login_required
-@check_owernership
+@check_ownership
 def new_reward(id):
     realm = Realm.query.get_or_404(id)
 
