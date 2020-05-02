@@ -3,7 +3,7 @@ from flask_login import current_user
 from app.models import Realm
 from functools import wraps
 
-def check_owernership(f):
+def check_ownership(f):
     @wraps(f)
     def wrapper(id):
         realm = Realm.query.get_or_404(id)

@@ -9,7 +9,7 @@ from app.realms import bp
 from app.realms.email import send_api_key_email
 from binascii import hexlify # generate API Key
 import os
-from app.realms.decorators import check_owernership
+from app.realms.decorators import check_ownership
 
 @bp.route('/realms/')
 @login_required
@@ -50,7 +50,7 @@ def calculate_avg_completed(realm):
 
 @bp.route('/realms/<id>', methods=['GET', 'POST'])
 @login_required
-@check_owernership
+@check_ownership
 def show_realm(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -65,7 +65,7 @@ def show_realm(id):
 
 @bp.route('/realms/<id>/api_key')
 @login_required
-@check_owernership
+@check_ownership
 def new_api_key(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
     admin = Admin.query.get_or_404(current_user.get_id())
