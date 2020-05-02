@@ -10,19 +10,19 @@
 
             <div class="container-fluid">
                 <div class="row justify-content-between mb-4">
-                    <h3 class="text-dark mb-0">Badges</h3>
-                    {% if admin.premium == False and badges|length >= 25 %}
+                    <h3 class="text-dark mb-0">Rewards</h3>
+                    {% if admin.premium == False and rewards|length >= 25 %}
                         <a href="{{url_for('realms.premium')}}" class="btn btn-primary float-right">Become Premium!</a>
                     {% else %}
-                        <a href="{{url_for('realms.new_badge', id=realm.id_realm)}}" class="btn btn-primary float-right">New Badge</a>
+                        <a href="{{url_for('realms.new_reward', id=realm.id_realm)}}" class="btn btn-primary float-right">New Reward</a>
                     {% endif %}     
                 </div>
 
-                {% if badges|length == 0 %}
+                {% if rewards|length == 0 %}
                     <div class="d-flex flex-column" style="text-align: center">
                         <div class="warn">
                             <i class="fas fa-info-circle"></i>
-                            <p>Looks like you haven't created any badge. Click on 'New Badge'.</p>
+                            <p>Looks like you haven't created any reward. Click on 'New Reward'.</p>
                         </div>
                     </div>
                 {% else %}                          
@@ -33,23 +33,19 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Required</th>
-                                    <th scope="col">XP</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for badge in badges %}
+                                {% for reward in rewards %}
                                     <tr>
-                                        <th scope="row">{{ badge.id_badge }}</th>
-                                        <td>{{ badge.name }}</td>
-                                        <td style="word-break: break-all;">{{ badge.description }}</td>
-                                        <td>{{ badge.required }}</td>
-                                        <td>{{ badge.xp }}</td>
+                                        <th scope="row">{{ reward.id_reward }}</th>
+                                        <td>{{ reward.name }}</td>
+                                        <td style="word-break: break-all;">{{ reward.desc }}</td>
                                         <td>
                                             <div class="row">
                                                 <a><i class="fas fa-edit"></i></a>
-                                                <a><i class="fas fa-trash-alt"></i></a>
+                                                <a><i class="fas fa-trash-alt" style="margin-left: 1vw;"></i></a>
                                             </div>
                                         </td>
                                     </tr>
