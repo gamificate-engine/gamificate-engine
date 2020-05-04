@@ -24,7 +24,7 @@ h1 {
     color: #292825;
 }
 
-#gamificate hr, #pricing hr , #about hr, #buymeacoffee hr{
+#gamificate hr, #start hr, #pricing hr , #about hr, #buymeacoffee hr, #contact hr{
     border-top: 1px solid rgb(119, 119, 119);
 }
 
@@ -35,6 +35,16 @@ h1 {
 }
 
 #pricing {
+    background-color: #292825;
+    color:white;   
+}
+
+#start {
+    background-color: #292825;
+    color:white;   
+}
+
+#contact {
     background-color: #292825;
     color:white;   
 }
@@ -54,6 +64,26 @@ section {
 #premium_btn:not(:disabled):not(.disabled):active:focus,#premium_btn:not(:disabled):not(.disabled).active:focus,.show>#premium_btn.dropdown-toggle:focus{box-shadow:0 0 0 .2rem #ebbc02}
 
 
+#start div {
+    color: #292825;
+}
+
+#instructions img{
+    height: 60vh;
+    width: 100vw;
+}
+
+#arrow_left, #arrow_right {
+    filter: invert(100%);
+}
+
+.carousel-indicators li {
+    background-color: #000000;
+}
+
+#contact div {
+    color: #292825;
+}
 
 #pricing div {
     color: #292825;
