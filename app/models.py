@@ -199,8 +199,8 @@ class User(db.Model):
     active = db.Column(db.Boolean)
     level = db.Column(db.Integer)
     id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
-    badges = db.relationship("UserBadges", lazy='dynamic')
-    rewards = db.relationship("UserRewards", lazy='dynamic')
+    badges = db.relationship("UserBadges", lazy='dynamic', cascade="delete")
+    rewards = db.relationship("UserRewards", lazy='dynamic', cascade="delete")
 
     def __repr__(self):
         return '<User {}>'.format(self.email)
