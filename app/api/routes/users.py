@@ -58,7 +58,7 @@ def create_user():
         return error_response(404, "Admin does not exist.")
     
     if not admin.premium:
-        if realm.users.count() >= 25:
+        if realm.users.count() >= 250:
             return error_response(403, "You have reached the max number of users. To add more, please upgrade your free plan to Premium.")
 
     data = request.get_json() or {}
