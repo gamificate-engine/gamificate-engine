@@ -89,6 +89,7 @@ def new_api_key(id):
 
 @bp.route('/realms/<int:id>/edit', methods=['POST'])
 @login_required
+@check_ownership
 def change_realm_name(id):
     realm = Realm.query.get_or_404(id)
     form = RealmNameForm(request.form)
@@ -108,6 +109,7 @@ def change_realm_name(id):
 
 @bp.route('/realms/<int:id>/delete', methods=['POST'])
 @login_required
+@check_ownership
 def delete_realm(id):
     realm = Realm.query.get_or_404(id)
     form = DeleteForm(request.form)
