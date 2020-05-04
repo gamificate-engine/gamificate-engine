@@ -48,7 +48,7 @@ class ResetPasswordForm(FlaskForm):
             raise ValidationError('Password inserted doesn\'t match.')
 
 
-class DeleteAccountForm(FlaskForm):
+class DeleteForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
 
     def validate_password(self, password):
@@ -56,3 +56,15 @@ class DeleteAccountForm(FlaskForm):
 
         if not admin.checkPassword(password.data):
             raise ValidationError('Password inserted doesn\'t match.')
+
+
+class RealmNameForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(min=1, max=32)])
+
+    def validate_name(self, name):
+        admin = Admin.query.get_or_404(current_user.get_id())
+        realms = admin.realms.all()
+
+        for realm in realms:
+            if realm.name == name.data:
+                raise ValidationError('Please use a different name.')

@@ -2,7 +2,7 @@ from app import stripe, db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm
-from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm, DeleteAccountForm
+from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm, DeleteForm, RealmNameForm
 from werkzeug.urls import url_parse
 from flask import request
 from app.realms import bp
@@ -48,7 +48,7 @@ def new_realm():
 def calculate_avg_completed(realm):
     return 25 # TODO: implement logic
 
-@bp.route('/realms/<id>', methods=['GET', 'POST'])
+@bp.route('/realms/<int:id>')
 @login_required
 @check_ownership
 def show_realm(id):
@@ -60,14 +60,18 @@ def show_realm(id):
     total_rewards = realm.rewards.count()
     avg_completed = calculate_avg_completed(realm)
 
-    return render_template('realms/show.html', realm=realm, admin=admin, total_users=total_users, total_badges=total_badges, avg_completed=avg_completed, total_rewards=total_rewards)
+    form_delete = DeleteForm()
+    form_name = RealmNameForm()
+
+    return render_template('realms/show.html', realm=realm, admin=admin, total_users=total_users, total_badges=total_badges, 
+                            avg_completed=avg_completed, total_rewards=total_rewards, form_delete=form_delete, form_name=form_name)
 
 
-@bp.route('/realms/<id>/api_key')
+@bp.route('/realms/<int:id>/api_key')
 @login_required
 @check_ownership
 def new_api_key(id):
-    realm = Realm.query.filter_by(id_realm=id).first_or_404()
+    realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
 
     api_key = hexlify(os.urandom(16)).decode()
@@ -81,6 +85,45 @@ def new_api_key(id):
 
     flash('Your new Realm\'s API Key was sent to your email!')
     return redirect(url_for('realms.show_realm', id=id))
+
+
+@bp.route('/realms/<int:id>/edit', methods=['POST'])
+@login_required
+@check_ownership
+def change_realm_name(id):
+    realm = Realm.query.get_or_404(id)
+    form = RealmNameForm(request.form)
+    
+    if form.validate_on_submit():
+        realm.name = form.name.data
+        
+        db.session.add(realm)
+        db.session.commit()
+
+        flash('Realm name successfully updated.')
+    else:
+        flash('Realm name not updated because you have a duplicate name.')
+
+    return redirect(url_for('realms.show_realm', id=id))
+
+
+@bp.route('/realms/<int:id>/delete', methods=['POST'])
+@login_required
+@check_ownership
+def delete_realm(id):
+    realm = Realm.query.get_or_404(id)
+    form = DeleteForm(request.form)
+    print(form)
+    if form.validate_on_submit():
+        db.session.delete(realm)
+        db.session.commit()
+
+        flash('Realm successfully deleted.')
+        return redirect(url_for('realms.realms'))
+
+    flash('Realm not deleted because passwords didn\'t match.')
+    return redirect(url_for('realms.show_realm', id=id))
+
 
 
 @bp.route('/realms/payment', methods=['POST'])
@@ -141,7 +184,7 @@ def settings():
 
     form_settings = SettingsForm()
     form_password = ResetPasswordForm()
-    form_delete = DeleteAccountForm()
+    form_delete = DeleteForm()
 
     return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=form_password, form_delete=form_delete)
 
@@ -160,7 +203,7 @@ def change_settings():
         db.session.commit()
         flash('Your settings have been successfully updated.')
 
-    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=ResetPasswordForm(), form_delete=DeleteAccountForm())
+    return render_template('realms/settings.html', admin=admin, form_settings=form_settings, form_password=ResetPasswordForm(), form_delete=DeleteForm())
 
 @bp.route('/realms/settings/resetpassword', methods=['POST'])
 @login_required
@@ -175,7 +218,7 @@ def reset_password():
         db.session.commit()
         flash('Your password has been successfully updated.')
     
-    return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=form_password, form_delete=DeleteAccountForm())
+    return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=form_password, form_delete=DeleteForm())
     
 
 @bp.route('/realms/settings/delete', methods=['POST'])
@@ -183,7 +226,7 @@ def reset_password():
 def delete():
     admin = Admin.query.get_or_404(current_user.get_id())
     
-    form_delete = DeleteAccountForm()
+    form_delete = DeleteForm()
 
     if form_delete.validate_on_submit():
         db.session.delete(admin)
@@ -194,3 +237,4 @@ def delete():
         return redirect(url_for('main.index'))
 
     return render_template('realms/settings.html', admin=admin, form_settings=SettingsForm(), form_password=ResetPasswordForm(), form_delete=form_delete)
+
