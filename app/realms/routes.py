@@ -100,9 +100,9 @@ def change_realm_name(id):
         db.session.add(realm)
         db.session.commit()
 
-        flash('Realm name successfully updated.')
+        flash('Realm\'s name successfully updated.')
     else:
-        flash('Realm name not updated because you have a duplicate name.')
+        flash('Realm\'s name not updated because you have a duplicate name.')
 
     return redirect(url_for('realms.show_realm', id=id))
 
