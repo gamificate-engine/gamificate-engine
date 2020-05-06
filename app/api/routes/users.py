@@ -58,7 +58,7 @@ def create_user():
         return error_response(404, "Admin does not exist.")
     
     if not admin.premium:
-        if realm.users.count() >= 25:
+        if realm.users.count() >= 250:
             return error_response(403, "You have reached the max number of users. To add more, please upgrade your free plan to Premium.")
 
     data = request.get_json() or {}
@@ -368,9 +368,10 @@ def get_user_rewards_unredeemed(id):
         redeemed_ids.append(reward.id_reward)
 
     res = []
-    badges = user.badges.all()
-    for badge in badges:
-        if badge.finished:
+    user_badges = user.badges.all()
+    for user_badge in user_badges:
+        if user_badge.finished:
+            badge = Badge.query.get(user_badge.id_badge)
             if badge.id_reward not in redeemed_ids:
                 res.append({
                     'id_reward': badge.id_reward,
@@ -381,7 +382,7 @@ def get_user_rewards_unredeemed(id):
 @bp.route('/users/rewards/unredeemed', methods=['GET'])
 @jwt_required
 @swag_from('../docs/users/all_rewards_unredeemed.yaml')
-def get_users_rewards_unredeemed(id):
+def get_users_rewards_unredeemed():
     id_realm = get_jwt_identity()
     realm = Realm.query.get(id_realm)
     if not realm:
@@ -395,9 +396,10 @@ def get_users_rewards_unredeemed(id):
             redeemed_ids.append(reward.id_reward)
 
         res = []
-        badges = user.badges.all()
-        for badge in badges:
-            if badge.finished:
+        user_badges = user.badges.all()
+        for user_badge in user_badges:
+            if user_badge.finished:
+                badge = Badge.query.get(user_badge.id_badge)
                 if badge.id_reward not in redeemed_ids:
                     res.append({
                         'id_reward': badge.id_reward,
