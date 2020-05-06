@@ -53,7 +53,7 @@ class Realm(db.Model):
     description = db.Column(db.String(256))
     id_admin = db.Column(db.Integer, db.ForeignKey('gamificate.admin.id_admin'))
     badges = db.relationship('Badge', lazy='dynamic', cascade="delete")
-    users = db.relationship('User', lazy='dynamic', cascade="delete")
+    users = db.relationship('User', lazy='dynamic', cascade="delete, save-update")
     rewards = db.relationship('Reward', lazy='dynamic', cascade="delete")
     api_key = db.Column(db.String(128), unique=True)
     a = db.Column(db.Float)

@@ -113,7 +113,7 @@ def change_realm_name(id):
 def delete_realm(id):
     realm = Realm.query.get_or_404(id)
     form = DeleteForm(request.form)
-    print(form)
+    
     if form.validate_on_submit():
         db.session.delete(realm)
         db.session.commit()
