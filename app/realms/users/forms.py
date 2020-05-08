@@ -1,6 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, FileField
 from wtforms.validators import ValidationError, DataRequired, Email
+from flask import request
+from werkzeug.utils import secure_filename
+from app.realms.validation import validate_users_json
+import json
+
 
 class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -19,3 +24,20 @@ class UserForm(FlaskForm):
 
         if [u.email for u in users if u.email == email.data]:
             raise ValidationError('Email already in use. Try again.')
+
+
+
+class JsonForm(FlaskForm):
+    file = FileField('file')
+
+    def validate_file(self, file):
+        file = request.files['file']
+
+        if not '.json' in file.filename:
+            raise ValidationError('File extension not supported.')
+
+        filename = secure_filename(file.filename)
+        json_obj = json.loads(file.read())
+
+        if not validate_users_json(json_obj):
+            raise ValidationError('Wrong file structure.')

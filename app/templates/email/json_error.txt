@@ -1,0 +1,8 @@
+Dear {{ admin.first_name }},
+
+Unfortunately, something is wrong with the JSON file you've recently uploaded, regarding the realm {{ realm.name }}.
+
+Please, make sure you don't have any duplicated username or email.
+
+Sincerely,
+The Gamificate Team

@@ -9,13 +9,52 @@
             {% endwith %}
 
             <div class="container-fluid">
-                <div class="row justify-content-between mb-4">
+                <div class="row justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0">Users</h3>
-                    {% if admin.premium == False and users|length >= 250 %}
-                        <a href="{{url_for('realms.premium')}}" class="btn btn-primary float-right" role="button">Become Premium!</a>
-                    {% else %}
-                        <a href="{{url_for('realms.new_user', id=realm.id_realm)}}" class="btn btn-primary float-right" role="button">New User</a>
-                    {% endif %}  
+                    <div class="float-right">              
+                    
+                        {% if admin.premium == False and users|length >= 250 %}
+                            <a href="{{url_for('realms.premium')}}" class="btn btn-primary" role="button">Become Premium!</a>
+                        {% else %}
+                            <a href="{{url_for('realms.new_user', id=realm.id_realm)}}" class="btn btn-primary" role="button">New User</a>
+                        {% endif %}  
+
+                        {% if admin.premium == True %}
+                            <!-- json modal trigger -->
+                            <a class="btn btn-secondary" role="button" data-toggle="modal" data-target="#modal-json">
+                                <i class="fas fa-plus fa-sm text-white-50"></i>
+                            </a>                       
+                            <!-- json Modal -->
+                            <div class="modal fade" id="modal-json" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel">Import users</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Upload a .json file with all your users to import. Make sure that the format is right.</p>
+                                            <form class="user" action="{{ url_for('realms.new_users_json', id=realm.id_realm) }}" enctype="multipart/form-data" method="post">
+                                                {{ form_json.hidden_tag() }}
+                                                <div class="form-row mb-3">
+                                                    <input  type="file" id="file" name="file">
+                                                    {% for error in form_json.file.errors %}
+                                                        <span class="error-form">{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                                </div>
+                                            </form>
+                                        </div>                              
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %} 
+                    </div>
                 </div>
                 {% if users|length == 0 %}
                     <div class="d-flex flex-column" style="text-align: center">

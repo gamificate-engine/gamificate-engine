@@ -1,10 +1,14 @@
-from app import db
-from flask import render_template, flash, redirect, url_for
+from app import app, db
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm, User
 from app.realms import bp
-from app.realms.users.forms import UserForm
-from app.realms.decorators import check_ownership
+from app.realms.users.forms import UserForm, JsonForm
+from app.realms.decorators import check_ownership, check_premium
+import os
+import json
+from threading import Thread
+from app.realms.email import send_json_error_email
 
 
 @bp.route('/realms/<int:id>/users')
@@ -14,7 +18,9 @@ def users(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
 
-    return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all())
+    form_json = JsonForm()
+
+    return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all(), form_json=form_json)
 
 
 @bp.route('/realms/<int:id>/users/new', methods=['GET', 'POST'])
@@ -42,4 +48,58 @@ def new_user(id):
 
     return render_template('realms/users/new.html', admin = admin, realm = realm, form = form)
 
-    # TODO: edit and show
+
+
+def add_async_users_from_json(app, json, id_admin, id_realm, is_premium):
+    with app.app_context():
+        admin = Admin.query.get_or_404(id_admin)
+        realm = Realm.query.get_or_404(id_realm)
+
+        try:
+            for user_info in json["users"]:
+                user = User()
+                user.new_user(user_info)
+
+                if (User.query.filter_by(id_realm=id_realm, email=user.email).first() == None and 
+                    User.query.filter_by(id_realm=id_realm, username=user.username).first() == None):
+                    realm.users.append(user)
+                else:
+                    raise Exception("error")
+
+            db.session.add(realm)
+            db.session.commit()
+            
+        except Exception:
+            db.session.rollback()
+            send_json_error_email(admin, realm)
+
+def add_users_from_json(json, id_admin, id_realm, is_premium):
+    Thread(target=add_async_users_from_json, args=(app, json, id_admin, id_realm, is_premium)).start()
+
+
+
+@bp.route('/realms/<int:id>/users/json', methods=['POST'])
+@login_required
+@check_ownership
+@check_premium
+def new_users_json(id):
+    form = JsonForm(request.form)
+    admin = Admin.query.get_or_404(current_user.get_id())
+
+    if form.validate_on_submit():
+        file = request.files['file']
+        file.seek(0)
+        json_obj = json.loads(file.read())
+
+        add_users_from_json(json_obj, admin.id_admin, id, admin.premium)
+        flash('Your file is being processed. You should see your new users at any moment! Any error will be sent to your email.')
+    
+    else:
+        flash('Something went wrong. Check your file structure and try again.')
+
+    return redirect(url_for('realms.users', id=id))
+
+
+
+
+# TODO: edit and show
