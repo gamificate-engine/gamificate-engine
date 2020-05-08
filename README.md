@@ -51,5 +51,5 @@ heroku login
 ```
 - Go to the branch you want to deploy and run the following:
 ```shell
-git push heroku hp-<branch_name>:master
+git push heroku <branch_name>:master
 ```
