@@ -1,1 +1,2 @@
 FLASK_APP=gamificate.py
+FLASK_DEBUG=true

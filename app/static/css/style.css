@@ -137,3 +137,23 @@ section {
         font-size: 48px;
     }
 }
+
+
+
+form textarea#message {
+    margin: auto;
+    width: 50vw;
+}
+
+form input#name, form input#email, form input#subject {
+    margin: auto;
+    width: 50vw;
+}
+
+form label {
+    color: white;
+}
+
+#success{
+    color: white;
+}
