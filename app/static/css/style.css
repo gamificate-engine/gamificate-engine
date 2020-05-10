@@ -69,8 +69,7 @@ section {
 }
 
 #instructions img{
-    height: 60vh;
-    width: 100vw;
+    width: 100%;
 }
 
 #arrow_left, #arrow_right {

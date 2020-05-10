@@ -6,6 +6,12 @@
     
     <title>Gamificate - Open Source Gamification Engine</title>
 
+    <link rel="apple-touch-icon" sizes="180x180" href="../../static/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../static/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../static/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/realms.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
@@ -23,11 +29,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" href="{{url_for('realms.show_realm', id=realm.id_realm)}}"><i class="fas fa-columns"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.badges', id=realm.id_realm)}}"><i class="fas fa-certificate"></i><span>Badges</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.users', id=realm.id_realm)}}"><i class="fas fa-user"></i><span>Users</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.rewards', id=realm.id_realm)}}"><i class="fas fa-award"></i><span>Rewards</span></a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="{{url_for('realms.leaderboards', id=realm.id_realm)}}"><i class="fas fa-table"></i><span>Leaderboards</span></a></li>
+                    <li class="nav-item" role="presentation"><a id="dashboard_link" class="nav-link" href="{{url_for('realms.show_realm', id=realm.id_realm)}}"><i class="fas fa-columns"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item" role="presentation"><a id="badges_link" class="nav-link" href="{{url_for('realms.badges', id=realm.id_realm)}}"><i class="fas fa-certificate"></i><span>Badges</span></a></li>
+                    <li class="nav-item" role="presentation"><a id="users_link" class="nav-link" href="{{url_for('realms.users', id=realm.id_realm)}}"><i class="fas fa-user"></i><span>Users</span></a></li>
+                    <li class="nav-item" role="presentation"><a id="rewards_link" class="nav-link" href="{{url_for('realms.rewards', id=realm.id_realm)}}"><i class="fas fa-award"></i><span>Rewards</span></a></li>
+                    <li class="nav-item" role="presentation"><a id="leaderboards_link" class="nav-link" href="{{url_for('realms.leaderboards', id=realm.id_realm)}}"><i class="fas fa-table"></i><span>Leaderboards</span></a></li>
 
                     <li class="nav-item" role="presentation"></li>
                     <li class="nav-item" role="presentation" style="height: 52px;"><a class="nav-link" href="{{url_for('realms.realms')}}" style="height: 80px;"><i class="fas fa-random"></i><span>Switch Realm</span></a></li>
@@ -50,6 +56,24 @@
 <script src="{{url_for('static', filename='js/theme.js')}}"></script>
 <script src="{{url_for('static', filename='js/chart.min.js')}}"></script>
 <script src="{{url_for('static', filename='js/bs-init.js')}}"></script>
+<script>
+    var path = window.location.href;
+    if(path.includes('badges')){
+        document.getElementById('badges_link').classList.add('active');
+    }
+    else if(path.includes('users')){
+        document.getElementById('users_link').classList.add('active');
+    }
+    else if(path.includes('rewards')){
+        document.getElementById('rewards_link').classList.add('active');
+    }
+    else if(path.includes('leaderboards')){
+        document.getElementById('leaderboards_link').classList.add('active');
+    }
+    else{
+        document.getElementById('dashboard_link').classList.add('active');
+    }
+</script>
 
 </body>
 </html>
