@@ -69,8 +69,7 @@ section {
 }
 
 #instructions img{
-    height: 60vh;
-    width: 100vw;
+    width: 100%;
 }
 
 #arrow_left, #arrow_right {
@@ -79,6 +78,19 @@ section {
 
 .carousel-indicators li {
     background-color: #000000;
+}
+
+.carousel-caption{
+    background-color: currentcolor;
+    opacity: 0.8;
+}
+
+.carousel-caption h5{
+    color: white;
+}
+
+.carousel-caption p{
+    color: white;
 }
 
 #contact div {
@@ -136,4 +148,24 @@ section {
     h1 {
         font-size: 48px;
     }
+}
+
+
+
+form textarea#message {
+    margin: auto;
+    width: 50vw;
+}
+
+form input#name, form input#email, form input#subject {
+    margin: auto;
+    width: 50vw;
+}
+
+form label {
+    color: white;
+}
+
+#success{
+    color: white;
 }

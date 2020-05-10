@@ -1,7 +1,7 @@
 from app import stripe, db
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import Admin, Realm
+from app.models import Admin, Realm, User, Badge
 from app.realms.forms import RealmForm, SettingsForm, ResetPasswordForm, DeleteForm, RealmNameForm
 from werkzeug.urls import url_parse
 from flask import request
@@ -10,6 +10,8 @@ from app.realms.email import send_api_key_email
 from binascii import hexlify # generate API Key
 import os
 from app.realms.decorators import check_ownership
+import random
+from app.realms.graphs import calculate_avg_completed, generate_colors, get_levels, get_badge_completion
 
 @bp.route('/realms/')
 @login_required
@@ -44,10 +46,6 @@ def new_realm():
     return render_template('realms/new.html', admin=admin, form=form)
 
 
-
-def calculate_avg_completed(realm):
-    return 25 # TODO: implement logic
-
 @bp.route('/realms/<int:id>')
 @login_required
 @check_ownership
@@ -60,11 +58,15 @@ def show_realm(id):
     total_rewards = realm.rewards.count()
     avg_completed = calculate_avg_completed(realm)
 
+    users_by_level = get_levels(realm)
+    badges_completed = get_badge_completion(realm)
+
     form_delete = DeleteForm()
     form_name = RealmNameForm()
 
     return render_template('realms/show.html', realm=realm, admin=admin, total_users=total_users, total_badges=total_badges, 
-                            avg_completed=avg_completed, total_rewards=total_rewards, form_delete=form_delete, form_name=form_name)
+                            avg_completed=avg_completed, total_rewards=total_rewards, form_delete=form_delete, form_name=form_name,
+                            users_by_level=users_by_level, badges_completed=badges_completed)
 
 
 @bp.route('/realms/<int:id>/api_key')
