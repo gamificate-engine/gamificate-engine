@@ -80,6 +80,19 @@ section {
     background-color: #000000;
 }
 
+.carousel-caption{
+    background-color: currentcolor;
+    opacity: 0.8;
+}
+
+.carousel-caption h5{
+    color: white;
+}
+
+.carousel-caption p{
+    color: white;
+}
+
 #contact div {
     color: #292825;
 }
