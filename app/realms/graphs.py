@@ -18,7 +18,7 @@ def calculate_avg_completed(realm):
             if badge.finished:
                 finished += 1
 
-    return finished / (number_of_users * number_of_badges)
+    return ( finished / (number_of_users * number_of_badges) ) * 100
 
 
 def generate_colors(n):
