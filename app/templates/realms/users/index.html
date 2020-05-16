@@ -90,7 +90,11 @@
                                         <td>{{ user.active }}</td>
                                         <td>
                                             <div class="row">
-                                                <a><i class="fas fa-edit"></i></a>
+                                                <a><i
+                                                    class="fas fa-edit" 
+                                                    data-toggle="modal" data-target="#editModal"
+                                                    data-username={{user.username}} data-email={{user.email}} data-id={{user.id_user}} data-active={{user.active}}></i>
+                                                </a>
                                                 <a><i class="fas fa-trash-alt" style="margin-left: 1vw;"></i></a>
                                             </div>
                                         </td>
@@ -99,11 +103,95 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- EDIT USER Modal -->
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{{ url_for('realms.edit_user', id=realm.id_realm) }}" method="post">
+                                {{ form_edit.hidden_tag() }}
+                                <div class="form-group" style="display: none;">
+                                    <input id="id-input" class="form-control" name="id" size="32" type="number">
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">New username</label>
+                                    <input id="username-input" class="form-control" name="username" size="32" type="text">
+                                    {% for error in form_edit.username.errors %}
+                                        <span class="error-form">{{ error }}</span>
+                                    {% endfor %} 
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">New email</label>
+                                    <input id="email-input" class="form-control" name="email" size="32" type="text">
+                                    {% for error in form_edit.email.errors %}
+                                        <span class="error-form">{{ error }}</span>
+                                    {% endfor %}  
+                                </div>
+                                <div class="form-group">
+                                    <label for="active">Active</label>
+                                    <input type="checkbox" id="active-input" class="form-control" name="active" value="True">
+                                    {% for error in form_edit.active.errors %}
+                                        <span class="error-form">{{ error }}</span>
+                                    {% endfor %}  
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                  </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
+    <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script>
+        $('.fa-edit').on('click', function (event) {
+            console.log("tou")
+            var button = $(event.target) // Button that triggered the modal
+            var username = button.data('username') // Extract info from data-* attributes
+            var email = button.data('email')
+            var id = button.data('id')
+            var active = button.data('active')
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $('#editModal')
+            modal.find('.modal-title').text('Edit User ' + id)
+            modal.find('.modal-body #id-input').val(id)
+            modal.find('.modal-body #username-input').val(username)
+            modal.find('.modal-body #email-input').val(email)
+
+            if (active === 'True'){
+                $('#active-input').attr("checked", "checked");
+            }
+            else {
+                $('#active-input').attr("checked", ""); // For IE
+                $('#active-input').removeAttr("checked"); // For other browsers
+                $('#active-input').checked = false;
+            }
+        })
+    </script>
+
+    <style>
+        i.fa-edit:hover{
+            color: #4e73df;
+        }
+        i.fa-trash-alt:hover{
+            color: red;
+        }
+    </style>
 
 
 {% endblock %}

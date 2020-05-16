@@ -25,53 +25,54 @@ jwt = JWTManager(app)
 
 CORS(app)
 
-csp = {
-    'default-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'stackpath.bootstrapcdn.com',
-        'code.jquery.com',
-        'cdn.jsdelivr.net',
-        'fonts.googleapis.com',
-        'fonts.gstatic.com',
-        'cdn.buymeacoffee.com',
-        '*.w3.org'
-    ],
-    'img-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'cdn.buymeacoffee.com',
-        'www.w3.org',
-        'data: *',
-        '*'
-    ],
-    'script-src':[
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'checkout.stripe.com',
-        'cdn.jsdelivr.net',
-        'stackpath.bootstrapcdn.com',
-        'code.jquery.com'
-    ],
-    'child-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'checkout.stripe.com'
-    ],
-    'connect-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'checkout.stripe.com'
-    ],
-    'style-src': [
-        '\'self\'',
-        '\'unsafe-inline\'',
-        'checkout.stripe.com',
-        'fonts.googleapis.com',
-        'fonts.gstatic.com',
-    ]
-}
-Talisman(app, content_security_policy=csp)
+if not app.debug:
+    csp = {
+        'default-src': [
+            '\'self\'',
+            '\'unsafe-inline\'',
+            'stackpath.bootstrapcdn.com',
+            'code.jquery.com',
+            'cdn.jsdelivr.net',
+            'fonts.googleapis.com',
+            'fonts.gstatic.com',
+            'cdn.buymeacoffee.com',
+            '*.w3.org'
+        ],
+        'img-src': [
+            '\'self\'',
+            '\'unsafe-inline\'',
+            'cdn.buymeacoffee.com',
+            'www.w3.org',
+            'data: *',
+            '*'
+        ],
+        'script-src':[
+            '\'self\'',
+            '\'unsafe-inline\'',
+            'checkout.stripe.com',
+            'cdn.jsdelivr.net',
+            'stackpath.bootstrapcdn.com',
+            'code.jquery.com'
+        ],
+        'child-src': [
+            '\'self\'',
+            '\'unsafe-inline\'',
+            'checkout.stripe.com'
+        ],
+        'connect-src': [
+            '\'self\'',
+            '\'unsafe-inline\'',
+            'checkout.stripe.com'
+        ],
+        'style-src': [
+            '\'self\'',
+            '\'unsafe-inline\'',
+            'checkout.stripe.com',
+            'fonts.googleapis.com',
+            'fonts.gstatic.com',
+        ]
+    }
+    Talisman(app, content_security_policy=csp)
 
 stripe.api_key = os.environ['STRIPE_SECRET_KEY']
 stripe.publishable_key = os.environ['STRIPE_PUBLISHABLE_KEY']
