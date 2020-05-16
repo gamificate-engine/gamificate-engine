@@ -95,7 +95,12 @@
                                                     data-toggle="modal" data-target="#editModal"
                                                     data-username={{user.username}} data-email={{user.email}} data-id={{user.id_user}} data-active={{user.active}}></i>
                                                 </a>
-                                                <a><i class="fas fa-trash-alt" style="margin-left: 1vw;"></i></a>
+                                                <a>
+                                                    <i class="fas fa-trash-alt" 
+                                                    data-user={{user.id_user}} data-realm={{realm.id_realm}}  
+                                                    data-link="{{url_for('realms.delete_user', id=realm.id_realm)}}"
+                                                    style="margin-left: 1vw;"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -156,10 +161,22 @@
         </div>
     </div>
 
+    <style>
+        i.fa-edit:hover{
+            color: #4e73df;
+        }
+        i.fa-trash-alt:hover{
+            color: red;
+        }
+    </style>
+
     <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
     <script>
+        function show_confirmation(e) {
+            if( !confirm(`Are you sure you want to delete the User? This action is irreversible.`) ) e.preventDefault();
+        }
+
         $('.fa-edit').on('click', function (event) {
-            console.log("tou")
             var button = $(event.target) // Button that triggered the modal
             var username = button.data('username') // Extract info from data-* attributes
             var email = button.data('email')
@@ -182,16 +199,22 @@
                 $('#active-input').checked = false;
             }
         })
+
+        $('.fa-trash-alt').on('click', function(event){
+            var button = $(event.target) // Button that triggered the modal
+            var user_id = button.data('user')
+            var realm_id = button.data('realm')
+            var link = button.data('link')
+            console.log(link)
+
+            if (confirm('Are you sure you want to delete the User?\nThis action is irreversible.')){
+                var form = $('<form action='+link+'?user='+user_id+' method="post"></form>');
+                $(document.body).append(form);
+                form.submit();
+            }
+        })
     </script>
 
-    <style>
-        i.fa-edit:hover{
-            color: #4e73df;
-        }
-        i.fa-trash-alt:hover{
-            color: red;
-        }
-    </style>
 
 
 {% endblock %}

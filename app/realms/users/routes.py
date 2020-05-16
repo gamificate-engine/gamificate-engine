@@ -130,3 +130,24 @@ def edit_user(id):
         flash('Something went wrong. Please try again.')
 
     return redirect(url_for('realms.users', id=id))
+
+@bp.route('/realms/<int:id>/users/delete', methods=['POST'])
+@login_required
+@check_ownership
+def delete_user(id):
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
+
+    user_id = request.args.get('user', None)
+    if not user_id:
+        return render_template('errors/404.html'), 404
+
+    user = User.query.get_or_404(user_id)
+    if user.id_realm != id:
+        return render_template('errors/403.html'), 403
+    else:
+        db.session.delete(user)
+        db.session.commit()
+        flash('User deleted with success!')
+
+    return redirect(url_for('realms.users', id=id))
