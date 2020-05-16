@@ -19,3 +19,16 @@ class BadgeForm(FlaskForm):
 
         if [b.name for b in badges if b.name == name.data]:
             raise ValidationError('Please use a different name')
+
+class EditForm(FlaskForm):
+    id = IntegerField("ID", validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired(), Length(min=3, max=32)])
+    description = StringField('Description', validators=[DataRequired(), Length(min=3, max=256)])
+    image_url = StringField('Image URL', validators=[Optional(), Length(min=3, max=2000)])
+    submit = SubmitField('Edit Badge')
+
+    def validate_name(self, name):
+        badges = self.realm.badges.all()
+
+        if [b.name for b in badges if b.name == name.data and self.id.data != b.id_badge]:
+            raise ValidationError('Please use a different name')
