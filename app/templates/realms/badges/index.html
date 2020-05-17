@@ -35,6 +35,7 @@
                                     <th scope="col">Description</th>
                                     <th scope="col">Required</th>
                                     <th scope="col">XP</th>
+                                    <th scope="col">Reward</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
@@ -46,11 +47,16 @@
                                         <td style="word-break: break-all;">{{ badge.description }}</td>
                                         <td>{{ badge.required }}</td>
                                         <td>{{ badge.xp }}</td>
+                                        {% if badge.id_reward %}
+                                            <td>{{badge.id_reward}}</td>
+                                        {% else %}
+                                            <td>-</td>
+                                        {% endif %}
                                         <td>
                                             <div class="row">
                                                 <a><i class="fas fa-edit"
                                                     data-toggle="modal" data-target="#editModal"
-                                                    data-id={{badge.id_badge}} data-name={{badge.name}} data-desc={{badge.description}} data-image={{badge.image_url}}
+                                                    data-id={{badge.id_badge}} data-name="{{badge.name}}" data-desc="{{badge.description}}" data-image="{{badge.image_url}}"
                                                     ></i></a>
                                                 <a><i class="fas fa-trash-alt" 
                                                     data-toggle="modal" data-target="#deleteModal"

@@ -94,6 +94,6 @@ def delete_badge(id):
     else:
         db.session.delete(badge)
         db.session.commit()
-        flash('Badges deleted with success!')
+        flash('Badge deleted with success!')
 
     return redirect(url_for('realms.badges', id=id))
