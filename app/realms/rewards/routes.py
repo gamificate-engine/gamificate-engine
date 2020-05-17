@@ -1,9 +1,9 @@
 from app import db
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Admin, Realm, Reward
 from app.realms import bp
-from app.realms.rewards.forms import RewardForm
+from app.realms.rewards.forms import RewardForm, EditForm
 from app.realms.decorators import check_ownership
 
 @bp.route('/realms/<id>/rewards')
@@ -13,7 +13,10 @@ def rewards(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
 
-    return render_template('realms/rewards/index.html', realm=realm, admin=admin, rewards=realm.rewards.all())
+    form = EditForm()
+    form.realm = realm
+
+    return render_template('realms/rewards/index.html', realm=realm, admin=admin, rewards=realm.rewards.all(), form=form)
 
 
 @bp.route('/realms/<int:id>/rewards/new', methods=['GET', 'POST'])
@@ -39,4 +42,53 @@ def new_reward(id):
 
     return render_template('realms/rewards/new.html', admin = admin, realm = realm, form = form)
 
-    # TODO: edit and show
+
+@bp.route('/realms/<int:id>/rewards/edit', methods=['POST'])
+@login_required
+@check_ownership
+def edit_reward(id):
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
+
+    form = EditForm(request.form)
+    form.realm = realm
+
+    if form.validate_on_submit():
+        reward_id = form.id.data
+
+        infoReward = {'name' : form.name.data, 'description': form.description.data}
+
+        reward = Reward.query.get_or_404(reward_id)
+
+        if reward.id_realm != id:
+            return render_template('errors/403.html'), 403
+        else:
+            reward.from_dict(infoReward)
+            db.session.commit()
+            flash('Reward edited with success!')
+    
+    else:
+        flash('Something went wrong. Please try again.')
+
+    return redirect(url_for('realms.rewards', id=id))
+
+@bp.route('/realms/<int:id>/rewards/delete', methods=['POST'])
+@login_required
+@check_ownership
+def delete_reward(id):
+    realm = Realm.query.get_or_404(id)
+    admin = Admin.query.get_or_404(current_user.get_id())
+
+    reward_id = request.args.get('reward', None)
+    if not reward_id:
+        return render_template('errors/404.html'), 404
+
+    reward = Reward.query.get_or_404(reward_id)
+    if reward.id_realm != id:
+        return render_template('errors/403.html'), 403
+    else:
+        db.session.delete(reward)
+        db.session.commit()
+        flash('Reward deleted with success!')
+
+    return redirect(url_for('realms.rewards', id=id))

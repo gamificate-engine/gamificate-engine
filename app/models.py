@@ -83,7 +83,7 @@ class Badge(db.Model):
     required = db.Column(db.Integer)
     image_url = db.Column(db.String(2000))
     id_realm = db.Column(db.Integer, db.ForeignKey('gamificate.realm.id_realm'))
-    id_reward = db.Column(db.Integer, db.ForeignKey('gamificate.reward.id_reward'), nullable=True)
+    id_reward = db.Column(db.Integer, db.ForeignKey('gamificate.reward.id_reward', ondelete="SET NULL"), nullable=True)
 
     def __repr__(self):
         return '<Badge {}>'.format(self.name)
@@ -130,6 +130,11 @@ class Reward(db.Model):
             'id_realm': self.id_realm
         }
         return data
+
+    def from_dict(self, data):
+        for field in ['name', 'desc']:
+            if field in data:
+                setattr(self, field, data[field])
 
 class UserRewards(db.Model):
     __table_args__ = {'schema': 'gamificate'}
