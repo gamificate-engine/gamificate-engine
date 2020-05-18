@@ -120,9 +120,42 @@
                             </div>
                             <div class="card-body">
                                 {% if admin.premium %}
-                                    <p>You're already premium!</p>
+                                    <p>You're already premium!</p>                       
+                                    <!-- Cancel modal trigger -->
                                     <div class="form-group float-right mt-3">
-                                        <a class="btn btn-danger btn-sm" href="{{url_for('realms.cancel')}}">Cancel subscription</a>
+                                        <a class="btn btn-danger btn-sm" href="{{url_for('realms.cancel')}}" 
+                                           role="button" data-toggle="modal" data-target="#modal-cancel">Cancel subscription</a>
+                                    </div>                     
+                                    <!-- Cancel Modal -->
+                                    <div class="modal fade" id="modal-cancel" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalLabel">Cancel premium subscription</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">                                                   
+                                                    <p>Are you sure you want to cancel your subscription?</p>
+                                                    <hr>
+                                                    <p><b>Conditions: </b></p>
+                                                    <ul>
+                                                        <li>This will disable all your realms and respective users, badges and rewards. </li>
+                                                        <li> 
+                                                            The only realm that will be enabled is your first (oldest) realm. Although it will be limited to 250 users and 25 badges. 
+                                                            The extra ones will be disabled.
+                                                        </li>
+                                                        <li>The next time you subscribe to our premium service, everything will be enabled and ready to continue using.</li> 
+                                                    </ul>
+                                                                                                       
+                                                </div>  
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <a class="btn btn-danger" href="{{url_for('realms.cancel')}}">Cancel</a>
+                                                </div>                            
+                                            </div>
+                                        </div>
                                     </div>
                                 {% else %}
                                     <p>Become a premium member of Gamificate and unlock all our features!</p>
