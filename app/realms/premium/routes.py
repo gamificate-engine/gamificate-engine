@@ -3,7 +3,9 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, login_required
 from app.models import Admin, Realm, Reward
 from app.realms import bp
+import os
 
+STRIPE_SUB_PLAN = os.environ['STRIPE_SUB_PLAN']
 
 @bp.route('/realms/payment', methods=['POST'])
 @login_required
@@ -20,10 +22,14 @@ def payment():
 
     subscription = stripe.Subscription.create(
         customer=customer.id,
-        items=[{"plan": "plan_H7quRNGUfctwNA"}],
+        items=[{"plan": STRIPE_SUB_PLAN}],
     )
     
     admin = Admin.query.get_or_404(current_user.get_id())
+
+    activate_realms(admin.realms.all())
+    free_realm(admin.realms.first())
+
     admin.premium = 1
     admin.subscription_key = subscription.id
 
@@ -46,12 +52,12 @@ def premium():
 @login_required
 def cancel():
     admin = Admin.query.get_or_404(current_user.get_id())
-    #stripe.Subscription.delete(admin.subscription_key)
+    stripe.Subscription.delete(admin.subscription_key)
 
     limit_realm(admin.realms.first())
     deactivate_realms(admin.realms.all())
-    #admin.premium = 0
-    #admin.subscription_key = None
+    admin.premium = 0
+    admin.subscription_key = None
     db.session.add(admin)
     db.session.commit()
 
@@ -60,22 +66,31 @@ def cancel():
 
 
 def limit_realm(realm):
-    users = realm.users.all()
-    if len(users) > 250:
-        for user in users[250:]:
-            user.active = False
-
+    if(realm):
+        users = realm.users.all()
+        if len(users) > 250:
+            for user in users[250:]:
+                user.active = False
     # no need to commit, will be made when commiting admin
 
 
 def deactivate_realms(realms):
     if len(realms) > 0:
         realms.pop(0)
-    print("----------------")
     for realm in realms:
         print(realm)
         realm.active = False
 
-    # no need to commit, will be made when commiting admin
 
 
+def free_realm(realm):
+    if(realm):
+        users = realm.users.all()
+        for user in users[250:]:
+            user.active = True
+
+
+def activate_realms(realms):
+    for realm in realms:
+        print(realm)
+        realm.active = True
