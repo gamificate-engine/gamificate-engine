@@ -58,6 +58,7 @@ class Realm(db.Model):
     api_key = db.Column(db.String(128), unique=True)
     a = db.Column(db.Float)
     b = db.Column(db.Float)
+    active = db.Column(db.Boolean, default=True)
 
     def xp_required(self,lvl):
         required = self.a * lvl**2 + self.b * lvl
