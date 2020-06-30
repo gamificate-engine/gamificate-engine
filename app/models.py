@@ -185,7 +185,7 @@ class UserBadges(db.Model):
 
     def to_dict(self):
         data = {
-            'id_badge': self.id_badge,
+            'id_badge': self.badge.id_badge,
             'progress': self.progress,
             'finished': self.finished
         }

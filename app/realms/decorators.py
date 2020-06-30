@@ -27,3 +27,16 @@ def check_premium(f):
         return f(id)
 
     return wrapper
+
+
+def check_active(f):
+    @wraps(f)
+    def wrapper(id):
+        realm = Realm.query.get_or_404(id)
+
+        if not realm.active:
+            abort(403)
+
+        return f(id)
+
+    return wrapper
