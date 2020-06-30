@@ -9,7 +9,7 @@ from app.realms import bp
 from app.realms.email import send_api_key_email
 from binascii import hexlify # generate API Key
 import os
-from app.realms.decorators import check_ownership
+from app.realms.decorators import check_ownership, check_active
 import random
 from app.realms.graphs import calculate_avg_completed, generate_colors, get_levels, get_badge_completion
 
@@ -49,6 +49,7 @@ def new_realm():
 @bp.route('/realms/<int:id>')
 @login_required
 @check_ownership
+@check_active
 def show_realm(id):
     realm = Realm.query.filter_by(id_realm=id).first_or_404()
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -72,6 +73,7 @@ def show_realm(id):
 @bp.route('/realms/<int:id>/api_key')
 @login_required
 @check_ownership
+@check_active
 def new_api_key(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
@@ -92,6 +94,7 @@ def new_api_key(id):
 @bp.route('/realms/<int:id>/edit', methods=['POST'])
 @login_required
 @check_ownership
+@check_active
 def change_realm_name(id):
     realm = Realm.query.get_or_404(id)
     form = RealmNameForm(request.form)
@@ -112,6 +115,7 @@ def change_realm_name(id):
 @bp.route('/realms/<int:id>/delete', methods=['POST'])
 @login_required
 @check_ownership
+@check_active
 def delete_realm(id):
     realm = Realm.query.get_or_404(id)
     form = DeleteForm(request.form)
