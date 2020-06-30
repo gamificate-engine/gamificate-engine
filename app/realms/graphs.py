@@ -1,6 +1,7 @@
 from app.models import Admin, Realm, User, Badge, UserBadges
 import random
 from colormap import rgb2hex
+from decimal import Decimal
 
 def calculate_avg_completed(realm):
     users = realm.users.all()
@@ -18,7 +19,7 @@ def calculate_avg_completed(realm):
             if badge.finished:
                 finished += 1
 
-    return ( finished / (number_of_users * number_of_badges) ) * 100
+    return round(Decimal(finished*100 / (number_of_users * number_of_badges)), 2)
 
 
 def generate_colors(n):

@@ -61,6 +61,15 @@
                         </table>
                     </div>
 
+                    <div class="row float-right">
+                        {% if prev_url %}
+                            <a class="btn btn-primary btn-sm m-2" href="{{ prev_url }}">Previous</a>
+                        {% endif %}
+                        {% if next_url %}
+                            <a class="btn btn-primary btn-sm m-2" href="{{ next_url }}">Next</a>
+                        {% endif %}
+                    </div>
+
                     <!-- EDIT REWARD Modal -->
                     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
                         <div class="modal-dialog" role="document">

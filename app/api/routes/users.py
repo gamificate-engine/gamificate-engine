@@ -1,8 +1,8 @@
+from app import db
 from app.api import bp
 from flask import jsonify, request
 from app.models import Admin, Realm, User, Badge, Reward, UserBadges, UserRewards
 from app.api.errors import bad_request, error_response
-from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 import re
@@ -215,6 +215,7 @@ def add_badge_progress(id):
     if user.level > level:
         res['level_up'] = user.level
 
+    db.session.add(badge_progress)
     db.session.commit()
 
     return jsonify(res)

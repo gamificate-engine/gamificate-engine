@@ -16,3 +16,7 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['gamificate.engine@gmail.com']
+
+    BADGES_PER_PAGE = 12
+    USERS_PER_PAGE = 12
+    REWARDS_PER_PAGE = 12

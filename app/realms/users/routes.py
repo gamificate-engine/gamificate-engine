@@ -18,11 +18,18 @@ def users(id):
     realm = Realm.query.get_or_404(id)
     admin = Admin.query.get_or_404(current_user.get_id())
 
+    page = request.args.get('page', 1, type=int)
+    pagination = realm.users.paginate(page, app.config['USERS_PER_PAGE'], True)
+    users = pagination.items
+    next_url = url_for('realms.users', id=id, page=pagination.next_num) if pagination.has_next else None
+    prev_url = url_for('realms.users', id=id, page=pagination.prev_num) if pagination.has_prev else None
+
     form_json = JsonForm()
     form_edit = EditForm()
     form_edit.realm = realm
 
-    return render_template('realms/users/index.html', realm=realm, admin=admin, users=realm.users.all(), form_json=form_json, form_edit=form_edit)
+    return render_template('realms/users/index.html', realm=realm, admin=admin, users=users,
+                           form_json=form_json, form_edit=form_edit, next_url=next_url, prev_url=prev_url)
 
 
 @bp.route('/realms/<int:id>/users/new', methods=['GET', 'POST'])
