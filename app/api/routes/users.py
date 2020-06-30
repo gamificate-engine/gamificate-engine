@@ -1,6 +1,6 @@
 from app.api import bp
 from flask import jsonify, request
-from app.models import Realm, User, Badge, Reward, UserBadges, UserRewards
+from app.models import Admin, Realm, User, Badge, Reward, UserBadges, UserRewards
 from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -110,6 +110,9 @@ def update_user_info(id):
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
 
+    if user.active == False:
+        return error_response(401, "User is inactive due to free plan. Please update to Premium.")
+
     data = request.get_json() or {}
 
     users = realm.users.all()
@@ -147,6 +150,8 @@ def add_badge_progress(id):
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
+    if user.active == False:
+        return error_response(401, "User is inactive due to free plan. Please update to Premium.")
 
     # To check if the user leveled up
     level = user.level
@@ -296,6 +301,8 @@ def redeem_reward(id):
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
+    if user.active == False:
+        return error_response(401, "User is inactive due to free plan. Please update to Premium.")
 
     data = request.get_json() or {}
 
