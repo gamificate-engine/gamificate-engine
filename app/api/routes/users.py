@@ -7,9 +7,10 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 import re
 
+
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    return re.search(regex,email)
+    return re.search(regex, email)
 
 
 # GET USER WITH GIVEN ID
@@ -28,6 +29,7 @@ def get_user(id):
 
     return jsonify(user.to_dict())
 
+
 # GET ALL USERS
 @bp.route('/users', methods=['GET'])
 @jwt_required
@@ -43,6 +45,7 @@ def get_users():
         res.append(user.to_dict())
     return jsonify({'users': res})
 
+
 # CREATE NEW USER
 @bp.route('/users', methods=['POST'])
 @jwt_required
@@ -52,6 +55,8 @@ def create_user():
     realm = Realm.query.get(id_realm)
     if not realm:
         return error_response(404, "Realm does not exist.")
+    if not realm.active:
+        return error_response(401, "Realm is inactive due to free plan. Please upgrade to Premium.")
 
     admin = Admin.query.get(realm.id_admin)
     if not admin:
@@ -93,6 +98,7 @@ def create_user():
 
     return response
 
+
 # UPDATE USER
 @bp.route('/users/<int:id>', methods=['PUT'])
 @jwt_required
@@ -102,6 +108,8 @@ def update_user_info(id):
     realm = Realm.query.get(id_realm)
     if not realm:
         return error_response(404, "Realm does not exist.")
+    if not realm.active:
+        return error_response(401, "Realm is inactive due to free plan. Please upgrade to Premium.")
 
     user = User.query.get(id)
     if not user:
@@ -110,8 +118,8 @@ def update_user_info(id):
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
 
-    if user.active == False:
-        return error_response(401, "User is inactive due to free plan. Please update to Premium.")
+    if not user.active:
+        return error_response(401, "User is inactive due to free plan. Please upgrade to Premium.")
 
     data = request.get_json() or {}
 
@@ -134,6 +142,7 @@ def update_user_info(id):
 
     return jsonify(user.to_dict())
 
+
 # UPDATE USER WITH BADGE PROGRESS
 @bp.route('/users/<int:id>/badges', methods=['PUT'])
 @jwt_required
@@ -144,14 +153,16 @@ def add_badge_progress(id):
     realm = Realm.query.get(id_realm)
     if not realm:
         return error_response(404, "Realm does not exist.")
+    if not realm.active:
+        return error_response(401, "Realm is inactive due to free plan. Please upgrade to Premium.")
 
     user = User.query.get(id)
     if not user:
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
-    if user.active == False:
-        return error_response(401, "User is inactive due to free plan. Please update to Premium.")
+    if not user.active:
+        return error_response(401, "User is inactive due to free plan. Please upgrade to Premium.")
 
     # To check if the user leveled up
     level = user.level
@@ -180,7 +191,6 @@ def add_badge_progress(id):
     except Exception as ex:
         return bad_request('progress must be an integer')   
 
-
     badge = Badge.query.get(id_badge)
     if not badge:
         return error_response(404, "Badge with given ID does not exist.")
@@ -208,6 +218,7 @@ def add_badge_progress(id):
     db.session.commit()
 
     return jsonify(res)
+
 
 # GET GIVEN BAGDE PROGRESS
 @bp.route('/users/<int:id>/badges', methods=['GET'])
@@ -247,6 +258,7 @@ def get_badge_progress(id):
 
     return jsonify(badge_progress.to_dict())
 
+
 # GET ALL USER BADGES (FINISHED AND NOT FINISHED)
 @bp.route('/users/<int:id>/badges/all', methods=['GET'])
 @jwt_required
@@ -266,6 +278,7 @@ def get_user_badges(id):
     for badge in badges:
         res.append(badge.to_dict())
     return jsonify({'user_badges': res})
+
 
 # GET ALL FINISHED USER BADGES
 @bp.route('/users/<int:id>/badges/finished', methods=['GET'])
@@ -288,12 +301,19 @@ def get_user_finished_badges(id):
             res.append(badge.to_dict())
     return jsonify({'user_badges_finished': res})
 
+
 # REDEEM REWARD WITH GIVEN ID
 @bp.route('/users/<int:id>/rewards', methods=['POST'])
 @jwt_required
 @swag_from('../docs/users/redeem.yaml')
 def redeem_reward(id):
     id_realm = get_jwt_identity()
+
+    realm = Realm.query.get(id_realm)
+    if not realm:
+        return error_response(404, "Realm does not exist.")
+    if not realm.active:
+        return error_response(401, "Realm is inactive due to free plan. Please upgrade to Premium.")
 
     user = User.query.get(id)
 
@@ -302,7 +322,7 @@ def redeem_reward(id):
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
     if user.active == False:
-        return error_response(401, "User is inactive due to free plan. Please update to Premium.")
+        return error_response(401, "User is inactive due to free plan. Please upgrade to Premium.")
 
     data = request.get_json() or {}
 
@@ -337,6 +357,7 @@ def redeem_reward(id):
     response.status_code = 201
     return response
 
+
 # GET ALL USER REWARDS
 @bp.route('/users/<int:id>/rewards', methods=['GET'])
 @jwt_required
@@ -356,6 +377,7 @@ def get_user_rewards(id):
     for reward in rewards:
         res.append(reward.to_dict())
     return jsonify({'user_rewards': res})
+
 
 @bp.route('/users/<int:id>/rewards/unredeemed', methods=['GET'])
 @jwt_required
@@ -385,6 +407,7 @@ def get_user_rewards_unredeemed(id):
                     'id_badge': badge.id_badge
                 })
     return jsonify({'user_rewards_unredeemed': res})
+
 
 @bp.route('/users/rewards/unredeemed', methods=['GET'])
 @jwt_required
@@ -417,4 +440,5 @@ def get_users_rewards_unredeemed():
             'unredeemed': res
         }
         users_res.append(dic)
+
     return jsonify({'users_rewards_unredeemed': users_res})
