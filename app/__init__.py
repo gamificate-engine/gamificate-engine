@@ -223,7 +223,6 @@ Have fun and **Gamificate** a lot!
   "host": "www.gamificate-engine.com",  # overrides localhost:500
 #   "basePath": "/api",  # base bash for blueprint registration
   "schemes": [
-    "http",
     "https"
   ],
 #   "operationId": "getmyData"

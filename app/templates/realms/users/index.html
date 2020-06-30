@@ -93,7 +93,7 @@
                                                 <a><i
                                                     class="fas fa-edit" 
                                                     data-toggle="modal" data-target="#editModal"
-                                                    data-username="{{user.username}}" data-email="{{user.email}}" data-id={{user.id_user}} data-active={{user.active}}></i>
+                                                    data-username="{{user.username}}" data-email="{{user.email}}" data-id={{user.id_user}}></i>
                                                 </a>
                                                 <a>
                                                     <i class="fas fa-trash-alt" 
@@ -149,13 +149,6 @@
                                         <span class="error-form">{{ error }}</span>
                                     {% endfor %}  
                                 </div>
-                                <div class="form-group">
-                                    <label for="active">Active</label>
-                                    <input type="checkbox" id="active-input" class="form-control" name="active" value="True">
-                                    {% for error in form_edit.active.errors %}
-                                        <span class="error-form">{{ error }}</span>
-                                    {% endfor %}  
-                                </div>
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -208,7 +201,6 @@
             var username = button.data('username') // Extract info from data-* attributes
             var email = button.data('email')
             var id = button.data('id')
-            var active = button.data('active')
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             var modal = $('#editModal')
@@ -217,14 +209,6 @@
             modal.find('.modal-body #username-input').val(username)
             modal.find('.modal-body #email-input').val(email)
 
-            if (active === 'True'){
-                $('#active-input').attr("checked", "checked");
-            }
-            else {
-                $('#active-input').attr("checked", ""); // For IE
-                $('#active-input').removeAttr("checked"); // For other browsers
-                $('#active-input').checked = false;
-            }
         })
 
         $('.fa-trash-alt').on('click', function(event){

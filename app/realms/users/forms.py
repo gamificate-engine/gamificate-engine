@@ -46,7 +46,6 @@ class EditForm(FlaskForm):
     id = IntegerField('ID', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    active = BooleanField('Active', validators=[Optional()])
     submit = SubmitField('Edit User')
 
 
