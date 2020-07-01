@@ -122,7 +122,7 @@ def edit_user(id):
     if form.validate_on_submit():
         user_id = form.id.data
 
-        infoUser = {'username' : form.username.data, 'email': form.email.data, 'active': form.active.data}
+        infoUser = {'username' : form.username.data, 'email': form.email.data}
 
         user = User.query.get_or_404(user_id)
 
