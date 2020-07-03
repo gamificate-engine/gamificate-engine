@@ -1,1 +1,1 @@
-web: bin/start-nginx gunicorn -c config/gunicorn.conf.py gamificate:app
+web: gunicorn gamificate:app
