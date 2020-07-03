@@ -13,7 +13,11 @@ from flask_talisman import Talisman
 import stripe
 import os
 
-app = Flask(__name__, instance_relative_config=True) 
+app = Flask(__name__, 
+            template_folder='templates',
+            static_folder='static',
+            static_url_path='/backend-static',
+            instance_relative_config=True) 
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn gamificate:app
+web: flask db upgrade; bin/start-nginx gunicorn -c config/gunicorn.conf.py gamificate:app
