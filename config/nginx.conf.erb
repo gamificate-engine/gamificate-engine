@@ -24,7 +24,7 @@ http {
    }
 
    server {
-      listen 80;
+      listen <%= ENV["PORT"] %>;
       server_name gamificate-engine.com www.gamificate-engine.com;
     
 
