@@ -151,7 +151,7 @@ class UserRewards(db.Model):
 
     def to_dict(self):
         data = {
-            'id_reward': self.id_reward,
+            'id_reward': self.reward.id_reward,
             'id_user': self.id_user,
             'redeem_date': self.redeem_date
         }
@@ -187,7 +187,8 @@ class UserBadges(db.Model):
         data = {
             'id_badge': self.badge.id_badge,
             'progress': self.progress,
-            'finished': self.finished
+            'finished': self.finished,
+            'required': self.badge.required
         }
         if self.finished:
             data['finished_date'] = self.finished_date
