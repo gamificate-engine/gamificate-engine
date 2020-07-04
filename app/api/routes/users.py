@@ -169,19 +169,9 @@ def add_badge_progress(id_user, id_badge):
 
     data = request.get_json() or {}
 
-    # if 'id_badge' not in data:
-    #     return bad_request('Must include id_badge')
-
     if 'progress' not in data:
         return bad_request('Must include progress')
 
-    # try:
-    #     id_badge = int(data['id_badge'])
-    # except ValueError as verr:
-    #     return bad_request('id_badge must be an integer')
-    # except Exception as ex:
-    #     return bad_request('id_badge must be an integer')
-    
     try:
         progress = int(data['progress'])
         if progress < 0:
@@ -233,18 +223,6 @@ def get_badge_progress(id_user, id_badge):
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
-
-    # data = request.get_json() or {}
-    #
-    # if 'id_badge' not in data:
-    #     return bad_request('Must include id_badge')
-    #
-    # try:
-    #     id_badge = int(data['id_badge'])
-    # except ValueError as verr:
-    #     return bad_request('id_badge must be an integer')
-    # except Exception as ex:
-    #     return bad_request('id_badge must be an integer')
 
     badge = Badge.query.get(id_badge)
 
