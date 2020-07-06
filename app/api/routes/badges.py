@@ -5,12 +5,10 @@ from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
-from app import limiter
 
 
 # GET BADGE WITH GIVEN ID
 @bp.route('/badges/<int:id>', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/badges/get.yaml')
 def get_badge(id):
@@ -27,7 +25,6 @@ def get_badge(id):
 
 # GET ALL BADGES
 @bp.route('/badges', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/badges/get_all.yaml')
 def get_badges():
@@ -43,7 +40,6 @@ def get_badges():
 
 # GET USER'S PROGRESS ON BADGE
 @bp.route('/badges/<int:id>/progress', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/badges/get_progress.yaml')
 def get_badge_progresses(id):
@@ -87,7 +83,6 @@ def get_badge_progresses(id):
 
 # GET USERS THAT FINISHED THE BADGE
 @bp.route('/badges/<int:id>/progress/finished', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/badges/get_finished.yaml')
 def get_badge_finished(id):
@@ -118,7 +113,6 @@ def get_badge_finished(id):
 
 # GET USERS THAT STARTED THE BADGE
 @bp.route('/badges/<int:id>/progress/unfinished', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/badges/get_unfinished.yaml')
 def get_badge_unfinished(id):
@@ -151,7 +145,6 @@ def get_badge_unfinished(id):
 # GET ALL BADGES PROGRESS
 # TODO: NEEDS TESTING !!!
 @bp.route('/badges/progress', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/badges/get_all_progress.yaml')
 def get_badges_progress():

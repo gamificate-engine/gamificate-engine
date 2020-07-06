@@ -6,7 +6,6 @@ from app.api.errors import bad_request, error_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 import re
-from app import limiter
 
 
 
@@ -17,7 +16,6 @@ def check_email(email):
 
 # GET USER WITH GIVEN ID
 @bp.route('/users/<int:id>', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/get.yaml')
 def get_user(id):
@@ -35,7 +33,6 @@ def get_user(id):
 
 # GET ALL USERS
 @bp.route('/users', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/get_all.yaml')
 def get_users():
@@ -52,7 +49,6 @@ def get_users():
 
 # CREATE NEW USER
 @bp.route('/users', methods=['POST'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/create.yaml')
 def create_user():
@@ -106,7 +102,6 @@ def create_user():
 
 # UPDATE USER
 @bp.route('/users/<int:id>', methods=['PUT'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/update.yaml')
 def update_user_info(id):
@@ -151,7 +146,6 @@ def update_user_info(id):
 
 # UPDATE USER WITH BADGE PROGRESS
 @bp.route('/users/<int:id_user>/badges/<int:id_badge>', methods=['PUT'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/badge.yaml')
 def add_badge_progress(id_user, id_badge):
@@ -220,7 +214,6 @@ def add_badge_progress(id_user, id_badge):
 
 # GET GIVEN BAGDE PROGRESS
 @bp.route('/users/<int:id_user>/badges/<int:id_badge>', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/get_badge.yaml')
 def get_badge_progress(id_user, id_badge):
@@ -249,7 +242,6 @@ def get_badge_progress(id_user, id_badge):
 
 # GET ALL USER BADGES (FINISHED AND NOT FINISHED)
 @bp.route('/users/<int:id>/badges/all', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/get_badges.yaml')
 def get_user_badges(id):
@@ -271,7 +263,6 @@ def get_user_badges(id):
 
 # GET ALL FINISHED USER BADGES
 @bp.route('/users/<int:id>/badges/finished', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/get_finished.yaml')
 def get_user_finished_badges(id):
@@ -294,7 +285,6 @@ def get_user_finished_badges(id):
 
 # REDEEM REWARD WITH GIVEN ID
 @bp.route('/users/<int:id>/rewards', methods=['POST'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/redeem.yaml')
 def redeem_reward(id):
@@ -352,7 +342,6 @@ def redeem_reward(id):
 
 # GET ALL USER REWARDS
 @bp.route('/users/<int:id>/rewards', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/rewards.yaml')
 def get_user_rewards(id):
@@ -373,7 +362,6 @@ def get_user_rewards(id):
 
 
 @bp.route('/users/<int:id>/rewards/unredeemed', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/rewards_unredeemed.yaml')
 def get_user_rewards_unredeemed(id):
@@ -404,7 +392,6 @@ def get_user_rewards_unredeemed(id):
 
 
 @bp.route('/users/rewards/unredeemed', methods=['GET'])
-@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/users/all_rewards_unredeemed.yaml')
 def get_users_rewards_unredeemed():
