@@ -191,7 +191,7 @@ Our API only allows you to interact with Users, Badges and Rewards. You will not
 
 To be able to use our API, you need to authenticate yourself first. This will be explained in the next section.
 
-The API has a rate limit of 50 requests per second.
+The API has a rate limit for every route of 50 requests per second.
 
 ## Authentication:
 So, now that you have your API Key, you can access your Realm through our API!  
