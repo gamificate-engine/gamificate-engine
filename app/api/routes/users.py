@@ -144,10 +144,10 @@ def update_user_info(id):
 
 
 # UPDATE USER WITH BADGE PROGRESS
-@bp.route('/users/<int:id>/badges', methods=['PUT'])
+@bp.route('/users/<int:id_user>/badges/<int:id_badge>', methods=['PUT'])
 @jwt_required
 @swag_from('../docs/users/badge.yaml')
-def add_badge_progress(id):
+def add_badge_progress(id_user, id_badge):
     id_realm = get_jwt_identity()
 
     realm = Realm.query.get(id_realm)
@@ -156,7 +156,7 @@ def add_badge_progress(id):
     if not realm.active:
         return error_response(401, "Realm is inactive due to free plan. Please upgrade to Premium.")
 
-    user = User.query.get(id)
+    user = User.query.get(id_user)
     if not user:
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
@@ -169,19 +169,9 @@ def add_badge_progress(id):
 
     data = request.get_json() or {}
 
-    if 'id_badge' not in data:
-        return bad_request('Must include id_badge')
-
     if 'progress' not in data:
         return bad_request('Must include progress')
 
-    try:
-        id_badge = int(data['id_badge'])
-    except ValueError as verr:
-        return bad_request('id_badge must be an integer')
-    except Exception as ex:
-        return bad_request('id_badge must be an integer')
-    
     try:
         progress = int(data['progress'])
         if progress < 0:
@@ -197,7 +187,7 @@ def add_badge_progress(id):
     if badge.id_realm != id_realm:
         return error_response(401, "Badge does not belong to your Realm.")
 
-    badge_progress = UserBadges.query.get((id, id_badge))
+    badge_progress = UserBadges.query.get((id_user, id_badge))
 
     if badge_progress is not None:
         if badge_progress.finished:
@@ -222,29 +212,18 @@ def add_badge_progress(id):
 
 
 # GET GIVEN BAGDE PROGRESS
-@bp.route('/users/<int:id>/badges', methods=['GET'])
+@bp.route('/users/<int:id_user>/badges/<int:id_badge>', methods=['GET'])
 @jwt_required
 @swag_from('../docs/users/get_badge.yaml')
-def get_badge_progress(id):
+def get_badge_progress(id_user, id_badge):
     id_realm = get_jwt_identity()
 
-    user = User.query.get(id)
+    user = User.query.get(id_user)
     if not user:
         return error_response(404, "User with given ID does not exist.")
     if user.id_realm != id_realm:
         return error_response(401, "User does not belong to your Realm.")
 
-    data = request.get_json() or {}
-
-    if 'id_badge' not in data:
-        return bad_request('Must include id_badge')
-
-    try:
-        id_badge = int(data['id_badge'])
-    except ValueError as verr:
-        return bad_request('id_badge must be an integer')
-    except Exception as ex:
-        return bad_request('id_badge must be an integer')
     badge = Badge.query.get(id_badge)
 
     if not badge:
@@ -253,7 +232,7 @@ def get_badge_progress(id):
     if badge.id_realm != id_realm:
         return error_response(401, "Badge does not belong to your Realm.")
 
-    badge_progress = UserBadges.query.get((id, id_badge))
+    badge_progress = UserBadges.query.get((id_user, id_badge))
     if not badge_progress:
         return error_response(404, "User has no progress on that Badge.")
 
@@ -352,6 +331,7 @@ def redeem_reward(id):
 
     user.rewards.append(user_reward)
 
+    db.session.add(user_reward)
     db.session.commit()
 
     response = jsonify(user_reward.to_dict())
