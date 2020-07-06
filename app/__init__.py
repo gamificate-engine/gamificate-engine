@@ -12,6 +12,8 @@ from flask_cors import CORS
 from flask_talisman import Talisman
 import stripe
 import os
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 app = Flask(__name__, instance_relative_config=True) 
 app.config.from_object(Config)
@@ -22,6 +24,11 @@ login.login_view = 'auth.login'
 mail = Mail(app)
 
 jwt = JWTManager(app)
+
+limiter = Limiter(
+    app,
+    key_func=get_remote_address
+)
 
 CORS(app)
 

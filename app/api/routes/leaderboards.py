@@ -5,9 +5,11 @@ from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
+from app import limiter
 
 # LEADERBOARD - LEVEL
 @bp.route('/leaderboards/level', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/leaderboards/level.yaml')
 def get_level_leaderboard():
@@ -29,6 +31,7 @@ def get_level_leaderboard():
 
 # LEADERBOARD - TOTAL XP
 @bp.route('/leaderboards/total_xp', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/leaderboards/total_xp.yaml')
 def get_total_xp_leaderboard():
@@ -50,6 +53,7 @@ def get_total_xp_leaderboard():
 
 # LEADERBOARD - TOTAL BADGES
 @bp.route('/leaderboards/total_badges', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/leaderboards/total_badges.yaml')
 def get_total_badges_leaderboard():

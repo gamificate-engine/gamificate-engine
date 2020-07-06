@@ -5,9 +5,12 @@ from app.api.errors import bad_request, error_response
 from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
+from app import limiter
+
 
 # GET REWARD WITH GIVEN ID
 @bp.route('/rewards/<int:id>', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/rewards/get.yaml')
 def get_reward(id):
@@ -24,6 +27,7 @@ def get_reward(id):
 
 # GET ALL REWARDS
 @bp.route('/rewards', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/rewards/get_all.yaml')
 def get_rewards():
@@ -39,6 +43,7 @@ def get_rewards():
 
 # GET REWARD'S REDEEMS
 @bp.route('/rewards/<int:id>/redeems', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/rewards/get_redeems.yaml')
 def get_reward_redeems(id):
@@ -63,6 +68,7 @@ def get_reward_redeems(id):
 # GET ALL REWARDS' REDEEMS
 # TODO: NEEDS TESTING !!!
 @bp.route('/rewards/redeems', methods=['GET'])
+@limiter.limit("50/second")
 @jwt_required
 @swag_from('../docs/rewards/get_all_redeems.yaml')
 def get_all_reward_redeems():

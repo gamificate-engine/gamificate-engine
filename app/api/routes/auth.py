@@ -5,9 +5,11 @@ from flask import request, jsonify
 from app.models import Realm
 from app.api.errors import bad_request, error_response
 from flasgger import swag_from
+from app import limiter
 
 
 @bp.route('/auth', methods=['POST'])
+@limiter.limit("50/second")
 @swag_from('../docs/auth/auth.yaml')
 def auth():
     data = request.get_json() or {}
@@ -43,6 +45,7 @@ def auth():
 
 
 @bp.route('/auth/refresh', methods=['POST'])
+@limiter.limit("50/second")
 @jwt_refresh_token_required
 @swag_from('../docs/auth/refresh.yaml')
 def refresh():
