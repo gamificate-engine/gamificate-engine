@@ -12,8 +12,11 @@ from flask_cors import CORS
 from flask_talisman import Talisman
 import stripe
 import os
+import flask_monitoringdashboard as dashboard
+import configparser
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+
 
 app = Flask(__name__, instance_relative_config=True) 
 app.config.from_object(Config)
@@ -246,5 +249,25 @@ Have fun and **Gamificate** a lot!
     }       
 }
 swagger = Swagger(app, config=swagger_config, template=template)
+
+config = configparser.ConfigParser()
+config.optionxform = str
+config['dashboard'] = {'APP_VERSION': app.config['APP_VERSION'],
+                    'CUSTOM_LINK': 'monitoring',
+                    'MONITOR_LEVEL': 3,
+                    'OUTLIER_DETECTION_CONSTANT': 2.5,
+                    'SAMPLING_PERIOD': 20}
+config['authentication'] = {'USERNAME': app.config['MONITORING_USERNAME'],
+                            'PASSWORD': app.config['MONITORING_PASSWORD'],
+                            'SECURITY_TOKEN': app.config['MONITORING_TOKEN']
+                            }
+config['database'] = {'DATABASE': app.config['MONITORING_DB']}
+config['visualization'] = {'TIMEZONE': 'Europe/London'}
+with open('app/monitoring_config.cfg', 'w') as configfile:
+    config.write(configfile, space_around_delimiters=False)
+
+dashboard.config.init_from(file='app/monitoring_config.cfg')
+dashboard.bind(app)
+    
 
 from app import models
