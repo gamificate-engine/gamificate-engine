@@ -17,6 +17,12 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['gamificate.engine@gmail.com']
 
+    MONITORING_USERNAME = os.environ.get('MONITORING_USERNAME')
+    MONITORING_PASSWORD = os.environ.get('MONITORING_PASSWORD')
+    MONITORING_TOKEN = os.environ.get('MONITORING_TOKEN')
+    MONITORING_DB = os.environ.get('MONITORING_DB')
+    APP_VERSION = os.environ.get('APP_VERSION')
+
     BADGES_PER_PAGE = 12
     USERS_PER_PAGE = 12
     REWARDS_PER_PAGE = 12
