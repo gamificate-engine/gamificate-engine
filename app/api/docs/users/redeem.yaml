@@ -37,9 +37,11 @@ responses:
           type: "integer"
           example: 1
         redeem_date:
-            description: "Date the Reward was redeemed"
-            type: "string"
-            example: "2020-04-19 21:22:27.175801"
+          description: "Date the Reward was redeemed"
+          type: "string"
+          example: "2020-04-19 21:22:27.175801"
+
+
   404:
     description: "Realm or User or Reward with given ID does not exist."
   400:

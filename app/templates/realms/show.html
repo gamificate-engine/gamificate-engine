@@ -4,7 +4,7 @@
 
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
-            {% with title=realm.name %}
+            {% with title=realm.name , id=realm.id_realm %}
                 {% include "realms/partials/navbar.html"  %}
             {% endwith%}
 
@@ -236,13 +236,15 @@
             type: 'horizontalBar',
             data: {
                 datasets: [{
-                    label: "# of Times Completed",
                     data: values,
                     backgroundColor: colors,
                 }],
                 labels: badges
             },
             options: {
+                legend: {
+                    display: false
+                },
                 responsive: true,
                 scales: {
                     xAxes: [{

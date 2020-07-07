@@ -34,6 +34,10 @@ responses:
                   description: "ID of the Badge to which the Reward is associated"
                   type: "integer"
                   example: 12
+                reward_name:
+                  description: "Name of the Reward"
+                  type: "string"
+                  example: "My first 20!"
   404:
     description: "User with given ID does not exist"
   401:

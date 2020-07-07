@@ -7,3 +7,4 @@ app.db
 migrations/versions
 .flaskenv
 .idea
+app/monitoring_config.cfg
