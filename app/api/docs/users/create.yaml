@@ -69,6 +69,6 @@ responses:
   400:
     description: "Username and Email are required and must be unique in the Realm OR Username must be between 3 and 50 chars OR Email must have a valid format"
   401:
-    description: "Wrong API key"
+    description: "Wrong API key OR Realm is inactive due to free plan"
   403:
     description: "You need to be a Premium admin to create more than 25 users"

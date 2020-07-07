@@ -8,6 +8,7 @@ from flasgger import swag_from
 import re
 
 
+
 def check_email(email):
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
     return re.search(regex, email)
