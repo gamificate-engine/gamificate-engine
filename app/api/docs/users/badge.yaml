@@ -10,22 +10,22 @@ security:
   - Bearer: []
 parameters:
   - in: "path"
-    name: "id"
+    name: "id_user"
     description: "ID of the User"
+    required: true
+    type: "integer"
+  - in: "path"
+    name: "id_badge"
+    description: "ID of the Badge"
     required: true
     type: "integer"
   - in: "body"
     name: "body"
-    description: "Object containing the ID of the Badge and the progress quantity"
+    description: "Object containing the progress quantity"
     required: true
     schema:
       type: "object"
       properties:
-        id_badge:
-          description: "ID of the Badge"
-          type: "integer"
-          example: 1
-          required: true
         progress:
           description: "Progress"
           type: integer
@@ -49,6 +49,10 @@ responses:
           description: "If the Badge is acquired or not"
           type: "boolean"
           example: false
+        required:
+          description: "Total needed to complete"
+          type: "integer"
+          example: 20
         finished_date:
           required: false
           description: "Only when the Badge is finished: Date when it was acquired"
@@ -62,8 +66,8 @@ responses:
   404:
     description: "User or Badge with given ID does not exist"
   400:
-    description: "Must include id_badge and progress OR id_badge must be an integer OR progress must be a positive integer"
+    description: "Must include progress OR progress must be a positive integer"
   401:
-    description: "Badge/User doesn't belong to the Realm authenticated"
+    description: "Badge/User doesn't belong to the Realm authenticated OR Realm/User is inactive due to free plan"
   403:
     description: "Badge already finished"

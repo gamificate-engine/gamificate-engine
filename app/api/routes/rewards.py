@@ -6,6 +6,7 @@ from app import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
+
 # GET REWARD WITH GIVEN ID
 @bp.route('/rewards/<int:id>', methods=['GET'])
 @jwt_required

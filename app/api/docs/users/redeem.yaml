@@ -41,10 +41,10 @@ responses:
             type: "string"
             example: "2020-04-19 21:22:27.175801"
   404:
-    description: "User or Reward with given ID does not exist."
+    description: "Realm or User or Reward with given ID does not exist."
   400:
     description: "Must include id_reward OR id_reward must be an integer."
   401:
-    description: "Reward/User doesn't belong to the authenticated Realm."
+    description: "Reward/User doesn't belong to the authenticated Realm OR Realm/User is inactive due to free plan."
   403:
     description: "Reward already redeemed."

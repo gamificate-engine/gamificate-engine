@@ -12,6 +12,8 @@ from flask_cors import CORS
 from flask_talisman import Talisman
 import stripe
 import os
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 app = Flask(__name__, instance_relative_config=True) 
 app.config.from_object(Config)
@@ -22,6 +24,11 @@ login.login_view = 'auth.login'
 mail = Mail(app)
 
 jwt = JWTManager(app)
+
+limiter = Limiter(
+    app,
+    key_func=get_remote_address
+)
 
 CORS(app)
 
@@ -90,6 +97,7 @@ from app.realms import bp as realms_bp
 app.register_blueprint(realms_bp)
 
 from app.api import bp as api_bp
+api_limit = limiter.shared_limit("50/second", scope="api")(api_bp)
 app.register_blueprint(api_bp, url_prefix='/api')
 
 
@@ -183,6 +191,8 @@ When you create your Realm, an API Key will be sent to your email. That API Key 
 Our API only allows you to interact with Users, Badges and Rewards. You will not be able to create Realms or Gamificate accounts through here. For that, you need to do it in our app's dashboard. Creating Badges and Rewards are also not covered here, but you can consult them and check their infos with the provided routes.
 
 To be able to use our API, you need to authenticate yourself first. This will be explained in the next section.
+
+The API has a rate limit of 50 requests per second.
 
 ## Authentication:
 So, now that you have your API Key, you can access your Realm through our API!  

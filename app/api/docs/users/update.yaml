@@ -79,4 +79,4 @@ responses:
   400:
     description: "Email or Username must be unique OR Username must be between 3 and 50 chars OR Email must have a valid format"
   401:
-    description: "Wrong API key"
+    description: "Wrong API key OR Realm/User is inactive due to free plan"
