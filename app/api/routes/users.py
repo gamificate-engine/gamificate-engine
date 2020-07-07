@@ -383,9 +383,11 @@ def get_user_rewards_unredeemed(id):
         if user_badge.finished:
             badge = Badge.query.get(user_badge.id_badge)
             if badge.id_reward not in redeemed_ids:
+                reward = Reward.query.get(badge.id_reward)
                 res.append({
                     'id_reward': badge.id_reward,
-                    'id_badge': badge.id_badge
+                    'id_badge': badge.id_badge,
+                    'reward_name': reward.name
                 })
     return jsonify({'user_rewards_unredeemed': res})
 
