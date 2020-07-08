@@ -153,7 +153,8 @@ class UserRewards(db.Model):
         data = {
             'id_reward': self.reward.id_reward,
             'id_user': self.id_user,
-            'redeem_date': self.redeem_date
+            'redeem_date': self.redeem_date,
+            'reward_name': self.reward.name
         }
         return data
 
