@@ -62,7 +62,12 @@ if not app.debug:
             'checkout.stripe.com',
             'cdn.jsdelivr.net',
             'stackpath.bootstrapcdn.com',
-            'code.jquery.com'
+            'code.jquery.com',
+            'cdn.plot.ly',
+            'cdnjs.cloudflare.com',
+            'cdn.datatables.net',
+            'ajax.googleapis.com',
+            'unpkg.com'
         ],
         'child-src': [
             '\'self\'',
@@ -80,6 +85,9 @@ if not app.debug:
             'checkout.stripe.com',
             'fonts.googleapis.com',
             'fonts.gstatic.com',
+            'cdnjs.cloudflare.com',
+            'stackpath.bootstrapcdn.com',
+            'cdn.datatables.net'
         ]
     }
     Talisman(app, content_security_policy=csp)
