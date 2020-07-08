@@ -59,6 +59,7 @@ if not app.debug:
         'script-src':[
             '\'self\'',
             '\'unsafe-inline\'',
+            '\'unsafe-eval\'',
             'checkout.stripe.com',
             'cdn.jsdelivr.net',
             'stackpath.bootstrapcdn.com',
@@ -77,7 +78,8 @@ if not app.debug:
         'connect-src': [
             '\'self\'',
             '\'unsafe-inline\'',
-            'checkout.stripe.com'
+            'checkout.stripe.com',
+            'pypi.org'
         ],
         'style-src': [
             '\'self\'',
