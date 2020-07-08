@@ -383,7 +383,7 @@ def get_user_rewards_unredeemed(id):
     for user_badge in user_badges:
         if user_badge.finished:
             badge = Badge.query.get(user_badge.id_badge)
-            if badge.id_reward not in redeemed_ids:
+            if badge.id_reward and badge.id_reward not in redeemed_ids:
                 reward = Reward.query.get(badge.id_reward)
                 res.append({
                     'id_reward': badge.id_reward,
